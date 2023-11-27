@@ -17,4 +17,12 @@ import sys
 
 @app.route("/")
 def home():
+    return render_template("portails.html")
+
+@app.route("/login")
+def login():
+    return render_template("login.html")
+
+@app.route("/login_admin")
+def login_admin():
     return render_template("login.html")

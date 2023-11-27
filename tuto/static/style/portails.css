@@ -1,0 +1,75 @@
+html, body {
+    height: 100%;
+    margin: 0;
+    font-family: 'Lato', sans-serif;
+}
+
+body {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    overflow: hidden;
+}
+
+main {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    height: 100vh;
+    overflow: scroll;
+    margin: 0;
+    justify-content: center;
+}
+
+.header {
+    background-color: white;
+    width: 100%;
+    display: flex;
+    justify-content: flex-end;
+    border-bottom: 2px solid #ccc;
+    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+.form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    
+}
+.portail-admin{
+    margin-top: 10px;;
+}
+
+.btn {
+    height: 3rem;
+    width: 20rem;
+    margin-top: 1rem;
+    background-color: wheat;
+    border-radius: 0.5rem;
+    border: none;
+    font-size: 1.2rem;
+    transition: all 400ms;
+    box-shadow: 0 0 10px antiquewhite, 0 0 10px antiquewhite;
+}
+
+.btn:hover {
+    background-color: antiquewhite;
+    box-shadow: none;
+}
+
+
+@media (max-height: 540px) or (max-width: 748px) {
+    main {
+        overflow: scroll;
+    }
+
+    .app-name {
+        font-size: 24px;
+    }
+
+}
+.container{
+    justify-content: center;
+    align-items: center;
+}
