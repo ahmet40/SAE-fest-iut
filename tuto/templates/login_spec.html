@@ -10,8 +10,13 @@
             <form class="form" action="">
                 <p class="title">Login Form</p>
                 <input placeholder="Username" class="username input" type="text">
+                
                 <input placeholder="Password" class="password input" type="password">
                 <button class="btn" type="submit">Login</button>
+                <div class ="creation">
+                    <p>Pas de compte : </p>
+                    <a href="{{ url_for('create_account') }}" class="create_account">Crée vous un compte</a>
+                </div>
             </form>
         </div>
     </body>

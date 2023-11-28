@@ -19,10 +19,14 @@ import sys
 def home():
     return render_template("portails.html")
 
-@app.route("/login")
-def login():
-    return render_template("login.html")
+@app.route("/login_spec")
+def login_spec():
+    return render_template("login_spec.html")
 
 @app.route("/login_admin")
 def login_admin():
-    return render_template("login.html")
+    return render_template("login_admin.html")
+
+@app.route("/create_account")
+def create_account():
+    return render_template("create_account.html")

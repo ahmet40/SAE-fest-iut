@@ -1,17 +1,29 @@
+html, body {
+    height: 100%;
+    margin: 0;
+    font-family: 'Lato', sans-serif;
+}
+body{
+    background-color: #38382e;
+    justify-items: center;
+    align-items: center;
+    justify-content: center;
+}
 ::selection {
     background-color: gray;
 }
 
 .container {
-    margin: 0 auto;
+    margin-top: 0 auto;
     display: flex;
     justify-content: center;
     align-items: center;
+    height: 100%;
 }
 
 .form {
     width: 400px;
-    height: 400px;
+    height: 450px;
     background-image: linear-gradient(to bottom, #424242,#212121);
     display: flex;
     align-items: center;
@@ -25,6 +37,17 @@
     font-size: 2rem;
 }
 
+.create_account{
+    text-decoration : none;
+    color: wheat;
+    height: min-content;
+    margin-top: 16px;
+    margin-left: 6px;
+
+}
+.creation{
+    display: flex;
+}
 .input {
     margin: 0.5rem 0;
     padding: 1rem 0.5rem;
@@ -35,32 +58,23 @@
     outline: none;
 }
 
-.username {
+.username, .email, .password {
     border-bottom: 1px solid wheat;
     transition: all 400ms;
 }
 
-.username:hover {
+.email:hover, .password:hover , .username:hover {
     background-color: #424242;
     border: none;
     border-radius: 0.5rem;
 }
 
-.password {
-    border-bottom: 1px solid wheat;
-    transition: all 400ms;
-}
 
-.password:hover {
-    background-color: #424242;
-    border: none;
-    border-radius: 0.5rem;
-}
 
 .btn {
     height: 3rem;
     width: 20rem;
-    margin-top: 3rem;
+    margin-top: 2rem;
     background-color: wheat;
     border-radius: 0.5rem;
     border: none;
