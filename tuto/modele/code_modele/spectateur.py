@@ -35,7 +35,7 @@ class Personne:
         """
         return self.__mdp
 
-    def get_prenom_p(self):
+    def get_pseudo(self):
         """
         Récupère le prénom de la personne.
 
