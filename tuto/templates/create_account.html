@@ -9,10 +9,10 @@
         <div class="container">
             <form class="form" action="">
                 <p class="title">Login</p>
-                <input placeholder="Username" class="username input" type="text">
+                <input placeholder="username" class="username input" type="text">
                 <input placeholder="email"    class="email input" name="email"  type="email" required pattern="[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}" title="Entrez une adresse e-mail valide" >
-                <input placeholder="Password" class="password input" type="password" required pattern="^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*])[a-zA-Z\d!@#$%^&*]{8,}$" title="Le mot de passe doit comporter au moins 8 caractères, y compris au moins une lettre majuscule, une lettre minuscule, un chiffre et un caractère spécial.">
-                <button class="btn" type="submit">Login</button>
+                <input placeholder="password" class="password input" type="password" required pattern="^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*])[a-zA-Z\d!@#$%^&*]{8,}$" title="Le mot de passe doit comporter au moins 8 caractères, y compris au moins une lettre majuscule, une lettre minuscule, un chiffre et un caractère spécial.">
+                <button class="btn" type="submit" onclick="{{ url_for('creation_compte') }}">Login</button>
             </form>
         </div>
     </body>
