@@ -1,8 +1,22 @@
 import sqlalchemy
 #pip install mysql-connector-python
 
-#
 def ouvrir_connexion(user, passwd, host, database):
+    """Cette methode va nous permettre de nous connecter à la 
+        base de données.
+
+    Args:
+        user (String): le user 
+        passwd (String): son mot de passe
+        host (String): le host
+        database (String): le nom de la database
+
+    Raises:
+        err: Exception en cas d'erreur de connexion
+
+    Returns:
+        cnx: une connexion ouverte à la base de données
+    """
     try:
         # Create an engine for interacting with the database server
         engine = sqlalchemy.create_engine(f"mysql+mysqlconnector://{user}:{passwd}@{host}/{database}")
@@ -16,9 +30,10 @@ def ouvrir_connexion(user, passwd, host, database):
         raise err
 
 # BASE DE DONNEE A CHANGER
-cnx = ouvrir_connexion("dahouede","dahouede","servinfo-maria","DBdahouede")
+cnx = ouvrir_connexion("temha", "temha1011", "localhost", "SAE_WEB_BD")
 
 
+import sqlalchemy
 
 #import sqlalchemy
 #

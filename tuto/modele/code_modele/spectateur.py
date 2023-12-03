@@ -1,4 +1,4 @@
-class Personne:
+class Spectateur:
     def __init__(self, id_p, pseudo, email,mdp):
         """
         Initialise une instance de la classe Personne.

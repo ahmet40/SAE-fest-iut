@@ -9,11 +9,13 @@ from wtforms import PasswordField
 from flask import request, redirect, url_for
 from wtforms import FloatField
 from flask import flash
-import models
 from .app import app, db
 import sqlalchemy
 import os
 import sys
+ROOT = os.path.join(os.path.dirname(os.path.abspath(__file__)), '')
+sys.path.append(os.path.join(ROOT, ''))
+import models
 
 
 @app.route("/")

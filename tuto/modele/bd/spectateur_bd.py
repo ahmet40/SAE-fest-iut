@@ -4,8 +4,8 @@ import sys
 import os
 
 ROOT = os.path.join(os.path.dirname(os.path.abspath(__file__)), '../..')
-sys.path.append(os.path.join(ROOT, 'modele/code_model/'))
-from spectateur import Spectateur
+sys.path.append(os.path.join(ROOT, 'modele/code_modele/'))
+from spectateur import *
 
 class Spectateur_bd:
     def __init__(self,conx):

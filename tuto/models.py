@@ -2,11 +2,12 @@ import yaml
 import os.path
 import sys
 from datetime import datetime
-from .app import db
-from .app import login_manager
+ROOT = os.path.join(os.path.dirname(os.path.abspath(__file__)), '')
+sys.path.append(os.path.join(ROOT, ''))
+from app import db
 
 
-ROOT = os.path.join(os.path.dirname(os.path.abspath(__file__)), './')
+ROOT = os.path.join(os.path.dirname(os.path.abspath(__file__)), '')
 sys.path.append(os.path.join(ROOT, 'modele/bd/'))
 from connexion import cnx
 from spectateur_bd import *
