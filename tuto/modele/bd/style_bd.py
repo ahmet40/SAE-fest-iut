@@ -8,34 +8,64 @@ sys.path.append(os.path.join(ROOT, 'modele/code_model/'))
 from style import Style
 
 class Style_bd:
-    def __init__(self,conx):
-        self.cnx=conx
+    """
+        Classe gérant l'accès à la base de données pour la gestion des styles.
+    """
+    def __init__(self, conx):
+        """
+        Initialise une instance de la classe Style_bd.
+
+        Args:
+            conx (obj): Objet de connexion à la base de données.
+        """
+        self.cnx = conx
 
     def get_all_styles(self):
+        """
+        Récupère tous les styles présents dans la base de données.
+
+        Returns:
+            list[Style] or None: Liste d'objets Style ou None si une erreur survient.
+        """
         try:
-            query = text("select id_St, nom_St from STYLE ")
+            query = text("select id_St, nom_St from STYLE")
             resultat = self.cnx.execute(query)
-            styles=[]
-            for id_St, nom_St in resultat:
-                styles.append(Style(id_St, nom_St))
+            styles = [Style(id_St, nom_St) for id_St, nom_St in resultat]
             return styles
         except Exception as e:
-            print("all styles a échoue")
+            print("all styles a échoué")
             return None
-        
-    def get_par_id_styles(self,id_St):
+
+    def get_par_id_styles(self, id_St):
+        """
+        Récupère un style spécifique à partir de son identifiant.
+
+        Args:
+            id_St (int): Identifiant du style à récupérer.
+
+        Returns:
+            list[Style] or None: Liste d'un objet Style ou None si une erreur survient.
+        """
         try:
             query = text(f"select id_St, nom_St from STYLE where id_St= {str(id_St)}")
             resultat = self.cnx.execute(query)
-            styles=[]
-            for id_St, nom_St in resultat:
-                styles.append(Style(id_St, nom_St))
+            styles = [Style(id_St, nom_St) for id_St, nom_St in resultat]
             return styles
         except Exception as e:
-            print("style by id a échoue")
+            print("style by id a échoué")
             return None
-        
-    def inserer_styles(self,id_St, nom_St):
+
+    def inserer_styles(self, id_St, nom_St):
+        """
+        Insère un nouveau style dans la base de données.
+
+        Args:
+            id_St (int): Identifiant du nouveau style.
+            nom_St (str): Nom du nouveau style.
+
+        Returns:
+            None: Aucune valeur de retour, lève une exception en cas d'échec.
+        """
         try:
             query = text(f"insert into STYLE values({str(id_St)} , {str(nom_St)})")
             cnx.execute(query)
@@ -45,6 +75,12 @@ class Style_bd:
             return None
 
     def get_prochain_id_styles(self):
+        """
+        Récupère le prochain identifiant disponible pour un nouveau style.
+
+        Returns:
+            int or None: Prochain identifiant disponible ou None si une erreur survient.
+        """
         try:
             query = text("SELECT MAX(id_St) as m FROM STYLE")
             result = self.cnx.execute(query).fetchone()

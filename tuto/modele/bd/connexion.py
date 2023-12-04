@@ -30,8 +30,10 @@ def ouvrir_connexion(user, passwd, host, database):
         raise err
 
 # BASE DE DONNEE A CHANGER
-cnx = ouvrir_connexion("temha", "temha1011", "localhost", "SAE_WEB_BD")
-
+#Sur pc maison
+CNX = ouvrir_connexion("temha", "temha1011", "localhost", "SAE_WEB_BD")
+#à l'iut
+#CNX = ouvrir_connexion("baba", "temha1011", "servinfo-maria", "DBbaba")
 
 import sqlalchemy
 

@@ -9,11 +9,12 @@ from app import db
 
 ROOT = os.path.join(os.path.dirname(os.path.abspath(__file__)), '')
 sys.path.append(os.path.join(ROOT, 'modele/bd/'))
-from connexion import cnx
+from connexion import CNX
 from spectateur_bd import *
 from concert_bd import *
 
-
+#-----------------------------------------------------------------------------
+# Connection et creation de compte
 def connecter_spectateur(username: str, password: str) -> bool:
     """Cette fonction va nous permettre de connecter le spectateur à l'application
 
@@ -24,7 +25,7 @@ def connecter_spectateur(username: str, password: str) -> bool:
     Returns:
         bool: renvoie la valeur True si le spectateur existe dans la base de données et False sinon
     """
-    user = Spectateur_bd(cnx)
+    user = Spectateur_bd(CNX)
     liste_spec = user.get_all_spectateurs()
     if liste_spec:
         for spec in liste_spec:
@@ -41,26 +42,26 @@ def creation_compte(username: str, email: str, password: str) -> bool:
         email (str): le mail entré par l'utilisateur
         password (str): le mot de passe entré par l'utilisateur
     """
-    user = Spectateur_bd(cnx)
+    user = Spectateur_bd(CNX)
     liste_spec = user.get_all_spectateurs()
     if liste_spec:
         for spec in liste_spec:
             if email==spec.get_email():
                 print("Vous avez déjà un compte associer à ce mail")
-                return False
+                return "MailExiste"
             elif username == spec.get_pseudo() and email == spec.get_email() and password == spec.get_mdp():
                 print("Vous êtes déjà inscrit.")
-                return False
+                return "Existe"
     user.inserer_spectateurs(user.get_prochain_id_spectateur(), username, email, password)
-    return True
+    return "Inscrit"
 
-
-
+#------------------------------------------------------------------------------
+# La liste des concerts
 def liste_concert()->list:
     """cette methode va nous permettre d'obtenir tous les concert du festivale
 
     Returns:
         list: la liste des concerts.
     """
-    user = Concert_bd(cnx)
+    user = Concert_bd(CNX)
     return user.get_all_concert()

@@ -8,34 +8,67 @@ sys.path.append(os.path.join(ROOT, 'modele/code_model/'))
 from groupe import Groupe
 
 class Groupe_bd:
-    def __init__(self,conx):
-        self.cnx=conx
+    """
+        Classe gérant l'accès à la base de données pour la gestion des groupes de musique.
+    """
+    def __init__(self, conx):
+        """
+        Initialise une instance de la classe Groupe_bd.
+
+        Args:
+            conx (obj): Objet de connexion à la base de données.
+        """
+        self.cnx = conx
 
     def get_all_groupe(self):
+        """
+        Récupère tous les groupes de musique présents dans la base de données.
+
+        Returns:
+            list[Groupe] or None: Liste d'objets Groupe ou None si une erreur survient.
+        """
         try:
             query = text("select  id_G, description, photo, lien_Reseaux, lien_Video from GROUPE")
             resultat = self.cnx.execute(query)
-            groupe=[]
-            for  id_G, description, photo, lien_Reseaux, lien_Video in resultat:
-                groupe.append(Groupe( id_G, description, photo, lien_Reseaux, lien_Video))
+            groupe = [Groupe(id_G, description, photo, lien_Reseaux, lien_Video) for id_G, description, photo, lien_Reseaux, lien_Video in resultat]
             return groupe
         except Exception as e:
-            print("all groupe a échoue")
+            print("all groupe a échoué")
             return None
 
-    def get_par_id_groupe_fav(self,id_G):
+    def get_par_id_groupe_fav(self, id_G):
+        """
+        Récupère un groupe de musique spécifique en fonction de son identifiant.
+
+        Args:
+            id_G (int): Identifiant du groupe de musique à récupérer.
+
+        Returns:
+            list[Groupe] or None: Liste d'objets Groupe correspondant à l'identifiant donné, ou None si une erreur survient.
+        """
         try:
             query = text(f"select  id_G, description, photo, lien_Reseaux, lien_Video from GROUPE where id_G= {str(id_G)}")
             resultat = self.cnx.execute(query)
-            groupe=[]
-            for  id_G, description, photo, lien_Reseaux, lien_Video in resultat:
-                groupe.append(Groupe( id_G, description, photo, lien_Reseaux, lien_Video))
+            groupe = [Groupe(id_G, description, photo, lien_Reseaux, lien_Video) for id_G, description, photo, lien_Reseaux, lien_Video in resultat]
             return groupe
         except Exception as e:
-            print("groupe by id groupe a échoue")
+            print("groupe by id groupe a échoué")
             return None     
         
     def inserer_groupe(self, id_G, description, photo, lien_Reseaux, lien_Video):
+        """
+        Insère un nouveau groupe de musique dans la base de données.
+
+        Args:
+            id_G (int): Identifiant du nouveau groupe de musique.
+            description (str): Description du groupe.
+            photo (str): Chemin de la photo du groupe.
+            lien_Reseaux (str): Lien vers les réseaux sociaux du groupe.
+            lien_Video (str): Lien vers une vidéo du groupe.
+
+        Returns:
+            None: Aucune valeur de retour, lève une exception en cas d'échec.
+        """
         try:
             query = text(f"insert into GROUPE values({str(id_G)} , {str(description)},{str(photo)},{str(lien_Reseaux)},{str(lien_Video)})")
             cnx.execute(query)
@@ -45,6 +78,12 @@ class Groupe_bd:
             return None
 
     def get_prochain_id_groupe(self):
+        """
+        Récupère le prochain identifiant disponible pour un nouveau groupe de musique.
+
+        Returns:
+            int or None: Prochain identifiant disponible ou None si une erreur survient.
+        """
         try:
             query = text("SELECT MAX(id_G) as m FROM GROUPE")
             result = self.cnx.execute(query).fetchone()

@@ -68,6 +68,9 @@ def creation_compte():
     username=request.form.get("username")
     email=request.form.get("email")
     password=request.form.get("password")
+    statut=models.creation_compte(username,email,password)
+    if statut=="MailExiste":
+        return redirect(url_for("create_account"))
     return redirect(url_for("login_spec"))
 
 @app.route("/liste_concerts",methods=["GET","POST"])
@@ -81,4 +84,5 @@ def se_connecter():
     password=request.form.get("password")
     if not models.connecter_spectateur(username,password):
         return redirect(url_for("login_spec"))
-    return redirect(url_for("liste_concerts"))
+        #redirection vers la page login si la connection de l'utilisateur n'a pas fonctionner
+    return redirect(url_for("liste_concerts"))    #redirection vers la page principale du site internet
