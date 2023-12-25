@@ -1,4 +1,3 @@
-from connexion import cnx
 from sqlalchemy.sql.expression import text
 import sys
 import os
@@ -28,11 +27,11 @@ class Concert_bd:
                 list[Concert] or None: Liste d'objets Concert ou None si une erreur survient.
         """
         try:
-            query = text("select id_C, nom_C, date_Debut, date_Fin, id_L from CONCERT")
+            query = text("select id_C, nom_C, date_Debut, date_Fin, id_L,id_IMAGE from CONCERT")
             resultat = self.cnx.execute(query)
             concert=[]
-            for id_C, nom_C, date_Debut, date_Fin, id_L in resultat:
-                concert.append(Concert(id_C, nom_C, date_Debut, date_Fin, id_L))
+            for id_C, nom_C, date_Debut, date_Fin, id_L,id_IMAGE in resultat:
+                concert.append(Concert(id_C, nom_C, date_Debut, date_Fin, id_L,id_IMAGE))
             return concert
         except Exception as e:
             print("all concert a échoue")
@@ -49,18 +48,18 @@ class Concert_bd:
                 list[Concert] or None: Liste d'objets Concert correspondant à l'identifiant donné, ou None si une erreur survient.
         """
         try:
-            query = text(f"select id_C, nom_C, date_Debut, date_Fin, id_L from CONCERT where id_C= {str(id_C)}")
+            query = text(f"select id_C, nom_C, date_Debut, date_Fin, id_L,id_IMAGE from CONCERT where id_C= {str(id_C)}")
             resultat = self.cnx.execute(query)
             concert=[]
-            for id_C, nom_C, date_Debut, date_Fin, id_L in resultat:
-                concert.append(Concert(id_C, nom_C, date_Debut, date_Fin, id_L))
+            for id_C, nom_C, date_Debut, date_Fin, id_L,id_IMAGE in resultat:
+                concert.append(Concert(id_C, nom_C, date_Debut, date_Fin, id_L,id_IMAGE))
             return concert
         except Exception as e:
             print("concert by id a échoue")
             return None
     
         
-    def inserer_concert(self,id_C, nom_C, date_Debut, date_Fin, id_L):
+    def inserer_concert(self,id_C, nom_C, date_Debut, date_Fin, id_L,id_IMAGE):
         """
             Insère un nouveau concert dans la base de données.
 
@@ -75,8 +74,8 @@ class Concert_bd:
                 None: Aucune valeur de retour, lève une exception en cas d'échec.
         """
         try:
-            query = text(f"insert into CONCERT values({str(id_C)} , {nom_C},{str(date_Debut)},{str(date_Fin)},{str(id_L)})")
-            cnx.execute(query)
+            query = text(f"insert into CONCERT values({str(id_C)} , '{nom_C}',{str(date_Debut)},{str(date_Fin)},{str(id_L)}, {str(id_IMAGE)})")
+            self.cnx.execute(query)
             self.cnx.commit()
         except Exception as e:
             print("insertion concert a échoué")

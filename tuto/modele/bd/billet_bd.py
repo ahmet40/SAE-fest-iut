@@ -1,4 +1,3 @@
-from connexion import cnx
 from sqlalchemy.sql.expression import text
 import sys
 import os
@@ -73,7 +72,7 @@ class Billet_bd:
         """
         try:
             query = text(f"insert into BILLET values({str(id_B)} , {str(id_Spec)},{str(id_C)},{str(id_T)})")
-            cnx.execute(query)
+            self.cnx.execute(query)
             self.cnx.commit()
         except Exception as e:
             print("insertion billet a échoué")

@@ -1,4 +1,3 @@
-from connexion import cnx
 from sqlalchemy.sql.expression import text
 import sys
 import os
@@ -73,9 +72,8 @@ class Organisation_bd:
             None: Aucune valeur de retour, lève une exception en cas d'échec.
         """
         try:
-            query = text(f"insert into ORGANISATION values({str(id_C)} , {str(id_G)},{str(date_Debut_O)},"
-                         f"{str(date_Fin_O)},{str(temps_Montage)},{str(temps_Demontage)})")
-            cnx.execute(query)
+            query = text(f"insert into ORGANISATION values({str(id_C)} , {str(id_G)},{str(date_Debut_O)},{str(date_Fin_O)},{str(temps_Montage)},{str(temps_Demontage)})")
+            self.cnx.execute(query)
             self.cnx.commit()
         except Exception as e:
             print("insertion organisations a échoué")

@@ -1,22 +1,25 @@
 
 from flask import jsonify, render_template, url_for, redirect
-from flask_wtf import FlaskForm
-from wtforms import StringField, HiddenField
-from wtforms.validators import DataRequired
 from flask import request
-from hashlib import sha256
-from wtforms import PasswordField
 from flask import request, redirect, url_for
-from wtforms import FloatField
-from flask import flash
-from .app import app, db
-import sqlalchemy
+from .app import app
 import os
 import sys
 ROOT = os.path.join(os.path.dirname(os.path.abspath(__file__)), '')
 sys.path.append(os.path.join(ROOT, ''))
 import models
+ROOT = os.path.join(os.path.dirname(os.path.abspath(__file__)), './modele')
+sys.path.append(os.path.join(ROOT, './bd'))
+from connexion import CNX
+from spectateur_bd import Spectateur_bd
 
+SPECTATEUR=Spectateur_bd(CNX)
+
+ROOT = os.path.join(os.path.dirname(os.path.abspath(__file__)), './modele')
+sys.path.append(os.path.join(ROOT, './code_modele'))
+from spectateur import Spectateur
+
+le_spectateur=Spectateur(-1,"","","")
 
 @app.route("/")
 def home():
@@ -49,8 +52,10 @@ def create_account():
     """
     return render_template("create_account.html")
 
-@app.route("/liste_concerts")
-def liste_concert():
+
+
+@app.route("/les-concerts")
+def les_concerts():
     """Cette methode va nous permettre de nous diriger vers la page 
         liste de concerts
     Returns:
@@ -58,23 +63,32 @@ def liste_concert():
     """
     return render_template("liste_concerts.html",liste_concert=models.liste_concert())
 
-@app.route("/login_spec",methods=["GET","POST"])
-def creation_compte():
+@app.route("/inscription",methods=["GET", "POST"])
+def inscrire():
     """Cette methode va nous permettre de nous rediriger vers la page 
         login
     Returns:
         redirect:redirection vers la page
     """
-    username=request.form.get("username")
-    email=request.form.get("email")
-    password=request.form.get("password")
-    statut=models.creation_compte(username,email,password)
-    if statut=="MailExiste":
-        return redirect(url_for("create_account"))
-    return redirect(url_for("login_spec"))
+    print("haha")
+    if request.method == "POST":
+        username=request.form.get("username")
+        email=request.form.get("email")
+        password=request.form.get("password")
+        print(username,email,password)
+        liste_utilisateur=SPECTATEUR.get_all_spectateurs()
+        for utilisateur in liste_utilisateur:
+            if email==utilisateur.get_email() or username==utilisateur.get_pseudo():
+                return jsonify({"error": "exists"})
+        models.inserer_le_spectateur(username, email, password)
+        le_spectateur.set_all(SPECTATEUR.get_prochain_id_spectateur() - 1,
+                                username, email, password)
+        print("hahahaahaha")
+        return jsonify({"success": "registered"})
+    return redirect(url_for("create_account"))
 
-@app.route("/liste_concerts",methods=["GET","POST"])
-def se_connecter():
+@app.route("/les-concerts",methods=["GET", "POST"])
+def connecter():
     """Cette methode va nous permettre de nous rediriger vers la page 
         liste des concerts
     Returns:
@@ -82,7 +96,12 @@ def se_connecter():
     """
     username=request.form.get("username")
     password=request.form.get("password")
-    if not models.connecter_spectateur(username,password):
-        return redirect(url_for("login_spec"))
-        #redirection vers la page login si la connection de l'utilisateur n'a pas fonctionner
-    return redirect(url_for("liste_concerts"))    #redirection vers la page principale du site internet
+    print(username,password)
+    liste_spec = SPECTATEUR.get_all_spectateurs()
+    if liste_spec:
+        for spec in liste_spec:
+            if (username == spec.get_pseudo() or username == spec.get_email()) and password == spec.get_mdp():
+                le_spectateur.set_all(spec.get_id_p(),spec.get_pseudo(),spec.get_email(),spec.get_mdp())
+                return redirect(url_for("les_concerts"))
+    
+    return redirect(url_for("login_spec"))

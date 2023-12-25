@@ -53,12 +53,13 @@ class Spectateur:
         """
         return self.__email
 
-    def set_mail(self,mail):
-        self.__email=mail
-    def set_pseudo(self,pseudo):
+
+    def set_all(self,id_p,pseudo,email,mdp):
+        """
+        Initialise toutes les informations de la personne.
+        """
+        self.__id_p=id_p
         self.__pseudo=pseudo
-    def set_id_p(self,id):
-        self.__id_p=id
-    def set_mdp(self,mdp):
+        self.__email=email
         self.__mdp=mdp
         

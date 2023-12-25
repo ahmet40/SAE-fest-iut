@@ -1,4 +1,3 @@
-from connexion import cnx
 from sqlalchemy.sql.expression import text
 import sys
 import os
@@ -49,7 +48,7 @@ class Style_appartient_a_bd:
         """
         try:
             query = text(f"insert into STYLE_APPARTIENT_A values({str(id_St)} , {str(id_St_P)})")
-            cnx.execute(query)
+            self.cnx.execute(query)
             self.cnx.commit()
         except Exception as e:
             print("insertion style_appartient_a a échoué")

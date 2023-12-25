@@ -1,4 +1,3 @@
-from connexion import cnx
 from sqlalchemy.sql.expression import text
 import sys
 import os
@@ -67,8 +66,8 @@ class Style_bd:
             None: Aucune valeur de retour, lève une exception en cas d'échec.
         """
         try:
-            query = text(f"insert into STYLE values({str(id_St)} , {str(nom_St)})")
-            cnx.execute(query)
+            query = text(f"insert into STYLE values({str(id_St)} , '{nom_St}')")
+            self.cnx.execute(query)
             self.cnx.commit()
         except Exception as e:
             print("insertion styles a échoué")

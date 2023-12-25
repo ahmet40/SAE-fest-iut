@@ -1,4 +1,3 @@
-from connexion import cnx
 from sqlalchemy.sql.expression import text
 import sys
 import os
@@ -69,7 +68,7 @@ class Membre_bd:
         """
         try:
             query = text(f"insert into MEMBRE values({str(id_P)} , {str(id_G)},{str(id_I)})")
-            cnx.execute(query)
+            self.cnx.execute(query)
             self.cnx.commit()
         except Exception as e:
             print("insertion membres a échoué")

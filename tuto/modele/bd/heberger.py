@@ -1,4 +1,3 @@
-from connexion import cnx
 from sqlalchemy.sql.expression import text
 import sys
 import os
@@ -70,7 +69,7 @@ class Heberger_bd:
         """
         try:
             query = text(f"insert into HEBERGER values({str(id_H)} , {str(id_G)},{str(date_Debut_H)},{str(date_Fin_H)})")
-            cnx.execute(query)
+            self.cnx.execute(query)
             self.cnx.commit()
         except Exception as e:
             print("insertion heberger a échoué")

@@ -1,4 +1,3 @@
-from connexion import cnx
 from sqlalchemy.sql.expression import text
 import sys
 import os
@@ -69,7 +68,7 @@ class Inscription_bd:
         """
         try:
             query = text(f"insert into INSCRIPTION values({str(id_C)} , {str(id_Spec)},{str(preinscription)})")
-            cnx.execute(query)
+            self.cnx.execute(query)
             self.cnx.commit()
         except Exception as e:
             print("insertion inscription a échoué")

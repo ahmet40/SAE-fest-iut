@@ -1,4 +1,3 @@
-from connexion import cnx
 from sqlalchemy.sql.expression import text
 import sys
 import os
@@ -69,7 +68,7 @@ class Hebergement_bd:
         """
         try:
             query = text(f"insert into HEBERGEMENT values({str(id_H)} , {str(dates)},{str(nb_Place)})")
-            cnx.execute(query)
+            self.cnx.execute(query)
             self.cnx.commit()
         except Exception as e:
             print("insertion hebergement a échoué")

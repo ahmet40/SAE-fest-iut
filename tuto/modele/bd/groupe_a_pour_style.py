@@ -1,4 +1,3 @@
-from connexion import cnx
 from sqlalchemy.sql.expression import text
 import sys
 import os
@@ -68,8 +67,24 @@ class GroupeAPourStyle_bd:
         """
         try:
             query = text(f"insert into GROUPE_A_POUR_STYLE values({str(id_G)} , {str(id_St)})")
-            cnx.execute(query)
+            self.cnx.execute(query)
             self.cnx.commit()
         except Exception as e:
             print("insertion gr_a_style a échoué")
+            return None
+        
+    def prochain_id(self):
+        """
+        Récupère le prochain identifiant disponible pour une nouvelle relation entre un groupe de musique et un style.
+
+        Returns:
+            int: Prochain identifiant disponible pour une nouvelle relation entre un groupe de musique et un style.
+        """
+        try:
+            query = text("select max(id_G) as m from GROUPE_A_POUR_STYLE")
+            resultat = self.cnx.execute(query).fetchone()
+            if resultat and resultat.m:
+                return int(resultat.m) + 1
+        except Exception as e:
+            print("prochain id gr_a_style a échoué")
             return None

@@ -1,4 +1,3 @@
-from connexion import cnx
 from sqlalchemy.sql.expression import text
 import sys
 import os
@@ -68,7 +67,7 @@ class Instrument_bd:
         """
         try:
             query = text(f"insert into INSTRUMENT values({str(id_I)} , {str(nom_I)})")
-            cnx.execute(query)
+            self.cnx.execute(query)
             self.cnx.commit()
         except Exception as e:
             print("insertion instrument a échoué")

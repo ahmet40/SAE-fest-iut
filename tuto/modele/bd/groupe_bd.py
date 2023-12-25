@@ -1,4 +1,4 @@
-from connexion import cnx
+
 from sqlalchemy.sql.expression import text
 import sys
 import os
@@ -70,8 +70,8 @@ class Groupe_bd:
             None: Aucune valeur de retour, lève une exception en cas d'échec.
         """
         try:
-            query = text(f"insert into GROUPE values({str(id_G)} , {str(description)},{str(photo)},{str(lien_Reseaux)},{str(lien_Video)})")
-            cnx.execute(query)
+            query = text(f"insert into GROUPE values({str(id_G)} , '{description}', {str(photo)},'{lien_Reseaux}','{lien_Video}')")
+            self.cnx.execute(query)
             self.cnx.commit()
         except Exception as e:
             print("insertion groupe a échoué")

@@ -1,4 +1,3 @@
-from connexion import cnx
 from sqlalchemy.sql.expression import text
 import sys
 import os
@@ -68,8 +67,8 @@ class Lieux_bd:
             None: Aucune valeur de retour, lève une exception en cas d'échec.
         """
         try:
-            query = text(f"insert into LIEUX values({str(id_L)} , {str(nom_L)},{str(nb_Max_Personne)})")
-            cnx.execute(query)
+            query = text(f"insert into LIEUX values({str(id_L)} , '{nom_L}',{str(nb_Max_Personne)})")
+            self.cnx.execute(query)
             self.cnx.commit()
         except Exception as e:
             print("insertion lieux a échoué")

@@ -1,4 +1,4 @@
-from connexion import cnx
+
 from sqlalchemy.sql.expression import text
 import sys
 import os
@@ -87,7 +87,7 @@ class Favoris_bd:
         """
         try:
             query = text(f"insert into FAVORIS values({str(id_Spec)} , {str(id_G)})")
-            cnx.execute(query)
+            self.cnx.execute(query)
             self.cnx.commit()
         except Exception as e:
             print("insertion favoris a échoué")

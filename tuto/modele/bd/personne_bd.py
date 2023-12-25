@@ -1,4 +1,3 @@
-from connexion import cnx
 from sqlalchemy.sql.expression import text
 import sys
 import os
@@ -71,8 +70,8 @@ class Personne_bd:
             None: Aucune valeur de retour, lève une exception en cas d'échec.
         """
         try:
-            query = text(f"insert into PERSONNE values({str(id_P)} , {str(nom_P)},{str(prenom_P)},{email_Sp})")
-            cnx.execute(query)
+            query = text(f"insert into PERSONNE values({str(id_P)} , '{nom_P}','{prenom_P}','{email_Sp}')")
+            self.cnx.execute(query)
             self.cnx.commit()
         except Exception as e:
             print("insertion personnes a échoué")

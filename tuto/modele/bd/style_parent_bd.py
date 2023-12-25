@@ -1,4 +1,3 @@
-from connexion import cnx
 from sqlalchemy.sql.expression import text
 import sys
 import os
@@ -67,8 +66,8 @@ class Style_parent_bd:
             None: Aucune valeur de retour, lève une exception en cas d'échec.
         """
         try:
-            query = text(f"insert into STYLE_PARENT values({str(id_St_P)} , {str(nom_St_P)})")
-            cnx.execute(query)
+            query = text(f"insert into STYLE_PARENT values({str(id_St_P)} , '{nom_St_P}')")
+            self.cnx.execute(query)
             self.cnx.commit()
         except Exception as e:
             print("insertion style_parent a échoué")

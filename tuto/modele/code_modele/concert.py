@@ -1,5 +1,5 @@
 class Concert:
-    def __init__(self, id_c, nom_c, date_debut, date_fin, id_l):
+    def __init__(self, id_c, nom_c, date_debut, date_fin, id_l,id_image):
         """
         Initialise une instance de la classe Concert.
 
@@ -19,6 +19,7 @@ class Concert:
         self.__date_debut = date_debut
         self.__date_fin = date_fin
         self.__id_l = id_l
+        self.__id_image=id_image
 
     def get_id_c(self):
         """
@@ -64,3 +65,12 @@ class Concert:
         :rtype: int
         """
         return self.__id_l
+
+    def get_id_image(self):
+        """
+        Récupère l'identifiant de l'image du concert.
+
+        :return: L'identifiant de l'image du concert.
+        :rtype: int
+        """
+        return self.__id_image

@@ -1,4 +1,3 @@
-from connexion import cnx
 from sqlalchemy.sql.expression import text
 import sys
 import os
@@ -70,8 +69,8 @@ class Activite_bd:
 
         """
         try:
-            query = text(f"insert into ACTIVITE values({str(id_A)} , {str(type_act)})")
-            cnx.execute(query)
+            query = text(f"insert into ACTIVITE values({str(id_A)} , '{type_act}')")
+            self.cnx.execute(query)
             self.cnx.commit()
         except Exception as e:
             print("insertion activite a échoué")

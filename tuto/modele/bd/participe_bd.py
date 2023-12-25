@@ -1,4 +1,3 @@
-from connexion import cnx
 from sqlalchemy.sql.expression import text
 import sys
 import os
@@ -72,7 +71,7 @@ class Participe_bd:
         """
         try:
             query = text(f"insert into PARTICPE values({str(id_A)} , {str(id_G)},{str(date_Debut_A)},{date_Fin_A})")
-            cnx.execute(query)
+            self.cnx.execute(query)
             self.cnx.commit()
         except Exception as e:
             print("insertion particpes a échoué")

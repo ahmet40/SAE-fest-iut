@@ -1,4 +1,3 @@
-from connexion import cnx
 from sqlalchemy.sql.expression import text
 import sys
 import os
@@ -67,8 +66,8 @@ class type_bd:
             None: Aucune valeur de retour, lève une exception en cas d'échec.
         """
         try:
-            query = text(f"insert into TYPE values({str(id_T)} , {str(nom_T)})")
-            cnx.execute(query)
+            query = text(f"insert into TYPE values({str(id_T)} , '{nom_T}')")
+            self.cnx.execute(query)
             self.cnx.commit()
         except Exception as e:
             print("insertion TYPE a échoué")

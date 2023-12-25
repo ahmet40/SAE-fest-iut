@@ -1,4 +1,4 @@
-from connexion import cnx
+
 from sqlalchemy.sql.expression import text
 import sys
 import os
@@ -71,12 +71,11 @@ class Spectateur_bd:
             None: Aucune valeur de retour, lève une exception en cas d'échec.
         """
         try:
-            query = text(f"insert into SPECTATEUR values({str(id_Spec)} , {str(pseudo_Spec)},"
-                         f"{str(email_Spec)}, {str(mdp_Spec)})")
-            cnx.execute(query)
+            query = text(f"insert into SPECTATEUR values({str(id_Spec)} , '{pseudo_Spec}', '{email_Spec}', '{mdp_Spec}')")
+            self.cnx.execute(query)
             self.cnx.commit()
         except Exception as e:
-            print("insertion spectateurs a échoué")
+            print("insertion spectateurs a échoué : ",e)
             return None
 
     def get_prochain_id_spectateur(self):
