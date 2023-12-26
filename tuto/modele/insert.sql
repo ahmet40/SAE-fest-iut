@@ -6,6 +6,10 @@ INSERT INTO IMAGE (id_IMAGE,nom_I) VALUES
 (4,'d.jpg'),
 (5,'e.jpg');
 
+-- ADMINISTRATEUR
+INSERT INTO ADMIN VALUES
+(1,'adm','adm');
+
 
 -- SPECTATEUR
 INSERT INTO SPECTATEUR (id_Spec, pseudo_Spec, email_Spec,mdp_Spec) VALUES

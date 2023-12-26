@@ -1,11 +1,23 @@
-<html>
+{% extends "base_slogan.html" %}
+{% block styles %}
+    {{ super() }}
+    {% endblock %}
+    {% block main_content %}
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <h1>Liste des concerts</h1>
+                {% if liste_concert|length == 0 %}
+                    <p>Aucun concert n'est disponible pour le moment</p>
+                {% else %}
+                    {% for concert in liste_concert %}
+                        <div class="box-concert">
+                            <h3>{{ concert.get_nom_c() }}</h3>
+                        </div>
+                    {% endfor %}
+                {% endif %}
 
-<head>
-    <meta charset="utf-8">
-    <title>Fest-IUT</title>
-    <link rel="stylesheet" href="../static/style/login.css">
-</head>
-<body>
-    <h1>Test</h1>
-</body>
-</html>
+            </div>
+        </div>
+    </div>
+{% endblock %}

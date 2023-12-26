@@ -13,6 +13,7 @@ from connexion import CNX
 from spectateur_bd import *
 from concert_bd import *
 SPECTATEUR=Spectateur_bd(CNX)
+CONCERTS=Concert_bd(CNX)
 
 #-----------------------------------------------------------------------------
 # Connection et creation de compte
@@ -63,5 +64,5 @@ def liste_concert()->list:
     Returns:
         list: la liste des concerts.
     """
-    user = Concert_bd(CNX)
-    return user.get_all_concert()
+    
+    return CONCERTS.get_all_concert()

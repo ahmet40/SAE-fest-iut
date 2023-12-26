@@ -200,6 +200,13 @@ CREATE TABLE ORGANISATION (
   FOREIGN KEY (id_C) REFERENCES CONCERTS (id_C)
 );
 
+create table ADMIN (
+  id_A int not null,
+  pseudo_A varchar(42),
+  mdp_A varchar(42),
+  primary key (id_A)
+);
+
 
 
 -- les triggers 
