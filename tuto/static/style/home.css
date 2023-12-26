@@ -16,12 +16,13 @@ body{
 }
 
 header {
-  background-color: gray;
+  background-color: #2EBEDD;
   min-width: 100%;
   min-height: 3vw;
   display: flex;
   border-bottom: 2px solid #ccc;
   box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.2);
+  position: relative;
 }
 .top-page{
   width: 33%;
@@ -36,14 +37,14 @@ header {
 #utilisateur{
   display: flex;
   flex-direction: row-reverse;
-  margin-top :3vh;
+  margin-top :4.5vh;
   float: right;
   width: 33%;
 }
 
 .app-name{
     font-family: 'Leckerli One', cursive;
-    color: #2EBEDD;
+    color: white;
     font-size: 64px;
     justify-content: center;
     align-items: center;
@@ -157,5 +158,93 @@ a{
 .search-bar button[type="submit"]:hover {
   transform: scale(1.1);
   color: rgb(255, 255, 255);
-  background-color: blue;
+  background-color: #2EBEDD;
+}
+
+
+
+#avant-connexion{
+  background-color: #fff; 
+  border: 1px solid #ccc;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+  border-radius: 8px;
+  margin-top: 1px;
+  overflow: hidden;
+  height: 30px; 
+  justify-content: center;
+  align-items: center;
+  width: 130px;
+}
+
+
+#apres-connexion {
+  background-color: #fff; 
+  border: 1px solid #ccc;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+  border-radius: 8px;
+  margin-top: 1px;
+  overflow: hidden;
+  height: 30px; 
+  max-height: 70px;
+  justify-content: center;
+  align-items: center;
+  width: 150px;
+}
+#apres-connexion:hover{
+  height: 70px;
+}
+
+#apres-connexion ul,#avant-connexion ul {
+  align-items: center;
+  justify-content: center;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+#apres-connexion ul li,#avant-connexion ul li {
+  margin-bottom: 10px;
+  margin-top: 3px;
+  justify-content: center;
+  align-items: center;
+}
+
+#apres-connexion a,#avant-connexion a {
+  text-decoration: none;
+  color: #333; /* Change the text color as needed */
+  font-size: 16px;
+  margin-left: 15px;
+}
+
+
+
+
+#nav-bar {
+  background-color: white;
+  padding: 10px 0;
+  border-bottom: 2px solid #ccc;
+}
+
+
+#contient {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  justify-content: space-between;
+}
+
+
+.lien-dans-nav a {
+  text-decoration: none;
+  color: #5e5e5e;
+  font-size: 16px;
+  margin-left: 160px;
+  margin-right: 230px;
+}
+
+
+.lien-dans-nav:hover {
+  transform: scale(1.05);
+  transition: transform 0.3s ease;
 }

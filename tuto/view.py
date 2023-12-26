@@ -12,18 +12,22 @@ ROOT = os.path.join(os.path.dirname(os.path.abspath(__file__)), './modele')
 sys.path.append(os.path.join(ROOT, './bd'))
 from connexion import CNX
 from spectateur_bd import Spectateur_bd
-
+from admin_bd import Admin_bd
+ADMIN=Admin_bd(CNX)
 SPECTATEUR=Spectateur_bd(CNX)
 
 ROOT = os.path.join(os.path.dirname(os.path.abspath(__file__)), './modele')
 sys.path.append(os.path.join(ROOT, './code_modele'))
 from spectateur import Spectateur
+from admin import Admin
 
 le_spectateur=Spectateur(-1,"","","")
+le_adm=Admin(-1,"","")
 
 @app.route("/")
 def home():
-    return render_template("portails.html")
+    le_spectateur=Spectateur(-1,"","","")
+    return render_template("liste_concerts.html",liste_concert=models.liste_concert(),le_spectateur=le_spectateur)
 
 @app.route("/login_spec")
 def login_spec():
@@ -33,15 +37,6 @@ def login_spec():
         reder_template:direction vers la page
     """
     return render_template("login_spec.html")
-
-@app.route("/login_admin")
-def login_admin():
-    """Cette methode va nous permettre de nous diriger vers la page 
-        login pour les admin
-    Returns:
-        reder_template:direction vers la page
-    """
-    return render_template("login_admin.html")
 
 @app.route("/create_account")
 def create_account():
@@ -61,7 +56,7 @@ def les_concerts():
     Returns:
         reder_template:direction vers la page
     """
-    return render_template("liste_concerts.html",liste_concert=models.liste_concert())
+    return render_template("liste_concerts.html",liste_concert=models.liste_concert(),le_spectateur=le_spectateur)
 
 @app.route("/inscription",methods=["GET", "POST"])
 def inscrire():
@@ -70,7 +65,6 @@ def inscrire():
     Returns:
         redirect:redirection vers la page
     """
-    print("haha")
     if request.method == "POST":
         username=request.form.get("username")
         email=request.form.get("email")
@@ -103,5 +97,10 @@ def connecter():
             if (username == spec.get_pseudo() or username == spec.get_email()) and password == spec.get_mdp():
                 le_spectateur.set_all(spec.get_id_p(),spec.get_pseudo(),spec.get_email(),spec.get_mdp())
                 return redirect(url_for("les_concerts"))
+    liste_adm=ADMIN.get_all_admins()
+    if liste_adm:
+        for adm in liste_adm:
+            if username == adm.get_pseudo() and password == adm.get_mdp():
+                return render_template("login_admin.html")
     
     return redirect(url_for("login_spec"))

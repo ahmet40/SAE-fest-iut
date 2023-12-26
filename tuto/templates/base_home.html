@@ -4,12 +4,17 @@
   <meta charset="utf-8">
   <title>FEST-IUT - Accueil</title>
     <link rel="stylesheet" href="../static/style/home.css">
+
   
 </head>
   <body>
     <header>
         <div class="top-page">
+          {% if le_spectateur.get_id_p() == -1 %}
           <h1 id="titre"><a href="{{ url_for('home') }}" class="app-name">FEST-IUT</a></h1>
+          {% else %}
+          <h1 id="titre"><a href="{{ url_for('les_concerts') }}" class="app-name">FEST-IUT</a></h1>
+          {% endif %}
         </div>
         <div id="form-search">
             <form action="" onsubmit="search(); return false;">
@@ -22,9 +27,32 @@
             </form>
         </div>
         <div id="utilisateur">
-          <a href=""><img src="../static/images/utilisateur.png" alt="utilisateur" width="40 px"></a>
+          {% if le_spectateur.get_id_p() == -1 %}
+            <nav id="avant-connexion">
+              <ul>
+                <li><a href="{{ url_for('login_spec') }}">Se connecter</a></li>
+              </ul>
+            </nav>
+          {% else %}
+            <nav id="apres-connexion">
+              <ul>
+                <!-- User is logged in, display option for "Mes concerts" -->
+                <li><a href="{{ url_for('les_concerts') }}">Mes concerts</a></li>
+                <li><a href="{{ url_for('home') }}">Se déconnecter</a></li>
+              </ul>
+            </nav>
+          {% endif %}
         </div>
     </header>
+
+      <nav id="nav-bar">
+        <ul id="contient">
+            <li class="lien-dans-nav"><a class="a" href="#">Home</a></li>
+            <li class="lien-dans-nav"><a class="a" href="#">Groupe</a></li>
+            <li class="lien-dans-nav"><a class="a" href="#">Ville</a></li>
+            <li class="lien-dans-nav"><a class="a" href="#">Concert</a></li>
+        </ul>
+    </nav>
     <main class="main-base">
         {% block content %}
         {% endblock %}
