@@ -12,8 +12,10 @@ sys.path.append(os.path.join(ROOT, 'modele/bd/'))
 from connexion import CNX
 from spectateur_bd import *
 from concert_bd import *
+from style_parent_bd import Style_parent_bd
 SPECTATEUR=Spectateur_bd(CNX)
 CONCERTS=Concert_bd(CNX)
+STYLE_PARENT=Style_parent_bd(CNX)
 
 #-----------------------------------------------------------------------------
 # Connection et creation de compte
@@ -66,3 +68,19 @@ def liste_concert()->list:
     """
     
     return CONCERTS.get_all_concert()
+
+def liste_style_parent()->list:
+    """Cette methode va nous permettre d'obtenir tous les styles parents
+
+    Returns:
+        list: la liste des styles parents
+    """
+    return STYLE_PARENT.get_all_style_parent()
+
+def liste_concert_proche()->list:
+    """
+    Cette methode va nous permettre d'obtenir les concerts qui sont proches de la date du jour
+    return : list
+    """
+    return CONCERTS.get_concert_debut_proche()
+    

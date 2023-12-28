@@ -4,16 +4,23 @@
   <meta charset="utf-8">
   <title>FEST-IUT - Accueil</title>
     <link rel="stylesheet" href="../static/style/home.css">
-
-  
+    {% if page_liste %}
+      <link rel="stylesheet" href="../static/style/liste_concerts.css">
+    {% endif %}  
+    {% if page_carte %}
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">  
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+      <script src="{{ url_for('static', filename='leaflet.js') }}"></script>
+      <script src="{{ url_for('static', filename='map.js') }}"></script>
+    {% endif %}
 </head>
   <body>
     <header>
         <div class="top-page">
           {% if le_spectateur.get_id_p() == -1 %}
-          <h1 id="titre"><a href="{{ url_for('home') }}" class="app-name">FEST-IUT</a></h1>
+          <h1 data-value="FEST-IUT" id="titre">FEST-IUT</h1>
           {% else %}
-          <h1 id="titre"><a href="{{ url_for('les_concerts') }}" class="app-name">FEST-IUT</a></h1>
+          <h1 data-value="FEST-IUT"  id="titre">FEST-IUT</h1>
           {% endif %}
         </div>
         <div id="form-search">
@@ -49,8 +56,20 @@
         <ul id="contient">
             <li class="lien-dans-nav"><a class="a" href="#">Home</a></li>
             <li class="lien-dans-nav"><a class="a" href="#">Groupe</a></li>
-            <li class="lien-dans-nav"><a class="a" href="#">Ville</a></li>
+            <li class="lien-dans-nav"><a class="a" href="{{ url_for('recherche_region') }}">Région</a></li>
             <li class="lien-dans-nav"><a class="a" href="#">Concert</a></li>
+            {% if liste_style_parent %}
+            <li id="lien-nav-bar">
+              <div class="paste-button">
+                <button class="button">STYLE &nbsp; ▼</button>
+                <div class="dropdown-content">
+                  {% for style in liste_style_parent %}
+                    <a id="top" href="">{{ style.get_nom_st_p() }}</a>
+                  {% endfor %}
+                </div>
+              </div>
+          </li>
+          {% endif %}
         </ul>
     </nav>
     <main class="main-base">
@@ -59,4 +78,24 @@
     </main>
   </body>
   <script src="../static/script/search.js"></script>
+  <script>
+    const letters="ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+    document.querySelector("#titre").onmouseover = (event)=>{
+      let repetition=0;
+      setInterval(()=>{
+      event.target.innerHTML=event.target.innerHTML
+      .split("")
+      .map((letter,index)=>{
+        if (index < repetition){
+          return event.target.dataset.value[index];
+        }
+        return letters[Math.floor(Math.random()*letters.length)];
+      })
+      .join("");
+      if (repetition === event.target.dataset.value.length)
+        clearInterval(interval);
+      repetition+=1/3;
+    },30);
+    }
+  </script>
 </html>

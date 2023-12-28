@@ -33,7 +33,7 @@ class Style_parent_bd:
             return style_parent
         except Exception as e:
             print("all style_parent a échoué")
-            return None
+            return []
 
     def get_par_id_style_parent(self, id_St_P):
         """

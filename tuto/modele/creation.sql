@@ -67,6 +67,7 @@ CREATE TABLE INSTRUMENT (
 
 CREATE TABLE LIEUX (
   id_L INT NOT NULL ,
+  nom_region VARCHAR(42),
   nom_L VARCHAR(42),
   nb_Max_Personne INT,
   PRIMARY KEY (id_L)

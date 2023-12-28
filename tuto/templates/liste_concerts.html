@@ -3,16 +3,41 @@
     {{ super() }}
     {% endblock %}
     {% block main_content %}
-    <div class="container">
+    {% if liste_concert_proche%}
+        <div id="conteneur-proche">
+            <h2>Concerts proches</h2>
+            <div id="concert-proche">
+                {% for concert,image in liste_concert_proche %}
+                    <img src="{{ url_for('static', filename='images/' + image) }}" alt="image des concerts proches">
+                {% endfor %}
+            </div>
+        </div>
+    {% endif %}
+    <div id="container">
         <div class="row">
             <div class="col-md-12">
-                <h1>Liste des concerts</h1>
+                <h1 id="liste-concert-titre">Liste des concerts</h1>
+                <h2 id="resultat-message" style="display: none;">Aucun résultat trouvé.</h2>
+
                 {% if liste_concert|length == 0 %}
                     <p>Aucun concert n'est disponible pour le moment</p>
                 {% else %}
-                    {% for concert in liste_concert %}
+                    {% for concert,image,lieux in liste_concert %}
                         <div class="box-concert">
-                            <h3>{{ concert.get_nom_c() }}</h3>
+                            <h3 class="plus-a-gauche">{{ concert.get_nom_c() }}</h3>
+                            <div >
+                                <div id="img-date-lieux">
+                                <img class="plus-a-gauche" src="{{ url_for('static', filename='images/' + image) }}" alt="image de tous les concert">
+                                    <div id="date">
+                                        <p class="plus-a-gauche">Date début (année/mois/jour : hh/mn/sd) : {{ concert.get_date_debut() }}</p>
+                                        <p class="plus-a-gauche">Date fin (année/mois/jour : hh/mn/sd) : {{ concert.get_date_fin() }}</p>
+                                    </div>
+                                </div>
+                                <div id="lieux">
+                                    <p class="plus-a-gauche">Région : {{ lieux[0] }}</p>
+                                    <p class="plus-a-gauche">lieux : {{ lieux[1] }}</p>
+                                </div>
+                            </div>
                         </div>
                     {% endfor %}
                 {% endif %}

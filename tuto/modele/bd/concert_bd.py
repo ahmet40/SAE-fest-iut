@@ -27,11 +27,11 @@ class Concert_bd:
                 list[Concert] or None: Liste d'objets Concert ou None si une erreur survient.
         """
         try:
-            query = text("select id_C, nom_C, date_Debut, date_Fin, id_L,id_IMAGE from CONCERTS")
+            query = text("select id_C, nom_C, date_Debut, date_Fin, id_L,id_IMAGE,nom_I,nom_region,nom_L from CONCERTS natural join IMAGE natural join LIEUX")
             resultat = self.cnx.execute(query)
             concert=[]
-            for id_C, nom_C, date_Debut, date_Fin, id_L,id_IMAGE in resultat:
-                concert.append(Concert(id_C, nom_C, date_Debut, date_Fin, id_L,id_IMAGE))
+            for id_C, nom_C, date_Debut, date_Fin, id_L,id_IMAGE,nom_I,nom_region,nom_L in resultat:
+                concert.append((Concert(id_C, nom_C, date_Debut, date_Fin, id_L,id_IMAGE),nom_I,(nom_region,nom_L)))
             return concert
         except Exception as e:
             print("all concert a échoue")
@@ -117,3 +117,21 @@ class Concert_bd:
         except Exception as e:
             print("Le max de concert échoue")
             return 0
+        
+    def get_concert_debut_proche(self):
+        """
+            Récupère le prochain identifiant disponible pour un nouveau concert.
+
+            Returns:
+                int or None: Prochain identifiant disponible ou None si une erreur survient.
+        """
+        try:
+            query = text("SELECT id_C, nom_C, date_Debut, date_Fin, id_L,id_IMAGE,nom_I FROM CONCERTS natural join IMAGE WHERE date_Debut >= NOW() ORDER BY ABS(DATEDIFF(NOW(), date_Debut)) LIMIT 3;")
+            result = self.cnx.execute(query)
+            concert=[]
+            for id_C, nom_C, date_Debut, date_Fin, id_L,id_IMAGE,nom_I in result:
+                concert.append((Concert(id_C, nom_C, date_Debut, date_Fin, id_L,id_IMAGE),nom_I))
+            return concert
+        except Exception as e:
+            print("Le max de concert échoue")
+            return []

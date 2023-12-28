@@ -27,7 +27,8 @@ le_adm=Admin(-1,"","")
 @app.route("/")
 def home():
     le_spectateur=Spectateur(-1,"","","")
-    return render_template("liste_concerts.html",liste_concert=models.liste_concert(),le_spectateur=le_spectateur)
+    return render_template("liste_concerts.html",liste_concert=models.liste_concert(),le_spectateur=le_spectateur,liste_style_parent=models.liste_style_parent(),
+                           liste_concert_proche=models.liste_concert_proche(),page_liste=True)
 
 @app.route("/login_spec")
 def login_spec():
@@ -56,7 +57,8 @@ def les_concerts():
     Returns:
         reder_template:direction vers la page
     """
-    return render_template("liste_concerts.html",liste_concert=models.liste_concert(),le_spectateur=le_spectateur)
+    return render_template("liste_concerts.html",liste_concert=models.liste_concert(),le_spectateur=le_spectateur,liste_style_parent=models.liste_style_parent(),
+                           liste_concert_proche=models.liste_concert_proche(),page_liste=True)
 
 @app.route("/inscription",methods=["GET", "POST"])
 def inscrire():
@@ -77,7 +79,6 @@ def inscrire():
         models.inserer_le_spectateur(username, email, password)
         le_spectateur.set_all(SPECTATEUR.get_prochain_id_spectateur() - 1,
                                 username, email, password)
-        print("hahahaahaha")
         return jsonify({"success": "registered"})
     return redirect(url_for("create_account"))
 
@@ -104,3 +105,12 @@ def connecter():
                 return render_template("login_admin.html")
     
     return redirect(url_for("login_spec"))
+
+@app.route("/les-regions")
+def recherche_region():
+    """Cette methode va nous permettre de nous rediriger vers la page 
+        liste des concerts
+    Returns:
+        redirect:redirection vers la page
+    """
+    return render_template("recherche_region.html",le_spectateur=le_spectateur,page_carte=True,liste_style_parent=models.liste_style_parent(),)

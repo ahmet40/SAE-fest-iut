@@ -27,13 +27,13 @@ class Lieux_bd:
             list[Lieux] or None: Liste d'objets Lieux ou None si une erreur survient.
         """
         try:
-            query = text("select id_L, nom_L, nb_Max_Personne from LIEUX")
+            query = text("select id_L,nom_region, nom_L, nb_Max_Personne from LIEUX")
             resultat = self.cnx.execute(query)
-            lieux = [Lieux(id_L, nom_L, nb_Max_Personne) for id_L, nom_L, nb_Max_Personne in resultat]
+            lieux = [Lieux(id_L,nom_region, nom_L, nb_Max_Personne) for id_L, nom_region,nom_L, nb_Max_Personne in resultat]
             return lieux
         except Exception as e:
             print("all lieux a échoué")
-            return None
+            return []
 
     def get_par_id_lieux(self, id_L):
         """
@@ -46,15 +46,15 @@ class Lieux_bd:
             list[Lieux] or None: Liste d'objets Lieux correspondant à l'identifiant donné, ou None si une erreur survient.
         """
         try:
-            query = text(f"select id_L, nom_L, nb_Max_Personne from LIEUX where id_L= {str(id_L)}")
+            query = text(f"select id_L,nom_region, nom_L, nb_Max_Personne from LIEUX where id_L= {str(id_L)}")
             resultat = self.cnx.execute(query)
-            lieux = [Lieux(id_L, nom_L, nb_Max_Personne) for id_L, nom_L, nb_Max_Personne in resultat]
+            lieux = [Lieux(id_L,nom_region, nom_L, nb_Max_Personne) for id_L,nom_region, nom_L, nb_Max_Personne in resultat]
             return lieux
         except Exception as e:
             print("lieux by id a échoué")
-            return None
+            return []
     
-    def inserer_lieux(self, id_L, nom_L, nb_Max_Personne):
+    def inserer_lieux(self, id_L,nom_region, nom_L, nb_Max_Personne):
         """
         Insère un nouveau lieu d'événement dans la base de données.
 
@@ -67,7 +67,7 @@ class Lieux_bd:
             None: Aucune valeur de retour, lève une exception en cas d'échec.
         """
         try:
-            query = text(f"insert into LIEUX values({str(id_L)} , '{nom_L}',{str(nb_Max_Personne)})")
+            query = text(f"insert into LIEUX values({str(id_L)} ,'{nom_region}', '{nom_L}',{str(nb_Max_Personne)})")
             self.cnx.execute(query)
             self.cnx.commit()
         except Exception as e:

@@ -42,14 +42,14 @@ header {
   width: 33%;
 }
 
-.app-name{
+#titre{
     font-family: 'Leckerli One', cursive;
     color: white;
     font-size: 64px;
     justify-content: center;
     align-items: center;
     text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
-    margin-top: 12vh;
+    margin-top: 5vh;
 }
 
 
@@ -234,17 +234,92 @@ a{
   justify-content: space-between;
 }
 
+.lien-dans-nav{
+  justify-content: center;
+  align-items: center;
+  display: flex;
+}
 
 .lien-dans-nav a {
   text-decoration: none;
   color: #5e5e5e;
   font-size: 16px;
-  margin-left: 160px;
-  margin-right: 230px;
+  margin-left: 120px;
+  margin-right: 150px;
 }
 
 
 .lien-dans-nav:hover {
   transform: scale(1.05);
   transition: transform 0.3s ease;
+}
+
+
+
+
+
+.paste-button {
+  position: relative;
+  display: block;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.button {
+  background-color: #4e99e9;
+  color: #212121;
+  padding: 10px 15px;
+  font-size: 15px;
+  font-weight: bold;
+  border: 2px solid transparent;
+  border-radius: 15px;
+  cursor: pointer;
+}
+
+.dropdown-content {
+  display: none;
+  font-size: 13px;
+  position: absolute;
+  z-index: 1;
+  min-width: 200px;
+  background-color: #212121;
+  border: 2px solid #4e99e9;
+  border-radius: 0px 15px 15px 15px;
+  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+}
+
+.dropdown-content a {
+  color: #4e99e9;
+  padding: 8px 10px;
+  text-decoration: none;
+  display: block;
+  transition: 0.1s;
+}
+
+.dropdown-content a:hover {
+  background-color: #4e99e9;
+  color: #212121;
+}
+
+.dropdown-content a:focus {
+  background-color: #212121;
+  color: #4e99e9;
+}
+
+.dropdown-content #top:hover {
+  border-radius: 0px 13px 0px 0px;
+}
+
+
+.paste-button:hover button {
+  border-radius: 15px 15px 0px 0px;
+}
+
+.paste-button:hover .dropdown-content {
+  display: block;
+}
+
+#lien-nav-bar{
+
+  margin-left: 160px;
+  margin-right: 230px;
 }

@@ -52,12 +52,12 @@ INSERT INTO INSTRUMENT (id_I,nom_I) VALUES
 (5,'Saxophone');
 
 -- LIEUX
-INSERT INTO LIEUX (id_L,nom_L, nb_Max_Personne) VALUES
-(1,'Arena', 5000),
-(2,'Club XYZ', 200),
-(3,'Outdoor Stage', 1000),
-(4,'Small Hall', 1),
-(5,'Stadium', 20000);
+INSERT INTO LIEUX (id_L,nom_region,nom_L, nb_Max_Personne) VALUES
+(1,'Loiret','Arena', 5000),
+(2,'Loiret','Club XYZ', 200),
+(3,'Loiret','Outdoor Stage', 1000),
+(4,'Loiret','Small Hall', 1),
+(5,'Loiret','Stadium', 20000);
 
 -- CONCERTS
 INSERT INTO CONCERTS (id_C, nom_C, date_Debut, date_Fin, id_L,id_IMAGE) VALUES

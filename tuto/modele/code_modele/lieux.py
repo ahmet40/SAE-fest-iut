@@ -1,5 +1,5 @@
 class Lieux:
-    def __init__(self, id_l, nom_l, nb_max_personne):
+    def __init__(self, id_l,nom_region, nom_l, nb_max_personne):
         """
         Initialise une instance de la classe Lieux.
 
@@ -11,6 +11,7 @@ class Lieux:
         :type nb_max_personne: int
         """
         self.__id_l = id_l
+        self.__nom_region = nom_region
         self.__nom_l = nom_l
         self.__nb_max_personne = nb_max_personne
 
@@ -40,3 +41,12 @@ class Lieux:
         :rtype: int
         """
         return self.__nb_max_personne
+
+    def get_nom_region(self):
+        """
+        Récupère le nom de la région du lieu.
+
+        :return: Le nom de la région du lieu.
+        :rtype: str
+        """
+        return self.__nom_region
