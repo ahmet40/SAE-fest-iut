@@ -25,7 +25,12 @@ INSERT INTO STYLE (id_St,nom_St) VALUES
 (2,'Jazz'),
 (3,'Pop'),
 (4,'Hip Hop'),
-(5,'Classical');
+(5,'Classical'),
+(6,'Electronic'),
+(7,'Folk'),
+(8,'Country'),
+(9,'Blues'),
+(10,'Reggae');
 
 -- STYLE_PARENT
 INSERT INTO STYLE_PARENT (id_St_P,nom_St_P) VALUES
@@ -68,12 +73,15 @@ INSERT INTO CONCERTS (id_C, nom_C, date_Debut, date_Fin, id_L,id_IMAGE) VALUES
 (5,'Classical Elegance', '2024-01-10 09:30:00', '2024-01-10 22:00:00', 5,5);
 
 -- GROUPE
-INSERT INTO GROUPE (id_G,description, photo, lien_Reseaux, lien_Video) VALUES
-(1,'Rock Band', 1, 'www.rockband.com', 'www.youtube.com/rockband'),
-(2,'Jazz Ensemble', 2, 'www.jazzensemble.com', 'www.youtube.com/jazzensemble'),
-(3,'Pop Sensation', 3, 'www.popsensation.com', 'www.youtube.com/popsensation'),
-(4,'Hip Hop Crew', 4, 'www.hiphopcrew.com', 'www.youtube.com/hiphopcrew'),
-(5,'Classical Orchestra', 5, 'www.classicalorchestra.com', 'www.youtube.com/classicalorchestra');
+INSERT INTO GROUPE (id_G,nom,description, id_IMAGE, lien_Reseaux, lien_Video) VALUES
+(1,'les rocks','Rock Band', 1, 'www.rockband.com', 'www.youtube.com/rockband'),
+(2,'les jazz','Jazz Ensemble', 2, 'www.jazzensemble.com', 'www.youtube.com/jazzensemble'),
+(3,'les pops','Pop Sensation', 3, 'www.popsensation.com', 'www.youtube.com/popsensation'),
+(4,'les hips','Hip Hop Crew', 4, 'www.hiphopcrew.com', 'www.youtube.com/hiphopcrew'),
+(5,'les classiques','Classical Orchestra', 5, 'www.classicalorchestra.com', 'www.youtube.com/classicalorchestra'),
+(6,'sniper','Rap Band', 1, 'www.sniper.com', 'www.youtube.com/sniper'),
+(7,'les test','tests est un très bon groupe du 21 ème siécle', 2, 'www.rockband.com', 'www.youtube.com/rockband');
+
 
 -- BILLET
 INSERT INTO BILLET (id_B,id_Spec, id_C, id_T) VALUES
@@ -108,7 +116,9 @@ INSERT INTO GROUPE_A_POUR_STYLE (id_G, id_St) VALUES
 (2, 2),
 (3, 3),
 (4, 4),
-(5, 5);
+(5, 5),
+(6, 1),
+(7, 2);
 
 -- STYLE_APPARTIENT_A
 INSERT INTO STYLE_APPARTIENT_A (id_St, id_St_P) VALUES
@@ -116,7 +126,12 @@ INSERT INTO STYLE_APPARTIENT_A (id_St, id_St_P) VALUES
 (2, 2),
 (3, 3),
 (4, 4),
-(5, 5);
+(5, 5),
+(6, 1),
+(7, 2),
+(8, 3),
+(9, 4),
+(10, 5);
 
 -- ACTIVITE
 INSERT INTO ACTIVITE (id_A,type_Act) VALUES

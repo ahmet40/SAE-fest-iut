@@ -1,5 +1,5 @@
 class Groupe:
-    def __init__(self, id_g, description, photo, lien_reseaux, lien_video):
+    def __init__(self, id_g,nom, description, id_IMAGE, lien_reseaux, lien_video):
         """
         Initialise une instance de la classe Groupe.
 
@@ -15,8 +15,9 @@ class Groupe:
         :type lien_video: str
         """
         self.__id_g = id_g
+        self.__nom = nom
         self.__description = description
-        self.__photo = photo
+        self.__photo = id_IMAGE
         self.__lien_reseaux = lien_reseaux
         self.__lien_video = lien_video
 
@@ -28,6 +29,15 @@ class Groupe:
         :rtype: int
         """
         return self.__id_g
+    
+    def get_nom(self):
+        """
+        Récupère le nom du groupe.
+
+        :return: Le nom du groupe.
+        :rtype: str
+        """
+        return self.__nom
 
     def get_description(self):
         """

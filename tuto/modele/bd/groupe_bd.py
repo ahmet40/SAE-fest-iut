@@ -28,13 +28,13 @@ class Groupe_bd:
             list[Groupe] or None: Liste d'objets Groupe ou None si une erreur survient.
         """
         try:
-            query = text("select  id_G, description, photo, lien_Reseaux, lien_Video from GROUPE")
+            query = text("select  id_G,nom, description, id_IMAGE, lien_Reseaux, lien_Video from GROUPE")
             resultat = self.cnx.execute(query)
-            groupe = [Groupe(id_G, description, photo, lien_Reseaux, lien_Video) for id_G, description, photo, lien_Reseaux, lien_Video in resultat]
+            groupe = [Groupe(id_G,nom, description, id_IMAGE, lien_Reseaux, lien_Video) for id_G,nom, description, id_IMAGE, lien_Reseaux, lien_Video in resultat]
             return groupe
         except Exception as e:
             print("all groupe a échoué")
-            return None
+            return []
 
     def get_par_id_groupe_fav(self, id_G):
         """
@@ -47,22 +47,22 @@ class Groupe_bd:
             list[Groupe] or None: Liste d'objets Groupe correspondant à l'identifiant donné, ou None si une erreur survient.
         """
         try:
-            query = text(f"select  id_G, description, photo, lien_Reseaux, lien_Video from GROUPE where id_G= {str(id_G)}")
+            query = text(f"select  id_G,nom, description, id_IMAGE, lien_Reseaux, lien_Video from GROUPE where id_G= {str(id_G)}")
             resultat = self.cnx.execute(query)
-            groupe = [Groupe(id_G, description, photo, lien_Reseaux, lien_Video) for id_G, description, photo, lien_Reseaux, lien_Video in resultat]
+            groupe = [Groupe(id_G,nom, description, id_IMAGE, lien_Reseaux, lien_Video) for id_G,nom, description, id_IMAGE, lien_Reseaux, lien_Video in resultat]
             return groupe
         except Exception as e:
             print("groupe by id groupe a échoué")
             return None     
         
-    def inserer_groupe(self, id_G, description, photo, lien_Reseaux, lien_Video):
+    def inserer_groupe(self, id_G,nom, description, id_IMAGE, lien_Reseaux, lien_Video):
         """
         Insère un nouveau groupe de musique dans la base de données.
 
         Args:
             id_G (int): Identifiant du nouveau groupe de musique.
             description (str): Description du groupe.
-            photo (str): Chemin de la photo du groupe.
+            id_IMAGE (str): Chemin de la id_IMAGE du groupe.
             lien_Reseaux (str): Lien vers les réseaux sociaux du groupe.
             lien_Video (str): Lien vers une vidéo du groupe.
 
@@ -70,7 +70,7 @@ class Groupe_bd:
             None: Aucune valeur de retour, lève une exception en cas d'échec.
         """
         try:
-            query = text(f"insert into GROUPE values({str(id_G)} , '{description}', {str(photo)},'{lien_Reseaux}','{lien_Video}')")
+            query = text(f"insert into GROUPE values({str(id_G)} ,'{nom}', '{description}', {str(id_IMAGE)},'{lien_Reseaux}','{lien_Video}')")
             self.cnx.execute(query)
             self.cnx.commit()
         except Exception as e:

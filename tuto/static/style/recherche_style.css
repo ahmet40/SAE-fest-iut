@@ -1,0 +1,74 @@
+.les-style a {
+    text-decoration: none;
+    color: black;
+}
+
+.les-style a:hover {
+    text-decoration: none;
+    color: #2EBEDD;
+    transform: scale(1.05);
+    transition: transform 0.3s ease;
+}
+
+#conteneur-style {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+#grp {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    align-content: center;
+    border-top: 0.5px solid black;
+    border-bottom: 0.5px solid black;
+}
+
+.card {
+    width: 300px;
+    height: 375px;
+    background-color: #2EBEDD;
+    border-radius: 15px;
+    box-shadow: rgb(0,0,0,0.7) 5px 10px 50px ,rgb(0,0,0,0.7) -5px 0px 250px;
+    display: flex;
+    color: white;
+    justify-content: center;
+    position: relative;
+    flex-direction: column;
+    background: linear-gradient(to right, rgb(20, 30, 48), rgb(36, 59, 85));
+    cursor: pointer;
+    transition: all 0.3s ease-in-out;
+    overflow: hidden;
+    margin-top :15px   ;
+}
+
+.card:hover {
+  box-shadow: rgb(0,0,0) 2px 7px 25px ,rgb(0,0,0) -3px 0px 200px;
+}
+
+.card:hover > #stl, .card:hover > #grp-name{
+
+  font-size: 18px;
+}
+
+.card>a{
+    text-decoration: none;
+    color: white;
+}
+.card>a>img{
+    width:250px;
+    margin-left: 25px;
+    margin-top: 5px;
+    height: 300px;
+    border-radius: 15px;
+}
+#mini-info{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    
+}

@@ -5,6 +5,7 @@ import os
 ROOT = os.path.join(os.path.dirname(os.path.abspath(__file__)), '../..')
 sys.path.append(os.path.join(ROOT, 'modele/code_model/'))
 from groupe_a_pour_style import GroupeAPourStyle
+from groupe import Groupe
 
 class GroupeAPourStyle_bd:
     """
@@ -33,7 +34,30 @@ class GroupeAPourStyle_bd:
             return gr_a_style
         except Exception as e:
             print("all gr_a_style a échoué")
-            return None
+            return []
+        
+    def get_par_id_style_a_pour_groupe(self, nom_st_p):
+        """
+        Récupère les relations entre un style spécifique et ses groupes de musique en fonction du nom du style.
+
+        Args:
+            nom_st (str): Nom du style pour lequel récupérer les relations avec les groupes de musique.
+
+        Returns:
+            list[GroupeAPourStyle] or None: Liste d'objets GroupeAPourStyle correspondant au nom du style, ou None si une erreur survient.
+        """
+        try:
+            query = text(f"select  * from GROUPE_A_POUR_STYLE NATURAL JOIN STYLE NATURAL JOIN GROUPE NATURAL JOIN IMAGE NATURAL JOIN STYLE_APPARTIENT_A NATURAL JOIN STYLE_PARENT where id_St_P = (select id_St_P from STYLE_PARENT where nom_St_P='{nom_st_p}')")
+            resultat = self.cnx.execute(query)
+            liste=[]
+            
+            for _,_,id_i,id_G,nom_St,nom,description,lien_Reseaux,lien_Video,nom_I,nom_St_P in resultat:
+                liste.append((Groupe(id_G,nom,description,id_i,lien_Reseaux,lien_Video),nom_St,nom_I))
+            return liste
+        except Exception as e:
+            print("gr_a_style by nom style a échoué")
+            return []
+        
 
     def get_par_id_groupe_a_pour_style(self, id_G):
         """

@@ -44,17 +44,19 @@ CREATE TABLE SPECTATEUR (
 CREATE TABLE STYLE (
   id_St INT NOT NULL  ,
   nom_St VARCHAR(42),
+  constraint nom unique(nom_St),
   PRIMARY KEY (id_St)
 );
 
 CREATE TABLE STYLE_PARENT (
   id_St_P INT NOT NULL  ,
   nom_St_P VARCHAR(42),
+  constraint nom unique(nom_St_P),
   PRIMARY KEY (id_St_P)
 );
 
 CREATE TABLE TYPES (
-  id_T INT NOT NULL  ,
+  id_T INT NOT NULL,
   nom_T VARCHAR(42),
   PRIMARY KEY (id_T)
 );
@@ -70,7 +72,8 @@ CREATE TABLE LIEUX (
   nom_region VARCHAR(42),
   nom_L VARCHAR(42),
   nb_Max_Personne INT,
-  PRIMARY KEY (id_L)
+  PRIMARY KEY (id_L),
+  constraint reg_li unique(nom_region,nom_L)
 );
 
 CREATE TABLE CONCERTS (
@@ -86,13 +89,15 @@ CREATE TABLE CONCERTS (
 );
 
 CREATE TABLE GROUPE (
-  id_G INT NOT NULL  ,
-  description VARCHAR(42),
-  photo int not null,
+  id_G INT NOT NULL,
+  nom VARCHAR(42),
+  description VARCHAR(420),
+  id_IMAGE int not null,
   lien_Reseaux VARCHAR(42),
   lien_Video VARCHAR(42),
   PRIMARY KEY (id_G),
-  FOREIGN KEY (photo) REFERENCES IMAGE (id_IMAGE)
+  FOREIGN KEY (id_IMAGE) REFERENCES IMAGE (id_IMAGE),
+  constraint nom unique(nom)
 );
 
 CREATE TABLE BILLET (

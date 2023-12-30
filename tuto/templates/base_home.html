@@ -11,6 +11,10 @@
       <meta name="viewport" content="width=device-width, initial-scale=1.0">  
       <link rel="stylesheet" href="../static/style/carte.css">
       {% endif %}
+      {% if page_style %}
+      <link rel="stylesheet" href="../static/style/recherche_style.css">
+
+      {% endif %}
 
 </head>
   <body>
@@ -44,6 +48,7 @@
               </ul>
             </nav>
           {% endif %}
+
         </div>
     </header>
 
@@ -59,7 +64,7 @@
                 <button class="button">STYLE &nbsp; ▼</button>
                 <div class="dropdown-content">
                   {% for style in liste_style_parent %}
-                    <a id="top" href="">{{ style.get_nom_st_p() }}</a>
+                    <a id="top" href="{{ url_for('recherche_style',nom=style.get_nom_st_p()) }}">{{ style.get_nom_st_p() }}</a>
                   {% endfor %}
                 </div>
               </div>

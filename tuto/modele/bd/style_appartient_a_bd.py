@@ -5,6 +5,7 @@ import os
 ROOT = os.path.join(os.path.dirname(os.path.abspath(__file__)), '../..')
 sys.path.append(os.path.join(ROOT, 'modele/code_model/'))
 from style_appartient_a import StyleAppartientA
+from style import Style
 
 class Style_appartient_a_bd:
     """
@@ -33,7 +34,26 @@ class Style_appartient_a_bd:
             return style_appartient_a
         except Exception as e:
             print("all style_appartient_a a échoué")
-            return None
+            return []
+        
+    def get_style_by_style_parent(self, nom_St_P):
+        """
+        Récupère tous les styles ayant un style parent donné.
+
+        Args:
+            id_St_P (int): Identifiant du style parent.
+
+        Returns:
+            list[Style] or None: Liste d'objets StyleAppartientA ou None si une erreur survient.
+        """
+        try:
+            query = text(f"select id_St, nom_St from STYLE_APPARTIENT_A NATURAL JOIN  STYLE_PARENT natural join STYLE where nom_St_P = '{nom_St_P}'")
+            resultat = self.cnx.execute(query)
+            style_appartient_a = [Style(id_St, nom_St) for id_St, nom_St in resultat]
+            return style_appartient_a
+        except Exception as e:
+            print("get style by style parent a échoué")
+            return []
 
     def inserer_style_appartient_a(self, id_St, id_St_P):
         """

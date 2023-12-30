@@ -13,10 +13,13 @@ from connexion import CNX
 from spectateur_bd import *
 from concert_bd import *
 from style_parent_bd import Style_parent_bd
+from style_appartient_a_bd import Style_appartient_a_bd
+from groupe_a_pour_style_bd import GroupeAPourStyle_bd
 SPECTATEUR=Spectateur_bd(CNX)
 CONCERTS=Concert_bd(CNX)
 STYLE_PARENT=Style_parent_bd(CNX)
-
+STYLE_APPARTIENT_A=Style_appartient_a_bd(CNX)
+GROUPE_A_POUR_STYLE=GroupeAPourStyle_bd(CNX)
 #-----------------------------------------------------------------------------
 # Connection et creation de compte
 def connecter_spectateur(username: str, password: str) -> bool:
@@ -95,3 +98,26 @@ def get_concert_par_region(nom):
         list: la liste des concerts de la region
     """
     return CONCERTS.get_concert_par_region(nom)
+
+def get_style_by_style_parent(nom):
+    """Cette methode va nous permettre d'obtenir les styles d'un style parent
+
+    Args:
+        nom ([str]): l'id du style parent
+
+    Returns:
+        list: la liste des styles
+    """
+    return STYLE_APPARTIENT_A.get_style_by_style_parent(nom)
+
+
+def get_groupe_by_style_parent(nom_style_parent):
+    """Cette methode va nous permettre d'obtenir les groupes d'un style parent
+
+    Args:
+        nom_style_parent ([str]): le nom du style parent
+
+    Returns:
+        list: la liste des groupes
+    """
+    return GROUPE_A_POUR_STYLE.get_par_id_style_a_pour_groupe(nom_style_parent)
