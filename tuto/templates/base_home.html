@@ -7,21 +7,16 @@
     {% if page_liste %}
       <link rel="stylesheet" href="../static/style/liste_concerts.css">
     {% endif %}  
-    {% if page_carte %}
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">  
-    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
-      <script src="{{ url_for('static', filename='leaflet.js') }}"></script>
-      <script src="{{ url_for('static', filename='map.js') }}"></script>
-    {% endif %}
+      {% if page_carte %}
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">  
+      <link rel="stylesheet" href="../static/style/carte.css">
+      {% endif %}
+
 </head>
   <body>
     <header>
         <div class="top-page">
-          {% if le_spectateur.get_id_p() == -1 %}
           <h1 data-value="FEST-IUT" id="titre">FEST-IUT</h1>
-          {% else %}
-          <h1 data-value="FEST-IUT"  id="titre">FEST-IUT</h1>
-          {% endif %}
         </div>
         <div id="form-search">
             <form action="" onsubmit="search(); return false;">

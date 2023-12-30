@@ -84,3 +84,14 @@ def liste_concert_proche()->list:
     """
     return CONCERTS.get_concert_debut_proche()
     
+
+def get_concert_par_region(nom):
+    """Cette methode va nous permettre d'obtenir les concerts d'une region
+
+    Args:
+        nom ([str]): le nom de la region
+
+    Returns:
+        list: la liste des concerts de la region
+    """
+    return CONCERTS.get_concert_par_region(nom)

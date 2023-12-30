@@ -21,7 +21,10 @@ img{
     width :100%;
 
 }
-
+.box-concert{
+    border-bottom: 1px solid black;
+    border-top: 1px solid black;
+}
 #liste-concert-titre{
     margin-left: 5px;
 
@@ -37,3 +40,5 @@ img{
 #img-date-lieux{
     display: flex;
 }
+
+

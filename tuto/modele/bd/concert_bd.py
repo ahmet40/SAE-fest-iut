@@ -37,6 +37,25 @@ class Concert_bd:
             print("all concert a échoue")
             return []
 
+    def get_concert_par_region(self,nom):
+        """
+            Récupère tous les concerts présents dans la base de données.
+
+            Returns:
+                list[Concert] or None: Liste d'objets Concert ou None si une erreur survient.
+        """
+        try:
+            query = text(f"select id_C, nom_C, date_Debut, date_Fin, id_L,id_IMAGE,nom_I,nom_region,nom_L from CONCERTS natural join IMAGE natural join LIEUX where nom_region='{nom}'")
+            resultat = self.cnx.execute(query)
+            concert=[]
+            for id_C, nom_C, date_Debut, date_Fin, id_L,id_IMAGE,nom_I,nom_region,nom_L in resultat:
+                concert.append((Concert(id_C, nom_C, date_Debut, date_Fin, id_L,id_IMAGE),nom_I,(nom_region,nom_L)))
+            return concert
+        except Exception as e:
+            print("concert par departement a échoue")
+            return []
+
+
     def get_par_id_concert(self,id_C):
         """
             Récupère un concert spécifique en fonction de son identifiant.

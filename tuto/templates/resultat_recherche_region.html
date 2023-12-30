@@ -1,0 +1,37 @@
+{% extends "base_slogan.html" %}
+{% block styles %}
+    {{ super() }}
+    {% endblock %}
+    {% block main_content %}
+    <div id="container">
+        <div class="row">
+            <div class="col-md-12">
+                <h1 id="liste-concert-titre">Les concerts dans le département : {{ nom }}</h1>
+                <h2 id="resultat-message" style="display: none;">Aucun résultat trouvé.</h2>
+
+                {% if liste_c|length == 0 %}
+                    <p>Aucun concert n'est disponible pour le moment</p>
+                {% else %}
+                    {% for concert,image,lieux in liste_c %}
+                        <div class="box-concert">
+                            <h3 class="plus-a-gauche">{{ concert.get_nom_c() }}</h3>
+                            <div >
+                                <div id="img-date-lieux">
+                                <img class="plus-a-gauche" src="{{ url_for('static', filename='images/' + image) }}" alt="image de tous les concert">
+                                    <div id="date">
+                                        <p class="plus-a-gauche">Date début (année/mois/jour : hh/mn/sd) : {{ concert.get_date_debut() }}</p>
+                                        <p class="plus-a-gauche">Date fin (année/mois/jour : hh/mn/sd) : {{ concert.get_date_fin() }}</p>
+                                    </div>
+                                </div>
+                                <div id="lieux">
+                                    <p class="plus-a-gauche">Région : {{ lieux[0] }}</p>
+                                    <p class="plus-a-gauche">lieux : {{ lieux[1] }}</p>
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
+                {% endif %}
+            </div>
+        </div>
+    </div>
+{% endblock %}

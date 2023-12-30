@@ -113,4 +113,13 @@ def recherche_region():
     Returns:
         redirect:redirection vers la page
     """
-    return render_template("recherche_region.html",le_spectateur=le_spectateur,page_carte=True,liste_style_parent=models.liste_style_parent(),)
+    return render_template("recherche_region.html",le_spectateur=le_spectateur,page_carte=True,liste_style_parent=models.liste_style_parent())
+
+@app.route("/les-regions/<string:nom>")
+def recherche_region_nom(nom):
+    """Cette methode va nous permettre de nous rediriger vers la page 
+        liste des concerts
+    Returns:
+        redirect:redirection vers la page
+    """
+    return render_template("resultat_recherche_region.html",le_spectateur=le_spectateur,liste_style_parent=models.liste_style_parent(),nom=nom,liste_c=models.get_concert_par_region(nom),page_liste=True)
