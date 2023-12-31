@@ -12,7 +12,7 @@
                     <p> Les styles :
                         {% for style in liste_style %}
 
-                        <a>
+                        <a href="{{ url_for('groupe_par_style',nom=style.get_nom_st()) }}">
                             {{ style.get_nom_st() }},
                         </a>
                         {% endfor %}

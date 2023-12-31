@@ -8,7 +8,7 @@
             <h2>Concerts proches</h2>
             <div id="concert-proche">
                 {% for concert,image in liste_concert_proche %}
-                    <img src="{{ url_for('static', filename='images/' + image) }}" alt="image des concerts proches">
+                    <img class="img" src="{{ url_for('static', filename='images/' + image) }}" alt="image des concerts proches">
                 {% endfor %}
             </div>
         </div>
@@ -27,7 +27,7 @@
                             <h3 class="plus-a-gauche">{{ concert.get_nom_c() }}</h3>
                             <div >
                                 <div id="img-date-lieux">
-                                <img class="plus-a-gauche" src="{{ url_for('static', filename='images/' + image) }}" alt="image de tous les concert">
+                                <img class="plus-a-gauche img" src="{{ url_for('static', filename='images/' + image) }}" alt="image de tous les concert">
                                     <div id="date">
                                         <p class="plus-a-gauche">Date début (année/mois/jour : hh/mn/sd) : {{ concert.get_date_debut() }}</p>
                                         <p class="plus-a-gauche">Date fin (année/mois/jour : hh/mn/sd) : {{ concert.get_date_fin() }}</p>

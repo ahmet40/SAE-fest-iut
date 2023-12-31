@@ -1,7 +1,9 @@
-img{
+.img{
     width: 115px;
     height: 140px;
     object-fit: cover;
+    padding: 2px;
+    border-radius: 15px;
 }
 #concert-proche{
     display:flex;
@@ -30,7 +32,7 @@ img{
 
 }
 .plus-a-gauche{
-    margin-left: 10 px;
+    margin-left: 1vw;
 }
 
 #resultat-message{

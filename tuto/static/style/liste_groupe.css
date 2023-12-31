@@ -1,0 +1,89 @@
+#tout-container {
+    overflow-x: auto;
+    margin-right: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+}
+
+#tout {
+    display: flex;
+    width: 100%;
+    justify-content: center;
+    align-items: center;
+}
+
+
+
+#grp {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    align-content: center;
+    border-top: 0.5px solid black;
+    border-bottom: 0.5px solid black;
+}
+
+
+
+
+.conteneur-image>a{
+    text-decoration: none;
+    color: white;
+}
+.conteneur-image>a>img{
+    width:75px;
+    margin-left: 25px;
+    margin-top: 5px;
+    height: 300px;
+    border-radius: 15px;
+}
+#mini-info{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    
+}
+.conteneur-image>a>img:hover{
+    transform: scale(1.01);
+    transition: all 0.3s ease-in-out;
+    width:250px;
+}
+
+.conteneur-image{
+    display: flex;
+    margin-left: 10px;
+    margin-right: 10px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    border-radius: 15px;
+    background-color: #1a1a1a;
+}
+#les-style{
+  width: 25%;
+  justify-content: center;
+  display: flex;
+  height: 100%;
+  margin-top: 20px;
+}
+#les-style li{
+    text-decoration: none;
+}
+#les-style li>a{
+    text-decoration: none;
+    color: #2EBEDD;
+}
+#les-style li>a:hover{
+    color: #ac9e1f;
+}
+#les-style ul{
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}

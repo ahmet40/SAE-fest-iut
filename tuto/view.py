@@ -26,7 +26,10 @@ le_adm=Admin(-1,"","")
 
 @app.route("/")
 def home():
-    le_spectateur=Spectateur(-1,"","","")
+    """
+    Cette methode va nous permettre de nous diriger vers la page d'accueil
+    """
+    print(models.liste_concert())
     return render_template("liste_concerts.html",liste_concert=models.liste_concert(),le_spectateur=le_spectateur,liste_style_parent=models.liste_style_parent(),
                            liste_concert_proche=models.liste_concert_proche(),page_liste=True)
 
@@ -133,3 +136,33 @@ def recherche_style(nom):
         redirect:redirection vers la page
     """
     return render_template("recherche_style.html",nom=nom,le_spectateur=le_spectateur,liste_style_parent=models.liste_style_parent(),liste_style=models.get_style_by_style_parent(nom),liste_grp=models.get_groupe_by_style_parent(nom),page_style=True)
+
+@app.route("/deconnexion")
+def deconnexion():
+    """Cette methode va nous permettre de nous rediriger vers la page 
+        liste des concerts
+    Returns:
+        redirect:redirection vers la page
+    """
+    le_spectateur.set_all(-1,"","","")
+    return redirect(url_for("les_concerts"))
+
+
+@app.route("/groupes")
+def groupes():
+    """Cette methode va nous permettre de nous rediriger vers la page 
+        liste des concerts
+    Returns:
+        redirect:redirection vers la page
+    """
+    return render_template("liste_groupe.html",liste_style=models.liste_style(),liste_groupe=models.get_all_groupe(),le_spectateur=le_spectateur,liste_style_parent=models.liste_style_parent(),page_groupe=True)
+
+
+@app.route("/groupes/<string:nom>")
+def groupe_par_style(nom):
+    """Cette methode va nous permettre de nous rediriger vers la page 
+        liste des concerts
+    Returns:
+        redirect:redirection vers la page
+    """
+    return render_template("resultat_recherche_groupe.html",nom=nom,liste_groupe=models.get_groupe_par_style(nom),le_spectateur=le_spectateur,liste_style_parent=models.liste_style_parent(),page_groupe=True)

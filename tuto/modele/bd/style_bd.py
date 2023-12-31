@@ -54,6 +54,7 @@ class Style_bd:
             print("style by id a échoué")
             return None
 
+
     def inserer_styles(self, id_St, nom_St):
         """
         Insère un nouveau style dans la base de données.

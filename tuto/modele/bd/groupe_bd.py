@@ -28,9 +28,9 @@ class Groupe_bd:
             list[Groupe] or None: Liste d'objets Groupe ou None si une erreur survient.
         """
         try:
-            query = text("select  id_G,nom, description, id_IMAGE, lien_Reseaux, lien_Video from GROUPE")
+            query = text("select  id_G,nom, description, id_IMAGE, lien_Reseaux, lien_Video,nom_I from GROUPE natural join IMAGE order by nom asc")
             resultat = self.cnx.execute(query)
-            groupe = [Groupe(id_G,nom, description, id_IMAGE, lien_Reseaux, lien_Video) for id_G,nom, description, id_IMAGE, lien_Reseaux, lien_Video in resultat]
+            groupe = [(Groupe(id_G,nom, description, id_IMAGE, lien_Reseaux, lien_Video),nom_I) for id_G,nom, description, id_IMAGE, lien_Reseaux, lien_Video,nom_I in resultat]
             return groupe
         except Exception as e:
             print("all groupe a échoué")

@@ -58,6 +58,28 @@ class GroupeAPourStyle_bd:
             print("gr_a_style by nom style a échoué")
             return []
         
+    def get_groupe_par_nom_style(self, nom_st):
+        """
+        Récupère les relations entre un style spécifique et ses groupes de musique en fonction du nom du style.
+
+        Args:
+            nom_st (str): Nom du style pour lequel récupérer les relations avec les groupes de musique.
+
+        Returns:
+            list[GroupeAPourStyle] or None: Liste d'objets GroupeAPourStyle correspondant au nom du style, ou None si une erreur survient.
+        """
+        try:
+            query = text(f"select  * from GROUPE_A_POUR_STYLE NATURAL JOIN STYLE NATURAL JOIN GROUPE NATURAL JOIN IMAGE where nom_St = '{nom_st}'")
+            resultat = self.cnx.execute(query)
+            liste=[]
+            
+            for id_IMAGE,id_G ,id_St,nom_St,nom,description,lien_Reseaux,lien_Video,nom_I in resultat:
+                liste.append((Groupe(id_G,nom,description,id_IMAGE,lien_Reseaux,lien_Video),nom_I))
+            return liste
+        except Exception as e:
+            print("gr_a_style by nom style a échoué")
+            return []
+
 
     def get_par_id_groupe_a_pour_style(self, id_G):
         """

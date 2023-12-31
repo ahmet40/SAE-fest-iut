@@ -13,7 +13,9 @@
       {% endif %}
       {% if page_style %}
       <link rel="stylesheet" href="../static/style/recherche_style.css">
-
+      {% endif %}
+      {% if page_groupe %}
+        <link rel="stylesheet" href="../static/style/liste_groupe.css">
       {% endif %}
 
 </head>
@@ -44,7 +46,7 @@
               <ul>
                 <!-- User is logged in, display option for "Mes concerts" -->
                 <li><a href="{{ url_for('les_concerts') }}">Mes concerts</a></li>
-                <li><a href="{{ url_for('home') }}">Se déconnecter</a></li>
+                <li><a href="{{ url_for('deconnexion') }}">Se déconnecter</a></li>
               </ul>
             </nav>
           {% endif %}
@@ -54,10 +56,9 @@
 
       <nav id="nav-bar">
         <ul id="contient">
-            <li class="lien-dans-nav"><a class="a" href="#">Home</a></li>
-            <li class="lien-dans-nav"><a class="a" href="#">Groupe</a></li>
-            <li class="lien-dans-nav"><a class="a" href="{{ url_for('recherche_region') }}">Région</a></li>
-            <li class="lien-dans-nav"><a class="a" href="#">Concert</a></li>
+            <li class="lien-dans-nav"><a class="a" href="{{ url_for('home')}}">Home</a></li>
+            <li class="lien-dans-nav"><a class="a" href="{{ url_for('groupes')}}">Groupe</a></li>
+            <li class="lien-dans-nav"><a class="a" href="{{ url_for('recherche_region') }}">Département</a></li>
             {% if liste_style_parent %}
             <li id="lien-nav-bar">
               <div class="paste-button">
@@ -68,8 +69,8 @@
                   {% endfor %}
                 </div>
               </div>
-          </li>
-          {% endif %}
+            </li>
+            {% endif %}
         </ul>
     </nav>
     <main class="main-base">

@@ -1,0 +1,35 @@
+{% extends "base_slogan.html" %}
+{% block styles %}
+    {{ super() }}
+{% endblock %}
+{% block main_content %}
+    <div id="grp">
+        <h2>Les groupes</h2>
+    </div>
+    <div id="tout-container">
+        <div id="tout">
+            {% if liste_groupe %}
+                <div class="conteneur-image">
+                    {% for grp,image in liste_groupe %}
+                            <a href="">
+                                <img class="plus-a-gauche" src="{{ url_for('static', filename='images/' + image) }}" alt="image des groupes">
+                            </a>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        </div>
+        {% if liste_style %}
+            <div id="les-style">
+                <ul>
+                    {% for style in liste_style %}
+                        <li>
+                            <a href="{{ url_for('groupe_par_style',nom=style.get_nom_st()) }}">
+                                {{ style.get_nom_st() }}
+                            </a>
+                        </li>
+                    {% endfor %}
+                </ul>
+            </div>
+        {% endif %}
+    </div>
+{% endblock %}

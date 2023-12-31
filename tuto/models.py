@@ -15,11 +15,17 @@ from concert_bd import *
 from style_parent_bd import Style_parent_bd
 from style_appartient_a_bd import Style_appartient_a_bd
 from groupe_a_pour_style_bd import GroupeAPourStyle_bd
+from groupe_bd import Groupe_bd
+from style_bd import Style_bd
+#---------------------------------------------------------------
+# Connexion à la base de données
 SPECTATEUR=Spectateur_bd(CNX)
 CONCERTS=Concert_bd(CNX)
 STYLE_PARENT=Style_parent_bd(CNX)
 STYLE_APPARTIENT_A=Style_appartient_a_bd(CNX)
 GROUPE_A_POUR_STYLE=GroupeAPourStyle_bd(CNX)
+GROUPE=Groupe_bd(CNX)
+STYLE=Style_bd(CNX)
 #-----------------------------------------------------------------------------
 # Connection et creation de compte
 def connecter_spectateur(username: str, password: str) -> bool:
@@ -121,3 +127,31 @@ def get_groupe_by_style_parent(nom_style_parent):
         list: la liste des groupes
     """
     return GROUPE_A_POUR_STYLE.get_par_id_style_a_pour_groupe(nom_style_parent)
+
+
+def get_all_groupe():
+    """Cette methode va nous permettre d'obtenir tous les groupes
+
+    Returns:
+        list: la liste des groupes
+    """
+    return GROUPE.get_all_groupe()
+
+def liste_style():
+    """Cette methode va nous permettre d'obtenir tous les styles
+
+    Returns:
+        list: la liste des styles
+    """
+    return STYLE.get_all_styles()
+
+def get_groupe_par_style(nom):
+    """Cette methode va nous permettre d'obtenir les groupes d'un style
+
+    Args:
+        nom ([str]): le nom du style
+
+    Returns:
+        list: la liste des groupes
+    """
+    return GROUPE_A_POUR_STYLE.get_groupe_par_nom_style(nom)
