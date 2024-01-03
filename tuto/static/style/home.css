@@ -6,7 +6,13 @@ body{
     overflow: hidden;
 }
 
-
+.img{
+  width: 115px;
+  height: 140px;
+  object-fit: cover;
+  padding: 2px;
+  border-radius: 15px;
+}
 
 @font-face {
     font-family: 'Leckerli One';
@@ -23,6 +29,7 @@ header {
   border-bottom: 2px solid #ccc;
   box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.2);
   position: relative;
+  justify-content: center;
 }
 .top-page{
   width: 33%;
@@ -37,7 +44,8 @@ header {
 #utilisateur{
   display: flex;
   flex-direction: row-reverse;
-  margin-top :4.5vh;
+  justify-content: center;
+  align-items: center;
   float: right;
   width: 33%;
 }
@@ -157,62 +165,6 @@ a{
 
 
 
-#avant-connexion{
-  background-color: #fff; 
-  border: 1px solid #ccc;
-  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
-  border-radius: 8px;
-  margin-top: 1px;
-  overflow: hidden;
-  height: 30px; 
-  justify-content: center;
-  align-items: center;
-  width: 130px;
-}
-
-
-#apres-connexion {
-  background-color: #fff; 
-  border: 1px solid #ccc;
-  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
-  border-radius: 8px;
-  margin-top: 1px;
-  overflow: hidden;
-  height: 30px; 
-  max-height: 70px;
-  justify-content: center;
-  align-items: center;
-  width: 150px;
-}
-#apres-connexion:hover{
-  height: 70px;
-}
-
-#apres-connexion ul,#avant-connexion ul {
-  align-items: center;
-  justify-content: center;
-  list-style: none;
-  padding: 0;
-  margin: 0;
-}
-
-#apres-connexion ul li,#avant-connexion ul li {
-  margin-bottom: 10px;
-  margin-top: 3px;
-  justify-content: center;
-  align-items: center;
-}
-
-#apres-connexion a,#avant-connexion a {
-  text-decoration: none;
-  color: #333; /* Change the text color as needed */
-  font-size: 16px;
-  margin-left: 15px;
-}
-
-
-
-
 #nav-bar {
   background-color: white;
   padding: 10px 0;
@@ -225,7 +177,7 @@ a{
   margin: 0;
   padding: 0;
   display: flex;
-  justify-content: space-between;
+  justify-content: space-around;
 }
 
 .lien-dans-nav{
@@ -238,8 +190,6 @@ a{
   text-decoration: none;
   color: #5e5e5e;
   font-size: 16px;
-  margin-left: 120px;
-  margin-right: 150px;
 }
 
 
@@ -312,8 +262,47 @@ a{
   display: block;
 }
 
-#lien-nav-bar{
 
-  margin-left: 160px;
-  margin-right: 230px;
+
+#titre-search{
+  display: flex;
+  justify-content: space-around;
+}
+
+
+
+
+.connectBtn {
+  width: 120px;
+  height: 40px;
+  border: none;
+  border-radius: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  color: white;
+  font-weight: 600;
+  background: linear-gradient( to right,#8be3fc,#576bff);
+  box-shadow: 0 20px 30px -7px rgba(97, 118, 238, 0.5);
+  transition: all 0.3s ease-in-out;
+  cursor: pointer;
+}
+
+.connectBtn:hover {
+  box-shadow: none;
+  transform: translate(0px, 2.2px);
+}
+
+.connectBtn:active {
+  transform: scale(0.96) translate(0px, 3.2px);
+}
+
+.aa{
+  text-decoration: none;
+  color:#5e5e5e;
+}
+.aa:hover{
+  text-decoration: none;
+  color:#131212;
 }

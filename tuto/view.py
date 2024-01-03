@@ -135,12 +135,13 @@ def recherche_style(nom):
     Returns:
         redirect:redirection vers la page
     """
+    print(models.get_groupe_by_style_parent(nom))
     return render_template("recherche_style.html",nom=nom,le_spectateur=le_spectateur,liste_style_parent=models.liste_style_parent(),liste_style=models.get_style_by_style_parent(nom),liste_grp=models.get_groupe_by_style_parent(nom),page_style=True)
 
 @app.route("/deconnexion")
 def deconnexion():
     """Cette methode va nous permettre de nous rediriger vers la page 
-        liste des concerts
+        liste des concerts en nous deconnectant
     Returns:
         redirect:redirection vers la page
     """
@@ -151,7 +152,7 @@ def deconnexion():
 @app.route("/groupes")
 def groupes():
     """Cette methode va nous permettre de nous rediriger vers la page 
-        liste des concerts
+        liste des groupes
     Returns:
         redirect:redirection vers la page
     """
@@ -161,8 +162,75 @@ def groupes():
 @app.route("/groupes/<string:nom>")
 def groupe_par_style(nom):
     """Cette methode va nous permettre de nous rediriger vers la page 
-        liste des concerts
+        groupes par style
     Returns:
         redirect:redirection vers la page
     """
     return render_template("resultat_recherche_groupe.html",nom=nom,liste_groupe=models.get_groupe_par_style(nom),le_spectateur=le_spectateur,liste_style_parent=models.liste_style_parent(),page_groupe=True)
+
+@app.route("/passé")
+def concert_passer():
+    """Cette methode va nous permettre de nous rediriger vers la page 
+        liste des concerts passés
+    Returns:
+        redirect:redirection vers la page
+    """
+    return render_template("a_venir_passe.html",liste_concert=models.get_concert_finis(),le_spectateur=le_spectateur,liste_style_parent=models.liste_style_parent(),page_liste=True)
+
+@app.route("/futurs")
+def concert_futurs():
+    """Cette methode va nous permettre de nous rediriger vers la page 
+        liste des concerts futurs
+    Returns:
+        redirect:redirection vers la page
+    """
+    return render_template("a_venir_passe.html",liste_concert=models.get_concert_futurs(),le_spectateur=le_spectateur,liste_style_parent=models.liste_style_parent(),page_liste=True)
+
+
+
+@app.route("/groupe/<int:id>", methods=['GET', 'POST'])
+def groupe(id):
+    """Cette methode va nous permettre de nous rediriger vers la page 
+        de l'information sur les groupes
+    Returns:
+        redirect:redirection vers la page
+    """
+    if request.method == 'GET':
+        return render_template("groupe_infos.html", liste_style_parent=models.liste_style_parent(), groupe=models.get_info_groupe(id)[0], membre=models.get_info_groupe(id)[1], le_spectateur=le_spectateur, groupe_infos=True,is_group_favorite=models.check_if_group_is_favorite(le_spectateur.get_id_p(), id))
+    # Assuming you have a function to check if the group is already in favorites
+    while request.method == 'POST':
+        user_id = le_spectateur.get_id_p()
+        group_id = id
+        is_checked = request.json.get('isChecked')
+        print(f"User ID: {user_id}, Group ID: {group_id}, Is Checked: {is_checked}")
+        if is_checked:
+            # Add the group to favorites
+            print("bonjour")
+            models.add_group_to_favorites(le_spectateur.get_id_p(), id)
+            return jsonify({'status': 'added'})
+        else:
+            print("au revoir")
+            # Remove the group from favorites
+            models.remove_group_from_favorites(le_spectateur.get_id_p(), id)
+            return jsonify({'status': 'removed'})
+            
+
+@app.route("/mes-groupes")
+def mes_groupes():
+    """Cette methode va nous permettre de nous rediriger vers la page 
+        groupes favoris
+    Returns:
+        redirect:redirection vers la page
+    """
+    return render_template("mes_groupes.html",liste_style_parent=models.liste_style_parent(),liste_groupe=models.get_favoris(le_spectateur.get_id_p()),le_spectateur=le_spectateur,page_groupe=True)
+
+
+@app.route("/membre/<int:idg>/<int:idp>")
+def membre(idg,idp):
+    """Cette methode va nous permettre de nous rediriger vers la page 
+        de l'information sur les groupes
+    Returns:
+        redirect:redirection vers la page
+    """
+    return render_template("infos_membre.html",liste_style_parent=models.liste_style_parent(),membre=models.get_infos_membre(idg,idp),le_spectateur=le_spectateur,info_membre=True)
+

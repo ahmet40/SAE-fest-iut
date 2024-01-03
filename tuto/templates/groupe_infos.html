@@ -1,0 +1,84 @@
+{% extends "base_slogan.html" %}
+{% block styles %}
+    {{ super() }}
+    {% endblock %}
+    {% block main_content %}
+    <div id="titre-img">
+        <div>
+            <img id="img-membre" src="{{ url_for('static', filename='images/' + groupe[0][1]) }}" alt="image du groupe">
+            <h1>
+                Groupe : {{ groupe[0][0].get_nom() }}
+            </h1>
+        </div>
+        {% if le_spectateur.get_id_p()!=-1 %}
+        <div id="favorite-btn" data-group-id="{{ groupe[0][0].get_id_g() }}">
+            {% if is_group_favorite %}
+                <label class="container">
+                    <input type="checkbox" checked>
+                    <svg id="Layer_1" version="1.0" viewBox="0 0 24 24" xml:space="preserve" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+                        <path d="M16.4,4C14.6,4,13,4.9,12,6.3C11,4.9,9.4,4,7.6,4C4.5,4,2,6.5,2,9.6C2,14,12,22,12,22s10-8,10-12.4C22,6.5,19.5,4,16.4,4z"></path>
+                    </svg>
+                </label>
+            {% else %}
+                <label class="container">
+                    <input type="checkbox">
+                    <svg id="Layer_1" version="1.0" viewBox="0 0 24 24" xml:space="preserve" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+                        <path d="M16.4,4C14.6,4,13,4.9,12,6.3C11,4.9,9.4,4,7.6,4C4.5,4,2,6.5,2,9.6C2,14,12,22,12,22s10-8,10-12.4C22,6.5,19.5,4,16.4,4z"></path>
+                    </svg>
+                </label>
+            {% endif %}
+        </div>
+        {% endif %}
+    </div>
+    <div id="all_grp">
+        <div id="desc">
+            <div id="title">
+                <h2>Description</h2>
+                <p>{{ groupe[0][0].get_description() }}</p>
+            </div>
+            <div id="lien">
+                <h2>Liens</h2>
+                <p>résaux : {{ groupe[0][0].get_lien_reseaux() }}</p>
+                <p>vidéo : {{ groupe[0][0].get_lien_video() }}</p>
+            </div>
+        </div>
+        <div id="membre">
+            <div id="title">
+                <h2>Membres</h2>
+            </div>
+            <div id="lien">
+                <div id="infos-membre">
+                    {% for personne,_,img in membre %}
+                            <a href="{{url_for('membre',idg=groupe[0][0].get_id_g(),idp=personne.get_id_p())}}"><img id="img-membre" src="{{ url_for('static', filename='images/' + img) }}" alt="image du membre"></a>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+    <script>
+        document.getElementById('favorite-btn').addEventListener('change', function() {
+            var groupId = this.getAttribute('data-group-id');
+            var isChecked = this.querySelector('input').checked;
+    
+            fetch('/groupe/' + groupId, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ 'isChecked': isChecked }),
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log('Statut:', data.status);
+                // Mettez à jour le style du cœur en conséquence (rouge ou blanc) ici si nécessaire
+            })
+            .catch((error) => {
+                console.error('Erreur:', error);
+            });
+        });
+    </script>
+    
+{% endblock %}

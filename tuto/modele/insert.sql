@@ -150,12 +150,12 @@ INSERT INTO PARTICIPE (id_A, id_G, date_Debut_A, date_Fin_A) VALUES
 (5, 5, '2024-01-10 11:00:00', '2024-01-10 13:00:00');
 
 -- PERSONNE
-INSERT INTO PERSONNE (id_P,nom_P, prenom_P, email_Sp) VALUES
-(1, 'Smith', 'John', 'john.smith@example.com'),
-(2, 'Doe', 'Jane', 'jane.doe@example.com'),
-(3, 'Johnson', 'Bob', 'bob.johnson@example.com'),
-(4, 'Williams', 'Alice', 'alice.williams@example.com'),
-(5, 'Brown', 'Charlie', 'charlie.brown@example.com');
+INSERT INTO PERSONNE (id_P,nom_P, prenom_P, email_Sp,id_IMAGE) VALUES
+(1, 'Smith', 'John', 'john.smith@example.com',1),
+(2, 'Doe', 'Jane', 'jane.doe@example.com',2),
+(3, 'Johnson', 'Bob', 'bob.johnson@example.com',3),
+(4, 'Williams', 'Alice', 'alice.williams@example.com',4),
+(5, 'Brown', 'Charlie', 'charlie.brown@example.com',5);
 
 -- MEMBRE
 INSERT INTO MEMBRE (id_P, id_G, id_I) VALUES
@@ -163,7 +163,9 @@ INSERT INTO MEMBRE (id_P, id_G, id_I) VALUES
 (2, 2, 2),
 (3, 3, 3),
 (4, 4, 4),
-(5, 5, 5);
+(5, 5, 5),
+(1, 5, 1),
+(2, 3, 2);
 
 
 

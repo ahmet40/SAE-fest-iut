@@ -50,9 +50,13 @@ class GroupeAPourStyle_bd:
             query = text(f"select  * from GROUPE_A_POUR_STYLE NATURAL JOIN STYLE NATURAL JOIN GROUPE NATURAL JOIN IMAGE NATURAL JOIN STYLE_APPARTIENT_A NATURAL JOIN STYLE_PARENT where id_St_P = (select id_St_P from STYLE_PARENT where nom_St_P='{nom_st_p}')")
             resultat = self.cnx.execute(query)
             liste=[]
-            
-            for _,_,id_i,id_G,nom_St,nom,description,lien_Reseaux,lien_Video,nom_I,nom_St_P in resultat:
-                liste.append((Groupe(id_G,nom,description,id_i,lien_Reseaux,lien_Video),nom_St,nom_I))
+            for _,_,id_i,id_G,nom_St,nom,description,lien_Reseaux,lien_Video,nom_I,_ in resultat:
+                cpt=0
+                q=text(f"select count(*) as m from GROUPE NATURAL JOIN ORGANISATION where id_G={str(id_G)} and date_Debut_O>now()")
+                r=self.cnx.execute(q).fetchone()                
+                if r and r.m:
+                    cpt=int(r.m)
+                liste.append((Groupe(id_G,nom,description,id_i,lien_Reseaux,lien_Video),nom_St,nom_I,cpt))
             return liste
         except Exception as e:
             print("gr_a_style by nom style a échoué")
@@ -74,7 +78,13 @@ class GroupeAPourStyle_bd:
             liste=[]
             
             for id_IMAGE,id_G ,id_St,nom_St,nom,description,lien_Reseaux,lien_Video,nom_I in resultat:
-                liste.append((Groupe(id_G,nom,description,id_IMAGE,lien_Reseaux,lien_Video),nom_I))
+                cpt=0
+                q=text(f"select count(*) as m from GROUPE NATURAL JOIN ORGANISATION where id_G={str(id_G)} and date_Debut_O>now()")
+                r=self.cnx.execute(q).fetchone()                
+                if r and r.m:
+                    cpt=int(r.m)
+                liste.append((Groupe(id_G,nom,description,id_IMAGE,lien_Reseaux,lien_Video),nom_I,cpt))
+            
             return liste
         except Exception as e:
             print("gr_a_style by nom style a échoué")

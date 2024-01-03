@@ -9,27 +9,18 @@
     <div id="tout-container">
         <div id="tout">
             {% if liste_groupe %}
-                <div class="conteneur-image">
-                    {% for grp,image in liste_groupe %}
-                            <a href="">
-                                <img class="plus-a-gauche" src="{{ url_for('static', filename='images/' + image) }}" alt="image des groupes">
-                            </a>
+                    {% for grp,image,cpt in liste_groupe %}
+                        <div class="dans-boucle">
+                            <div class="contain-infos-grp img-contain"><img class="groupe-img" src="{{ url_for('static', filename='images/' + image) }}" alt="image des groupes"></div>
+                            <div class="contain-infos-grp"><a class="aa" href="{{ url_for('groupe',id=grp.get_id_g())}}">{{ grp.get_nom() }}</a></div>
+
+                            <div class="contain-infos-grp"><p>concert à venir : {{cpt}}</p></div>
+                        </div>
                     {% endfor %}
-                </div>
+            {% endif %}
+            {% if liste_groupe == [] %}
+                <p>Il n'existe pas encore de groupe de music pour ce style</p>
             {% endif %}
         </div>
-        {% if liste_style %}
-            <div id="les_style">
-                <ul>
-                    {% for style in liste_style %}
-                        <li>
-                            <a>
-                                {{ style.get_nom_st() }},
-                            </a>
-                        </li>
-                    {% endfor %}
-                </ul>
-            </div>
-        {% endif %}
-    </div>
+    </div> 
 {% endblock %}

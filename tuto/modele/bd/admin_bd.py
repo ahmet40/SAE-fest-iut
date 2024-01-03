@@ -18,7 +18,7 @@ class Admin_bd:
             conx (obj): Objet de connexion à la base de données.
         """
         self.cnx = conx
-    def get_all_admin(self):
+    def get_all_admins(self):
         """
         Récupère tous les administrateurs présents dans la base de données.
 

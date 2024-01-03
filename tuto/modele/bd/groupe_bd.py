@@ -30,7 +30,32 @@ class Groupe_bd:
         try:
             query = text("select  id_G,nom, description, id_IMAGE, lien_Reseaux, lien_Video,nom_I from GROUPE natural join IMAGE order by nom asc")
             resultat = self.cnx.execute(query)
-            groupe = [(Groupe(id_G,nom, description, id_IMAGE, lien_Reseaux, lien_Video),nom_I) for id_G,nom, description, id_IMAGE, lien_Reseaux, lien_Video,nom_I in resultat]
+            groupe=[]
+            for id_G,nom, description, id_IMAGE, lien_Reseaux, lien_Video,nom_I in resultat:
+                cpt=0
+                q=text(f"select count(*) as m from GROUPE NATURAL JOIN ORGANISATION where id_G={str(id_G)} and date_Debut_O>now()")
+                r=self.cnx.execute(q).fetchone()                
+                if r and r.m:
+                    cpt=int(r.m)
+                groupe.append((Groupe(id_G,nom,description,id_IMAGE,lien_Reseaux,lien_Video),nom_I,cpt))
+            
+            return groupe
+        except Exception as e:
+            print("all groupe a échoué")
+            return []
+        
+
+    def get_all_information_groupe(self,id):
+        """
+        Récupère tous les groupes de musique présents dans la base de données avec toutes leurs informations.
+            et leur jointure
+        """
+        try:
+            query = text(f"SELECT G.id_G,G.nom,G.description,G.id_IMAGE,G.lien_Reseaux,G.lien_Video,I.nom_I AS nom_image FROM GROUPE G LEFT JOIN IMAGE I ON G.id_IMAGE = I.id_IMAGE LEFT JOIN ORGANISATION O ON G.id_G = O.id_G LEFT JOIN CONCERTS C ON O.id_C = C.id_C LEFT JOIN LIEUX ON C.id_L = LIEUX.id_L WHERE G.id_G = {str(id)}")
+            resultat = self.cnx.execute(query)
+            groupe = []
+            for id_G ,nom,description,id_IMAGE,lien_Reseaux,lien_Video,nom_image in resultat:
+                groupe.append((Groupe(id_G,nom, description, id_IMAGE, lien_Reseaux, lien_Video),nom_image))    
             return groupe
         except Exception as e:
             print("all groupe a échoué")

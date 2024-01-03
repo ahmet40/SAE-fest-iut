@@ -24,19 +24,21 @@
     <div id="grp">
         <h2>Les groupes</h2>
     </div>
-    {% if liste_grp %}
-        
-        {% for grp,name_style,image in liste_grp %}
-        <div class="card">
-            <a href="">
-                <img class="plus-a-gauche" src="{{ url_for('static', filename='images/' + image) }}" alt="image des groupes">
-            </a>
-            <div id="mini-info">
-                <div id="grp-name">Groupe : {{grp.get_nom()}}</div>
-                <div id="stl">Style : {{ name_style }}</div>
+        <div id="tout-container">
+            <div id="tout">
+                {% if liste_groupe %}
+                        {% for grp,style,image,cpt in liste_groupe %}
+                            <div class="dans-boucle">
+                                <div class="contain-infos-grp img-contain"><img class="groupe-img" src="{{ url_for('static', filename='images/' + image) }}" alt="image des groupes"></div>
+                                <div class="contain-infos-grp"><a class="aa" href="{{ url_for('groupe',id=grp.get_id_g())}}">{{ grp.get_nom() }}</a></div>
+                                <div class="contain-infos-grp"><p>style : {{ style }}</p></div>
+                                <div class="contain-infos-grp"><p>concert à venir : {{cpt}}</p></div>
+                            </div>
+                        {% endfor %}
+                {% endif %}
+                {% if liste_groupe == [] %}
+                    <p>Il n'existe pas encore de groupe de music pour ce style</p>
+                {% endif %}
             </div>
-        </div>
-        {% endfor %}
-        
-    {% endif %}
+        </div>    
 {% endblock %}

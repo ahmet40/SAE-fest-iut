@@ -1,0 +1,23 @@
+{% extends "base_slogan.html" %}
+{% block styles %}
+    {{ super() }}
+    {% endblock %}
+    {% block main_content %}
+
+    {% if liste_style %}
+        <div id="tout-container">
+            <div class="card">
+                <div class="card-border-top">
+                </div>
+                <div class="img">
+                </div>
+                <span> Person</span>
+                <p class="job">{{ membre[0][0].get_nom_p()}} {{ membre[0][0].get_prenom_p()}}</p>
+                <p class="job">{{ membre[0][0].get_email_sp()}}</p>
+                <p class="job">{{ membre[0][1]}}</p>
+            </div>
+        </div>
+    {% endif %}
+{% endblock %}
+
+

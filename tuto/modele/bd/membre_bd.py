@@ -5,7 +5,7 @@ import os
 ROOT = os.path.join(os.path.dirname(os.path.abspath(__file__)), '../..')
 sys.path.append(os.path.join(ROOT, 'modele/code_model/'))
 from membre import Membre
-
+from personne import Personne
 class Membre_bd:
     """
         Classe gérant l'accès à la base de données pour la gestion des membres de groupes.
@@ -34,6 +34,50 @@ class Membre_bd:
         except Exception as e:
             print("all membres a échoué")
             return None
+
+    def get_membre_par_id(self, id_G):
+        """
+        Récupère un membre spécifique en fonction de son identifiant.
+
+        Args:
+            id_G (int): Identifiant du membre à récupérer.
+
+        Returns:
+            list[Membre] or None: Liste d'objets Membre correspondant à l'identifiant du membre, ou None si une erreur survient.
+        """
+        try:
+            query = text(f"SELECT M.id_P, P.nom_P,P.prenom_P, P.email_Sp, I2.nom_I AS nom_instrument, I.nom_I AS nom_image FROM MEMBRE M NATURAL JOIN PERSONNE P LEFT JOIN INSTRUMENT I2 ON M.id_I = I2.id_I  LEFT JOIN IMAGE I ON P.id_IMAGE = I.id_IMAGE WHERE M.id_G = {str(id_G)}")
+            resultat = self.cnx.execute(query)
+            membres = []
+            for id_P, nom_P, prenom_P, email_Sp, nom_instrument, nom_image in resultat:
+                membres.append((Personne(id_P,nom_P, prenom_P, email_Sp),nom_instrument, nom_image))
+            return membres
+        except Exception as e:
+            print("membre by id a échoué")
+            return []
+        
+
+    def get_membre_par_idg_idp(self, id_G,id_P):
+        """
+        Récupère un membre spécifique en fonction de son identifiant.
+
+        Args:
+            id_G (int): Identifiant du membre à récupérer.
+
+        Returns:
+            list[Membre] or None: Liste d'objets Membre correspondant à l'identifiant du membre, ou None si une erreur survient.
+        """
+        try:
+            query = text(f"SELECT M.id_P, P.nom_P,P.prenom_P, P.email_Sp, I2.nom_I AS nom_instrument, I.nom_I AS nom_image FROM MEMBRE M NATURAL JOIN PERSONNE P LEFT JOIN INSTRUMENT I2 ON M.id_I = I2.id_I  LEFT JOIN IMAGE I ON P.id_IMAGE = I.id_IMAGE WHERE M.id_G = {str(id_G)} and M.id_P={str(id_P)}")
+            resultat = self.cnx.execute(query)
+            membres = []
+            for id_P, nom_P, prenom_P, email_Sp, nom_instrument, nom_image in resultat:
+                membres.append((Personne(id_P,nom_P, prenom_P, email_Sp),nom_instrument, nom_image))
+            return membres
+        except Exception as e:
+            print("membre by id a échoué")
+            return []
+    
 
     def get_par_id_groupe_membres(self, id_G):
         """

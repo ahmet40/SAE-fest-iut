@@ -17,6 +17,8 @@ from style_appartient_a_bd import Style_appartient_a_bd
 from groupe_a_pour_style_bd import GroupeAPourStyle_bd
 from groupe_bd import Groupe_bd
 from style_bd import Style_bd
+from membre_bd import Membre_bd
+from favoris_bd import Favoris_bd
 #---------------------------------------------------------------
 # Connexion à la base de données
 SPECTATEUR=Spectateur_bd(CNX)
@@ -26,6 +28,8 @@ STYLE_APPARTIENT_A=Style_appartient_a_bd(CNX)
 GROUPE_A_POUR_STYLE=GroupeAPourStyle_bd(CNX)
 GROUPE=Groupe_bd(CNX)
 STYLE=Style_bd(CNX)
+MEMBRE=Membre_bd(CNX)
+FAVORIS=Favoris_bd(CNX)
 #-----------------------------------------------------------------------------
 # Connection et creation de compte
 def connecter_spectateur(username: str, password: str) -> bool:
@@ -155,3 +159,87 @@ def get_groupe_par_style(nom):
         list: la liste des groupes
     """
     return GROUPE_A_POUR_STYLE.get_groupe_par_nom_style(nom)
+
+def get_concert_finis():
+    """Cette methode va nous permettre d'obtenir les concerts qui sont finis
+
+    Returns:
+        list: la liste des concerts
+    """
+    return CONCERTS.get_concert_passer()
+
+def get_concert_futurs():
+    """Cette methode va nous permettre d'obtenir les concerts qui sont futurs
+
+    Returns:
+        list: la liste des concerts
+    """
+    return CONCERTS.get_concert_a_venir()
+
+def get_info_groupe(id):
+    """Cette methode va nous permettre d'obtenir les informations d'un groupe
+
+    Args:
+        id ([int]): l'id du groupe
+
+    Returns:
+        list: la liste des informations
+    """
+    liste1=GROUPE.get_all_information_groupe(id)
+    liste2=MEMBRE.get_membre_par_id(id)
+    print(liste2)
+    return (liste1,liste2)
+
+
+def get_favoris(id_spec):
+    """Cette methode va nous permettre d'obtenir les favoris d'un spectateur
+
+    Args:
+        id_spec ([int]): l'id du spectateur
+
+    Returns:
+        list: la liste des favoris
+    """
+    return FAVORIS.get_infos_groupes_favoris(id_spec)
+
+def get_infos_membre(idg,idp):
+    """Cette methode va nous permettre d'obtenir les informations d'un membre
+
+    Args:
+        id ([int]): l'id du membre
+
+    Returns:
+        list: la liste des informations
+    """
+    return MEMBRE.get_membre_par_idg_idp(idg,idp)
+
+
+def check_if_group_is_favorite(id_spec, id_groupe):
+    """Cette methode va nous permettre de verifier si un groupe est favoris d'un spectateur
+
+    Args:
+        id_spec ([int]): l'id du spectateur
+        id_groupe ([int]): l'id du groupe
+
+    Returns:
+        bool: renvoie la valeur True si le groupe est favoris du spectateur et False sinon
+    """
+    return FAVORIS.verifie_si_favoris(id_spec, id_groupe)
+
+def remove_group_from_favorites(id_spec, id_groupe):
+    """Cette methode va nous permettre de retirer un groupe des favoris d'un spectateur
+
+    Args:
+        id_spec ([int]): l'id du spectateur
+        id_groupe ([int]): l'id du groupe
+    """
+    FAVORIS.supprimer_favoris(id_spec, id_groupe)
+
+def add_group_to_favorites(id_spec, id_groupe):
+    """Cette methode va nous permettre d'ajouter un groupe aux favoris d'un spectateur
+
+    Args:
+        id_spec ([int]): l'id du spectateur
+        id_groupe ([int]): l'id du groupe
+    """
+    FAVORIS.inserer_favoris(id_spec, id_groupe)

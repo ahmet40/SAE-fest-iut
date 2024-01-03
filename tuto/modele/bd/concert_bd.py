@@ -36,6 +36,43 @@ class Concert_bd:
         except Exception as e:
             print("all concert a échoue")
             return []
+        
+
+    def get_concert_a_venir(self):
+        """
+            Récupère tous les concerts présents dans la base de données.
+
+            Returns:
+                list[Concert] or None: Liste d'objets Concert ou None si une erreur survient.
+        """
+        try:
+            query = text("select id_C, nom_C, date_Debut, date_Fin, id_L,id_IMAGE,nom_I,nom_region,nom_L from CONCERTS natural join IMAGE natural join LIEUX where date_Debut >= NOW() order by date_Debut")
+            resultat = self.cnx.execute(query)
+            concert=[]
+            for id_C, nom_C, date_Debut, date_Fin, id_L,id_IMAGE,nom_I,nom_region,nom_L in resultat:
+                concert.append((Concert(id_C, nom_C, date_Debut, date_Fin, id_L,id_IMAGE),nom_I,(nom_region,nom_L)))
+            return concert
+        except Exception as e:
+            print("all a venir a échoue")
+            return []
+        
+    def get_concert_passer(self):
+        """
+            Récupère tous les concerts présents dans la base de données.
+
+            Returns:
+                list[Concert] or None: Liste d'objets Concert ou None si une erreur survient.
+        """
+        try:
+            query = text("select id_C, nom_C, date_Debut, date_Fin, id_L,id_IMAGE,nom_I,nom_region,nom_L from CONCERTS natural join IMAGE natural join LIEUX where date_Fin < NOW() order by date_Debut")
+            resultat = self.cnx.execute(query)
+            concert=[]
+            for id_C, nom_C, date_Debut, date_Fin, id_L,id_IMAGE,nom_I,nom_region,nom_L in resultat:
+                concert.append((Concert(id_C, nom_C, date_Debut, date_Fin, id_L,id_IMAGE),nom_I,(nom_region,nom_L)))
+            return concert
+        except Exception as e:
+            print("all passer a échoue")
+            return []
 
     def get_concert_par_region(self,nom):
         """
