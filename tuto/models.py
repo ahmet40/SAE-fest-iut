@@ -193,7 +193,6 @@ def get_info_groupe(id):
     """
     liste1=GROUPE.get_all_information_groupe(id)
     liste2=MEMBRE.get_membre_par_id(id)
-
     liste3=ORGANISATION.get_infos_concert_by_idg_future(id)
     liste4=ORGANISATION.get_infos_concert_by_idg_passe(id)
     liste5=PARTICIPE.get_par_id_groupe_activite_lieux_futurs(id)

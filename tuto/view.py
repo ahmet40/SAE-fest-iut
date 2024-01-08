@@ -106,7 +106,6 @@ def connecter():
         for adm in liste_adm:
             if username == adm.get_pseudo() and password == adm.get_mdp():
                 return render_template("login_admin.html")
-    
     return redirect(url_for("login_spec"))
 
 @app.route("/les-regions")
@@ -197,7 +196,7 @@ def groupe(id):
     """
     if request.method == 'GET':
         j=models.get_info_groupe(id)
-        return render_template("groupe_infos.html", liste_style_parent=models.liste_style_parent(), groupe=j[0],concert_future=j[2],concert_passe=j[3],act_futur=j[4],act_passe=j[5], membre=j[1], le_spectateur=le_spectateur, groupe_infos=True,is_group_favorite=models.check_if_group_is_favorite(le_spectateur.get_id_p(), id))
+        return render_template("groupe_infos.html", liste_style_parent=models.liste_style_parent(), groupe=j[0],concert_future=j[2],concert_passe=j[3],act_futur=j[4],act_passe=j[5], chanteur=j[1], le_spectateur=le_spectateur, groupe_infos=True,is_group_favorite=models.check_if_group_is_favorite(le_spectateur.get_id_p(), id))
     # Assuming you have a function to check if the group is already in favorites
     while request.method == 'POST':
         user_id = le_spectateur.get_id_p()

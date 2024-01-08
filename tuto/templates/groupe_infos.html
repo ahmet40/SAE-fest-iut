@@ -41,15 +41,23 @@
             <div id="title">
                 <h2>Membres</h2>
             </div>
-            <div id="lien">
-                <div id="infos-membre">
-                    {% if membre %}
-                    {% for personne,_,img in membre %}
-                            <a href="{{url_for('membre',idg=groupe[0][0].get_id_g(),idp=personne.get_id_p())}}"><img id="img-membre" src="{{ url_for('static', filename='images/' + img) }}" alt="image du membre"></a>
-                    {% endfor %}
+            <div id="tout-container">
+                <div id="tout">
+                    {% if chanteur %}
+                            {% for personne,instrument,image in chanteur %}
+                                <div class="dans-boucle">
+                                    <div class="contain-infos-grp img-contain"><img class="groupe-img" src="{{ url_for('static', filename='images/' + image) }}" alt="image du chanteur"></div>
+                                    <div class="contain-infos-grp"><p>{{ personne.get_nom_p() }}, {{ personne.get_prenom_p() }}</p></div>
+                                    <div class="contain-infos-grp"><p>{{ instrument }}</p></div>
+
+                                    </div>
+                            {% endfor %}
+                    {% endif %}
+                    {% if chanteur == [] %}
+                        <p>Pas de chanteur</p>
                     {% endif %}
                 </div>
-            </div>
+            </div> 
         </div>
         {% if concert_future %}
             <div id="concert">
@@ -99,44 +107,46 @@
             <p>résaux : {{ groupe[0][0].get_lien_reseaux() }}</p>
             <p>vidéo : {{ groupe[0][0].get_lien_video() }}</p>
         </div>
-        <div id="concert">
-            <div id="title">
-                <h2>Activité futurs</h2>
-            </div>
-            <div id="lien">
-                <div id="infos-membre">
-                    {% if act_future %}
-                    {% for activite,desc,dep,noml in act_future %}
-                        <div id="concert">
-                            <p>{{ desc}} à {{dep}},{{noml}}</p>
-                            <p>Du : {{activite.get_date_debut_a()}} au : {{activite.get_date_fin_a()}}</p>
-                        </div>
+        {% if act_future %}
+            <div id="concert">
+                <div id="title">
+                    <h2>Activité futurs</h2>
+                </div>
+                <div id="lien">
+                    <div id="infos-membre">
                         
-                    {% endfor %}
-                    {% endif %}
+                        {% for activite,desc,dep,noml in act_future %}
+                            <div id="concert">
+                                <p>{{ desc}} à {{dep}},{{noml}}</p>
+                                <p>Du : {{activite.get_date_debut_a()}} au : {{activite.get_date_fin_a()}}</p>
+                            </div>
+                            
+                        {% endfor %}
+                        
+                    </div>
                 </div>
             </div>
-        </div>
-
-        <div id="concert">
-            <div id="title">
-                <h2>Activité passé</h2>
-            </div>
-            <div id="lien">
-                <div id="infos-membre">
-                    {% if act_passe %}
-                    {% for activite,desc,dep,noml in act_passe %}
-                        <div id="concert">
-                            <p>{{ desc}} à {{dep}},{{noml}}</p>
-                            <p>Du : {{activite.get_date_debut_a()}} au : {{activite.get_date_fin_a()}}</p>
-                        </div>
+        {% endif %}
+        {% if act_passe %}
+            <div id="concert">
+                <div id="title">
+                    <h2>Activité passé</h2>
+                </div>
+                <div id="lien">
+                    <div id="infos-membre">
                         
-                    {% endfor %}
-                    {% endif %}
+                        {% for activite,desc,dep,noml in act_passe %}
+                            <div id="concert">
+                                <p>{{ desc}} à {{dep}},{{noml}}</p>
+                                <p>Du : {{activite.get_date_debut_a()}} au : {{activite.get_date_fin_a()}}</p>
+                            </div>
+                            
+                        {% endfor %}
+                        
+                    </div>
                 </div>
             </div>
-        </div>
-
+        {% endif %}
 
     <script>
         document.getElementById('favorite-btn').addEventListener('change', function() {
