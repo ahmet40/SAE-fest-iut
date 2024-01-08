@@ -34,7 +34,7 @@ class Organisation_bd:
             return organisations
         except Exception as e:
             print("all organisations a échoué")
-            return None
+            return []
 
     def get_par_id_groupe_organisations(self, id_G):
         """
@@ -56,6 +56,48 @@ class Organisation_bd:
             print("organisations by id a échoué")
             return None
     
+    def get_infos_concert_by_idg_future(self,id_G):
+        """
+        Récupère toutes les informations des concerts associés à un groupe spécifique en fonction de son identifiant.
+
+        Args:
+            id_G (int): Identifiant du groupe auquel les concerts sont associés.
+
+        Returns:
+            list[Organisation] or None: Liste d'objets Organisation correspondant à l'identifiant du groupe, ou None si une erreur survient.
+        """
+        try:
+            query = text(f"select  id_C,nom_C, date_Debut_O, date_Fin_O,nom_I from ORGANISATION natural join CONCERTS natural join IMAGE  where id_G= {str(id_G)} and date_Debut_O>now() order by date_Debut_O asc")
+            resultat = self.cnx.execute(query)
+            org=[]
+            for id_C,nom_C, date_Debut_O, date_Fin_O,nom_I in resultat:
+                org.append((Organisation(id_C, id_G, date_Debut_O, date_Fin_O, 0, 0),nom_C,nom_I))
+            return org
+        except Exception as e:
+            print("organisations by id a échoué")
+            return
+    def get_infos_concert_by_idg_passe(self,id_G):
+        """
+        Récupère toutes les informations des concerts associés à un groupe spécifique en fonction de son identifiant.
+
+        Args:
+            id_G (int): Identifiant du groupe auquel les concerts sont associés.
+
+        Returns:
+            list[Organisation] or None: Liste d'objets Organisation correspondant à l'identifiant du groupe, ou None si une erreur survient.
+        """
+        try:
+            query = text(f"select  id_C,nom_C, date_Debut_O, date_Fin_O,nom_I from ORGANISATION natural join CONCERTS natural join IMAGE  where id_G= {str(id_G)} and date_Debut_O<=now() order by date_Debut_O asc")
+            resultat = self.cnx.execute(query)
+            org=[]
+            for id_C,nom_C, date_Debut_O, date_Fin_O,nom_I in resultat:
+                org.append((Organisation(id_C, id_G, date_Debut_O, date_Fin_O, 0, 0),nom_C,nom_I))
+            return org
+        except Exception as e:
+            print("organisations by id a échoué")
+            return None
+
+
     def inserer_organisations(self, id_C, id_G, date_Debut_O, date_Fin_O, temps_Montage, temps_Demontage):
         """
         Insère une nouvelle organisation d'événement dans la base de données.

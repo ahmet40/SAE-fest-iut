@@ -45,6 +45,48 @@ class Groupe_bd:
             return []
         
 
+    def get_groupe_by_personne(self,id_p):
+        """
+        Récupère tous les groupes de musique présents dans la base de données.
+
+        Returns:
+            list[Groupe] or None: Liste d'objets Groupe ou None si une erreur survient.
+        """
+        try:
+            query = text(f"select  id_G,nom, description, id_IMAGE, lien_Reseaux, lien_Video,nom_I from MEMBRE natural join GROUPE natural join IMAGE where id_P={str(id_p)} order by nom asc")
+            resultat = self.cnx.execute(query)
+            groupe=[]
+            for id_G,nom, description, id_IMAGE, lien_Reseaux, lien_Video,nom_I in resultat:
+                cpt=0
+                q=text(f"select count(*) as m from GROUPE NATURAL JOIN ORGANISATION where id_G={str(id_G)} and date_Debut_O>now()")
+                r=self.cnx.execute(q).fetchone()                
+                if r and r.m:
+                    cpt=int(r.m)
+                groupe.append((Groupe(id_G,nom,description,id_IMAGE,lien_Reseaux,lien_Video),nom_I,cpt))
+            return groupe
+        except Exception as e:
+            print("all groupe a échoué")
+            return []
+        
+
+    def get_infos_groupe_by_concert(self,id_c):
+        """
+        Récupère tous les groupes de musique présents dans la base de données.
+
+        Returns:
+            list[Groupe] or None: Liste d'objets Groupe ou None si une erreur survient.
+        """
+        try:
+            query = text(f"select  id_G,nom, description, id_IMAGE, lien_Reseaux, lien_Video,nom_I,date_Debut_O,date_Fin_O from ORGANISATION natural join GROUPE natural join IMAGE where id_C={str(id_c)} order by nom asc")
+            resultat = self.cnx.execute(query)
+            groupe=[]
+            for id_G,nom, description, id_IMAGE, lien_Reseaux, lien_Video,nom_I,date_Debut_O,date_Fin_O in resultat:
+                groupe.append((Groupe(id_G,nom,description,id_IMAGE,lien_Reseaux,lien_Video),nom_I,date_Debut_O,date_Fin_O))
+            return groupe
+        except Exception as e:
+            print("all groupe a échoué")
+            return []
+
     def get_all_information_groupe(self,id):
         """
         Récupère tous les groupes de musique présents dans la base de données avec toutes leurs informations.

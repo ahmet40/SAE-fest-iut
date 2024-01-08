@@ -134,12 +134,12 @@ INSERT INTO STYLE_APPARTIENT_A (id_St, id_St_P) VALUES
 (10, 5);
 
 -- ACTIVITE
-INSERT INTO ACTIVITE (id_A,type_Act) VALUES
-(1, 'Workshop'),
-(2, 'Masterclass'),
-(3, 'Q&A Session'),
-(4, 'Rehearsal'),
-(5, 'Meet and Greet');
+INSERT INTO ACTIVITE (id_A,type_Act,id_L) VALUES
+(1, 'Workshop', 1),
+(2, 'Masterclass', 2),
+(3, 'Q&A Session', 3),
+(4, 'Rehearsal', 4),
+(5, 'Meet and Greet', 5);
 
 -- PARTICIPE
 INSERT INTO PARTICIPE (id_A, id_G, date_Debut_A, date_Fin_A) VALUES

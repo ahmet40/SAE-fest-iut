@@ -36,6 +36,48 @@ class Participe_bd:
             print("all particpes a échoué")
             return None
 
+    def get_par_id_groupe_activite_lieux_futurs(self, id_G):
+        """
+        Récupère toutes les participations d'un groupe à un événement en fonction de l'identifiant du groupe.
+
+        Args:
+            id_G (int): Identifiant du groupe.
+
+        Returns:
+            list[Participe] or None: Liste d'objets Participe correspondant à l'identifiant du groupe, ou None si une erreur survient.
+        """
+        try:
+            query = text(f"select  id_A,type_Act, date_Debut_A, date_Fin_A,nom_region,nom_L from PARTICIPE natural join ACTIVITE natural join LIEUX where id_G= {str(id_G)} and date_Debut_A>now()")
+            resultat = self.cnx.execute(query)
+            p=[]
+            for id_A,type_Act, date_Debut_A, date_Fin_A,nom_region,nom_L in resultat:
+                p.append((Participe(id_A, id_G, date_Debut_A, date_Fin_A),type_Act,nom_region,nom_L))
+            return p
+        except Exception as e:
+            print("particpes by id a échoué")
+            return []
+
+    def get_par_id_groupe_activite_lieux_passe(self, id_G):
+        """
+        Récupère toutes les participations d'un groupe à un événement en fonction de l'identifiant du groupe.
+
+        Args:
+            id_G (int): Identifiant du groupe.
+
+        Returns:
+            list[Participe] or None: Liste d'objets Participe correspondant à l'identifiant du groupe, ou None si une erreur survient.
+        """
+        try:
+            query = text(f"select  id_A,type_Act, date_Debut_A, date_Fin_A,nom_region,nom_L from PARTICIPE natural join ACTIVITE natural join LIEUX where id_G= {str(id_G)} and (date_Fin_A <= now() or (date_Fin_A >= now() and date_Debut_A <= now()))")
+            resultat = self.cnx.execute(query)
+            p=[]
+            for id_A,type_Act, date_Debut_A, date_Fin_A,nom_region,nom_L in resultat:
+                p.append((Participe(id_A, id_G, date_Debut_A, date_Fin_A),type_Act,nom_region,nom_L))
+            return p
+        except Exception as e:
+            print("particpes by id a échoué")
+            return []
+
     def get_par_id_groupe_particpes(self, id_G):
         """
         Récupère toutes les participations d'un groupe à un événement en fonction de l'identifiant du groupe.

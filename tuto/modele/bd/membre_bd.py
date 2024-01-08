@@ -57,6 +57,8 @@ class Membre_bd:
             return []
         
 
+
+
     def get_membre_par_idg_idp(self, id_G,id_P):
         """
         Récupère un membre spécifique en fonction de son identifiant.

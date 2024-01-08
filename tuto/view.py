@@ -136,7 +136,7 @@ def recherche_style(nom):
         redirect:redirection vers la page
     """
     print(models.get_groupe_by_style_parent(nom))
-    return render_template("recherche_style.html",nom=nom,le_spectateur=le_spectateur,liste_style_parent=models.liste_style_parent(),liste_style=models.get_style_by_style_parent(nom),liste_grp=models.get_groupe_by_style_parent(nom),page_style=True)
+    return render_template("recherche_style.html",nom=nom,le_spectateur=le_spectateur,liste_style_parent=models.liste_style_parent(),liste_style=models.get_style_by_style_parent(nom),liste_groupe=models.get_groupe_by_style_parent(nom),page_style=True)
 
 @app.route("/deconnexion")
 def deconnexion():
@@ -196,7 +196,8 @@ def groupe(id):
         redirect:redirection vers la page
     """
     if request.method == 'GET':
-        return render_template("groupe_infos.html", liste_style_parent=models.liste_style_parent(), groupe=models.get_info_groupe(id)[0], membre=models.get_info_groupe(id)[1], le_spectateur=le_spectateur, groupe_infos=True,is_group_favorite=models.check_if_group_is_favorite(le_spectateur.get_id_p(), id))
+        j=models.get_info_groupe(id)
+        return render_template("groupe_infos.html", liste_style_parent=models.liste_style_parent(), groupe=j[0],concert_future=j[2],concert_passe=j[3],act_futur=j[4],act_passe=j[5], membre=j[1], le_spectateur=le_spectateur, groupe_infos=True,is_group_favorite=models.check_if_group_is_favorite(le_spectateur.get_id_p(), id))
     # Assuming you have a function to check if the group is already in favorites
     while request.method == 'POST':
         user_id = le_spectateur.get_id_p()
@@ -222,6 +223,8 @@ def mes_groupes():
     Returns:
         redirect:redirection vers la page
     """
+    if le_spectateur.get_id_p()==-1:
+        return redirect(url_for("login_spec"))
     return render_template("mes_groupes.html",liste_style_parent=models.liste_style_parent(),liste_groupe=models.get_favoris(le_spectateur.get_id_p()),le_spectateur=le_spectateur,page_groupe=True)
 
 
@@ -234,3 +237,50 @@ def membre(idg,idp):
     """
     return render_template("infos_membre.html",liste_style_parent=models.liste_style_parent(),membre=models.get_infos_membre(idg,idp),le_spectateur=le_spectateur,info_membre=True)
 
+
+
+@app.route("/chanteur")
+def liste_chanteurs():
+    """Cette methode va nous permettre de nous rediriger vers la page 
+        liste des chanteurs
+    Returns:
+        redirect:redirection vers la page
+    """
+    return render_template("liste_chanteurs.html",liste_style_parent=models.liste_style_parent(),chanteur=models.get_all_chanteur(),le_spectateur=le_spectateur,page_groupe=True)
+
+
+@app.route("/chanteur-groupe/<int:id>")
+def get_infos_groupe(id):
+    """Cette methode va nous permettre d'obtenir les informations d'un groupe
+
+    Args:
+        id ([int]): l'id du groupe
+
+    Returns:
+        list: la liste des informations
+    """
+    return render_template("liste_groupe.html",liste_style_parent=models.liste_style_parent(),liste_groupe=models.liste_groupe_by_idp(id),le_spectateur=le_spectateur,page_groupe=True)
+
+
+
+@app.route("/mes-concerts")
+def mes_concerts():
+    """Cette methode va nous permettre de nous rediriger vers la page 
+        liste de mes concerts
+    Returns:
+        redirect:redirection vers la page
+    """
+    if le_spectateur.get_id_p()==-1:
+        return redirect(url_for("login_spec"))
+    return render_template("mes_concerts.html",liste_style_parent=models.liste_style_parent(),liste_concert=models.concert_by_spec(le_spectateur.get_id_p()),le_spectateur=le_spectateur,page_liste=True)
+
+
+@app.route("/infos-concert/<int:id>")
+def infos_concert(id):
+    """Cette methode va nous permettre de nous rediriger vers la page 
+        de l'information sur les concerts
+    Returns:
+        redirect:redirection vers la page
+    """
+    liste = models.get_concert(id)
+    return render_template("infos_concert.html",liste_style_parent=models.liste_style_parent(),concert=liste[0],liste_groupe=liste[1],le_spectateur=le_spectateur,info_concert=True)

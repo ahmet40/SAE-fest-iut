@@ -23,6 +23,9 @@
       {% if info_membre %}
         <link rel="stylesheet" href="../static/style/membre.css">
       {% endif %}
+      {% if info_concert %}
+        <link rel="stylesheet" href="../static/style/concert_infos.css">
+      {% endif %}
 
 
 </head>
@@ -46,7 +49,7 @@
                 <div class="paste-button">
                   <button class="button">Concert &nbsp; ▼</button>
                   <div class="dropdown-content">
-                    <a id="top" href="">Mes concerts</a>
+                    <a id="top" href="{{url_for('mes_concerts')}}">Mes concerts</a>
                     <a id="top" href="{{ url_for('mes_groupes') }}">Mes groupes</a>
                     <a id="top" href="{{ url_for('deconnexion') }}">Se déconnecter</a>
                   </div>
@@ -60,7 +63,7 @@
       <nav id="nav-bar">
         <ul id="contient">
             <li class="lien-dans-nav"><a class="a" href="{{ url_for('home')}}">Home</a></li>
-            <li id="lien-nav-bar">
+            <li id="lien-dans-nav">
               <div class="paste-button">
                 <button class="button">Concert &nbsp; ▼</button>
                 <div class="dropdown-content">
@@ -69,10 +72,19 @@
                 </div>
               </div>
             </li>
-            <li class="lien-dans-nav"><a class="a" href="{{ url_for('groupes')}}">Groupe</a></li>
+            <li class="lien-dans-nav">
+              <div class="paste-button">
+                  <button class="button">Chanteur &nbsp; ▼</button>
+                    <div class="dropdown-content">
+                      <a class="a" href="{{ url_for('groupes')}}">Groupe</a>
+                      <a id="top" href="{{ url_for('liste_chanteurs') }}">Chanteur</a>
+                    </div>
+                </div>
+              </div>
+            </li>
             <li class="lien-dans-nav"><a class="a" href="{{ url_for('recherche_region') }}">Département</a></li>
             {% if liste_style_parent %}
-            <li id="lien-nav-bar">
+            <li id="lien-dans-nav">
               <div class="paste-button">
                 <button class="button">STYLE &nbsp; ▼</button>
                 <div class="dropdown-content">

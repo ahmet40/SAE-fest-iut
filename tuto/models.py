@@ -19,6 +19,9 @@ from groupe_bd import Groupe_bd
 from style_bd import Style_bd
 from membre_bd import Membre_bd
 from favoris_bd import Favoris_bd
+from personne_bd import Personne_bd
+from organisation_bd import Organisation_bd
+from participe_bd import Participe_bd
 #---------------------------------------------------------------
 # Connexion à la base de données
 SPECTATEUR=Spectateur_bd(CNX)
@@ -30,6 +33,9 @@ GROUPE=Groupe_bd(CNX)
 STYLE=Style_bd(CNX)
 MEMBRE=Membre_bd(CNX)
 FAVORIS=Favoris_bd(CNX)
+PERSONNE=Personne_bd(CNX)
+ORGANISATION=Organisation_bd(CNX)
+PARTICIPE=Participe_bd(CNX)
 #-----------------------------------------------------------------------------
 # Connection et creation de compte
 def connecter_spectateur(username: str, password: str) -> bool:
@@ -187,8 +193,13 @@ def get_info_groupe(id):
     """
     liste1=GROUPE.get_all_information_groupe(id)
     liste2=MEMBRE.get_membre_par_id(id)
-    print(liste2)
-    return (liste1,liste2)
+
+    liste3=ORGANISATION.get_infos_concert_by_idg_future(id)
+    liste4=ORGANISATION.get_infos_concert_by_idg_passe(id)
+    liste5=PARTICIPE.get_par_id_groupe_activite_lieux_futurs(id)
+    liste6=PARTICIPE.get_par_id_groupe_activite_lieux_passe(id)
+
+    return (liste1,liste2,liste3,liste4,liste5,liste6)
 
 
 def get_favoris(id_spec):
@@ -212,6 +223,15 @@ def get_infos_membre(idg,idp):
         list: la liste des informations
     """
     return MEMBRE.get_membre_par_idg_idp(idg,idp)
+
+
+def get_all_chanteur():
+    """Cette methode va nous permettre d'obtenir tous les chanteurs
+
+    Returns:
+        list: la liste des chanteurs
+    """
+    return PERSONNE.get_all_personnes()
 
 
 def check_if_group_is_favorite(id_spec, id_groupe):
@@ -243,3 +263,42 @@ def add_group_to_favorites(id_spec, id_groupe):
         id_groupe ([int]): l'id du groupe
     """
     FAVORIS.inserer_favoris(id_spec, id_groupe)
+
+
+def liste_groupe_by_idp(id):
+    """Cette methode va nous permettre d'obtenir les groupes d'un membre
+
+    Args:
+        id ([int]): l'id du membre
+
+    Returns:
+        list: la liste des groupes
+    """
+    return GROUPE.get_groupe_by_personne(id)
+
+
+
+def concert_by_spec(id):
+    """Cette methode va nous permettre d'obtenir les concerts d'un spectateur
+
+    Args:
+        id ([int]): l'id du spectateur
+
+    Returns:
+        list: la liste des concerts
+    """
+    return CONCERTS.get_concert_par_spectateur(id)
+
+
+def get_concert(id):
+    """Cette methode va nous permettre d'obtenir un concert
+
+    Args:
+        id ([int]): l'id du concert
+
+    Returns:
+        list: la liste des informations
+    """
+    liste1=CONCERTS.get_par_id_concert(id)
+    liste2=GROUPE.get_infos_groupe_by_concert(id)
+    return (liste1,liste2)

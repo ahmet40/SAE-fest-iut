@@ -92,6 +92,23 @@ class Concert_bd:
             print("concert par departement a échoue")
             return []
 
+    def get_concert_par_spectateur(self,id_Spec):
+        """
+            Récupère tous les concerts présents dans la base de données.
+
+            Returns:
+                list[Concert] or None: Liste d'objets Concert ou None si une erreur survient.
+        """
+        try:
+            query = text(f"select id_C, nom_C, date_Debut, date_Fin, id_L,id_IMAGE,nom_I,nom_region,nom_L from BILLET NATURAL JOIN CONCERTS natural join IMAGE natural join LIEUX where id_Spec='{id_Spec}' order by date_Debut")
+            resultat = self.cnx.execute(query)
+            concert=[]
+            for id_C, nom_C, date_Debut, date_Fin, id_L,id_IMAGE,nom_I,nom_region,nom_L in resultat:
+                concert.append((Concert(id_C, nom_C, date_Debut, date_Fin, id_L,id_IMAGE),nom_I,(nom_region,nom_L)))
+            return concert
+        except Exception as e:
+            print("concert par spec a échoue")
+            return []
 
     def get_par_id_concert(self,id_C):
         """
@@ -104,15 +121,17 @@ class Concert_bd:
                 list[Concert] or None: Liste d'objets Concert correspondant à l'identifiant donné, ou None si une erreur survient.
         """
         try:
-            query = text(f"select id_C, nom_C, date_Debut, date_Fin, id_L,id_IMAGE from CONCERTS where id_C= {str(id_C)}")
+            query = text(f"select id_C, nom_C, date_Debut, date_Fin, id_L,id_IMAGE,nom_I from CONCERTS natural join IMAGE where id_C= {str(id_C)}")
             resultat = self.cnx.execute(query)
             concert=[]
-            for id_C, nom_C, date_Debut, date_Fin, id_L,id_IMAGE in resultat:
-                concert.append(Concert(id_C, nom_C, date_Debut, date_Fin, id_L,id_IMAGE))
+            for id_C, nom_C, date_Debut, date_Fin, id_L,id_IMAGE,nom_I in resultat:
+                concert.append((Concert(id_C, nom_C, date_Debut, date_Fin, id_L,id_IMAGE),nom_I))
             return concert
         except Exception as e:
-            print("concert by id a échoue")
+            print("all passer a échoue")
             return []
+
+
     def get_par_nom_concert(self,nom):
         """
             Récupère un concert spécifique en fonction de son identifiant.

@@ -27,14 +27,15 @@ class Personne_bd:
             list[Personne] or None: Liste d'objets Personne ou None si une erreur survient.
         """
         try:
-            query = text("select  id_P, nom_P, prenom_P, email_Sp from PERSONNE")
-            resultat = self.cnx.execute(query)
-            personnes = [Personne(id_P, nom_P, prenom_P, email_Sp) for
-                         id_P, nom_P, prenom_P, email_Sp in resultat]
+            query = text("select  id_P, nom_P, prenom_P, email_Sp,nom_I,count(distinct(id_G)) as m from PERSONNE natural join MEMBRE natural join IMAGE group by id_P order by nom_P")
+            resultat = self.cnx.execute(query).fetchall()
+            personnes = []
+            for id_P, nom_P, prenom_P, email_Sp,nom_I,m in resultat:
+                personnes.append((Personne(id_P, nom_P, prenom_P, email_Sp),nom_I,m))
             return personnes
         except Exception as e:
             print("all personnes a échoué")
-            return None
+            return []
 
     def get_par_id_personnes(self, id_P):
         """
@@ -93,3 +94,5 @@ class Personne_bd:
         except Exception as e:
             print("Le max de personne échoue")
             return None
+        
+

@@ -27,11 +27,11 @@ class Activite_bd:
                 list[Activite] or None: Liste d'objets Activite ou None si une erreur survient.
         """
         try:
-            query = text("select id_A,type_Act from ACTIVITE")
+            query = text("select id_A,type_Act,id_L from ACTIVITE")
             resultat = self.cnx.execute(query)
             activite=[]
-            for id_A,type_Act in resultat:
-                activite.append(Activite(id_A,type_Act))
+            for id_A,type_Act,id_L in resultat:
+                activite.append(Activite(id_A,type_Act,id_L))
             return activite
         except Exception as e:
             print("all activite a echoue")
@@ -45,18 +45,18 @@ class Activite_bd:
                 id_A (int): Identifiant de l'activité à récupérer.
         """
         try:
-            query = text(f"select id_A,type_Act from ACTIVITE where id_A= {str(id_A)}")
+            query = text(f"select id_A,type_Act,id_L from ACTIVITE where id_A= {str(id_A)}")
             resultat = self.cnx.execute(query)
             activite=[]
-            for id_A,type_Act in resultat:
-                activite.append(Activite(id_A,type_Act))
+            for id_A,type_Act,id_L in resultat:
+                activite.append(Activite(id_A,type_Act,id_L))
             return activite
         except Exception as e:
             print("activite by id a echoue")
             return None
     
         
-    def inserer_activite(self,id_A,type_act):
+    def inserer_activite(self,id_A,type_act,id_L):
         """
             Insère une nouvelle activité dans la base de données.
 
@@ -69,7 +69,7 @@ class Activite_bd:
 
         """
         try:
-            query = text(f"insert into ACTIVITE values({str(id_A)} , '{type_act}')")
+            query = text(f"insert into ACTIVITE values({str(id_A)} , '{type_act}', {str(id_L)})")
             self.cnx.execute(query)
             self.cnx.commit()
         except Exception as e:
