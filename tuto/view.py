@@ -29,8 +29,7 @@ def home():
     """
     Cette methode va nous permettre de nous diriger vers la page d'accueil
     """
-    print(models.liste_concert())
-    return render_template("liste_concerts.html",liste_concert=models.liste_concert(),le_spectateur=le_spectateur,liste_style_parent=models.liste_style_parent(),
+    return render_template("liste_concerts.html",liste_concert=models.get_concert_futurs(),le_spectateur=le_spectateur,liste_style_parent=models.liste_style_parent(),
                            liste_concert_proche=models.liste_concert_proche(),page_liste=True)
 
 @app.route("/login_spec")
@@ -60,7 +59,7 @@ def les_concerts():
     Returns:
         reder_template:direction vers la page
     """
-    return render_template("liste_concerts.html",liste_concert=models.liste_concert(),le_spectateur=le_spectateur,liste_style_parent=models.liste_style_parent(),
+    return render_template("liste_concerts.html",liste_concert=models.liste_concert_proche(),le_spectateur=le_spectateur,liste_style_parent=models.liste_style_parent(),
                            liste_concert_proche=models.liste_concert_proche(),page_liste=True)
 
 @app.route("/inscription",methods=["GET", "POST"])
@@ -100,7 +99,7 @@ def connecter():
         for spec in liste_spec:
             if (username == spec.get_pseudo() or username == spec.get_email()) and password == spec.get_mdp():
                 le_spectateur.set_all(spec.get_id_p(),spec.get_pseudo(),spec.get_email(),spec.get_mdp())
-                return redirect(url_for("les_concerts"))
+                return redirect(url_for("home"))
     liste_adm=ADMIN.get_all_admins()
     if liste_adm:
         for adm in liste_adm:
@@ -183,8 +182,7 @@ def concert_futurs():
     Returns:
         redirect:redirection vers la page
     """
-    return render_template("a_venir_passe.html",liste_concert=models.get_concert_futurs(),le_spectateur=le_spectateur,liste_style_parent=models.liste_style_parent(),page_liste=True)
-
+    return redirect(url_for("home"))
 
 
 @app.route("/groupe/<int:id>", methods=['GET', 'POST'])
@@ -281,5 +279,35 @@ def infos_concert(id):
     Returns:
         redirect:redirection vers la page
     """
-    liste = models.get_concert(id)
-    return render_template("infos_concert.html",liste_style_parent=models.liste_style_parent(),concert=liste[0],liste_groupe=liste[1],le_spectateur=le_spectateur,info_concert=True)
+    liste = models.get_concert(le_spectateur.get_id_p(),id)
+    return render_template("infos_concert.html",liste_style_parent=models.liste_style_parent(),concert=liste[0],liste_groupe=liste[1],le_spectateur=le_spectateur,info_concert=True,future_concert=liste[2],if_concert_acheter_by_spec=liste[3])
+
+
+@app.route("/infos-concert/acheter/<int:id>")
+def acheter_le_billet(id):
+    """Cette methode va nous permettre d'acheter un billet
+
+    Args:
+        id ([int]): l'id du billet
+
+    Returns:
+        list: la liste des informations
+    """
+    if le_spectateur.get_id_p()!=-1:
+        models.acheter_concert(le_spectateur.get_id_p(),id)
+    return redirect(url_for("infos_concert",id=id))
+
+
+@app.route("/infos-concert/annuler/<int:id>",methods=["POST"])
+def annule_le_billet(id):
+    """Cette methode va nous permettre d'acheter un billet
+
+    Args:
+        id ([int]): l'id du billet
+
+    Returns:
+        list: la liste des informations
+    """
+    if le_spectateur.get_id_p()!=-1:
+        models.annuler_achat_concert(le_spectateur.get_id_p(),id)
+    return redirect(url_for("infos_concert",id=id))

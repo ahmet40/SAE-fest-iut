@@ -38,6 +38,24 @@ class Concert_bd:
             return []
         
 
+    def get_if_concert_futurs(self,id_C):
+        """
+            Récupère tous les concerts présents dans la base de données.
+
+            Returns:
+                list[Concert] or None: Liste d'objets Concert ou None si une erreur survient.
+        """
+        try:
+            query = text(f"select count(*) as m from CONCERTS LIEUX where id_C={str(id_C)} and date_Debut >= NOW()")
+            resultat = self.cnx.execute(query).fetchone()
+            concert=[]
+            if resultat.m!=0:
+                print("verifie si favoris a réussi")
+                return True
+        except Exception as e:
+            print("all concert a échoue")
+            return []
+
     def get_concert_a_venir(self):
         """
             Récupère tous les concerts présents dans la base de données.
@@ -82,7 +100,7 @@ class Concert_bd:
                 list[Concert] or None: Liste d'objets Concert ou None si une erreur survient.
         """
         try:
-            query = text(f"select id_C, nom_C, date_Debut, date_Fin, id_L,id_IMAGE,nom_I,nom_region,nom_L from CONCERTS natural join IMAGE natural join LIEUX where nom_region='{nom}'")
+            query = text(f"select id_C, nom_C, date_Debut, date_Fin, id_L,id_IMAGE,nom_I,nom_region,nom_L from CONCERTS natural join IMAGE natural join LIEUX where nom_region='{nom}' and date_Debut > NOW() order by date_Debut")
             resultat = self.cnx.execute(query)
             concert=[]
             for id_C, nom_C, date_Debut, date_Fin, id_L,id_IMAGE,nom_I,nom_region,nom_L in resultat:
@@ -175,6 +193,8 @@ class Concert_bd:
         except Exception as e:
             print("insertion concert a échoué")
             return None
+        
+
 
     def get_prochain_id_concert(self):
         """

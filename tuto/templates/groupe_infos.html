@@ -69,7 +69,7 @@
                         
                         {% for org,nomconcert,img in concert_future %}
                             <div id="concert">
-                                <a href=""><img id="img-membre" src="{{ url_for('static', filename='images/' + img) }}" alt="image du concert"></a>
+                                <a href="{{ url_for('infos_concert', id=org.get_id_c()) }}"><img class="plus-a-gauche img" src="{{ url_for('static', filename='images/' + img) }}" alt="image de tous les concert"></a>
                                 <a href="">{{ nomconcert }}</a>
                             </div>
                             
@@ -91,10 +91,9 @@
                         
                         {% for org,nomconcert,img in concert_passe %}
                             <div id="concert">
-                                <a href=""><img id="img-membre" src="{{ url_for('static', filename='images/' + img) }}" alt="image du concert"></a>
+                                <a href="{{ url_for('infos_concert', id=org.get_id_c()) }}"><img class="plus-a-gauche img" src="{{ url_for('static', filename='images/' + img) }}" alt="image de tous les concert"></a>
                                 <a href="">{{ nomconcert }}</a>
                             </div>
-                            
                         {% endfor %}
                         
                     </div>

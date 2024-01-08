@@ -3,16 +3,6 @@
     {{ super() }}
     {% endblock %}
     {% block main_content %}
-    {% if liste_concert_proche%}
-        <div id="conteneur-proche">
-            <h2>Concerts proches</h2>
-            <div id="concert-proche">
-                {% for concert,image in liste_concert_proche %}
-                    <img class="img" src="{{ url_for('static', filename='images/' + image) }}" alt="image des concerts proches">
-                {% endfor %}
-            </div>
-        </div>
-    {% endif %}
     <div id="container">
         <div class="row">
             <div class="col-md-12">

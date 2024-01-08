@@ -17,7 +17,7 @@
                             <h3 class="plus-a-gauche">{{ concert.get_nom_c() }}</h3>
                             <div >
                                 <div id="img-date-lieux">
-                                <img class="plus-a-gauche img" src="{{ url_for('static', filename='images/' + image) }}" alt="image de tous les concert">
+                                    <a href="{{ url_for('infos_concert', id=concert.get_id_c()) }}"><img class="plus-a-gauche img" src="{{ url_for('static', filename='images/' + image) }}" alt="image de tous les concert"></a>
                                     <div id="date">
                                         <p class="plus-a-gauche">Date début (année/mois/jour : hh/mn/sd) : {{ concert.get_date_debut() }}</p>
                                         <p class="plus-a-gauche">Date fin (année/mois/jour : hh/mn/sd) : {{ concert.get_date_fin() }}</p>

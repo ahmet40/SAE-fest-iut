@@ -54,6 +54,26 @@ class Billet_bd:
         except Exception as e:
             print("billet by id a échoue")
             return None
+        
+
+    def get_billet_acheter_par_spec(self,id_Spec,id_C):
+        """
+            Récupère une billet spécifique en fonction de son identifiant.
+
+            Args:
+                id_A (int): Identifiant du billet à récupérer.
+        """
+        try:
+            query = text(f"select count(*) as m from BILLET where id_Spec= {str(id_Spec)} and id_C={str(id_C)}")
+            resultat = self.cnx.execute(query).fetchone()
+            billet=[]
+            if resultat.m!=0:
+                print("verifie si favoris a réussi")
+                return True
+            return False
+        except Exception as e:
+            print("billet by id a échoue")
+            return None
     
         
     def inserer_billet(self,id_B, id_Spec, id_C, id_T):
@@ -76,6 +96,24 @@ class Billet_bd:
             self.cnx.commit()
         except Exception as e:
             print("insertion billet a échoué")
+            return None
+        
+    def supprimer_billet(self,id_C,id_Spec):
+        """
+            Supprime un billet de la base de données.
+
+            Args:
+                id_C (int): Identifiant du billet à supprimer.
+
+            Returns:
+                None: Aucune valeur de retour, lève une exception en cas d'échec.
+        """
+        try:
+            query = text(f"delete from BILLET where id_C={str(id_C)} and id_Spec={str(id_Spec)}")
+            self.cnx.execute(query)
+            self.cnx.commit()
+        except Exception as e:
+            print("suppression billet a échoué")
             return None
     
     def get_prochain_id_billet(self):

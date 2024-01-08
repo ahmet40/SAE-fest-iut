@@ -22,6 +22,7 @@ from favoris_bd import Favoris_bd
 from personne_bd import Personne_bd
 from organisation_bd import Organisation_bd
 from participe_bd import Participe_bd
+from billet_bd import Billet_bd
 #---------------------------------------------------------------
 # Connexion à la base de données
 SPECTATEUR=Spectateur_bd(CNX)
@@ -36,6 +37,7 @@ FAVORIS=Favoris_bd(CNX)
 PERSONNE=Personne_bd(CNX)
 ORGANISATION=Organisation_bd(CNX)
 PARTICIPE=Participe_bd(CNX)
+BILLET=Billet_bd(CNX)
 #-----------------------------------------------------------------------------
 # Connection et creation de compte
 def connecter_spectateur(username: str, password: str) -> bool:
@@ -289,7 +291,7 @@ def concert_by_spec(id):
     return CONCERTS.get_concert_par_spectateur(id)
 
 
-def get_concert(id):
+def get_concert(id_spec,id):
     """Cette methode va nous permettre d'obtenir un concert
 
     Args:
@@ -299,5 +301,24 @@ def get_concert(id):
         list: la liste des informations
     """
     liste1=CONCERTS.get_par_id_concert(id)
+    futurs_concert=CONCERTS.get_if_concert_futurs(id)
     liste2=GROUPE.get_infos_groupe_by_concert(id)
-    return (liste1,liste2)
+    si_utilisateur_billet_acheter=BILLET.get_billet_acheter_par_spec(id_spec,id)
+    return (liste1,liste2,futurs_concert,si_utilisateur_billet_acheter)
+
+
+def acheter_concert(id_spec,id):
+    """Cette methode va nous permettre d'acheter un billet pour un concert
+
+    Args:
+        id ([int]): l'id du concert
+    """
+    BILLET.inserer_billet(BILLET.get_prochain_id_billet(),id_spec,id,1)
+
+def annuler_achat_concert(id_spec,id):
+    """Cette methode va nous permettre d'annuler l'achat d'un billet pour un concert
+
+    Args:
+        id ([int]): l'id du concert
+    """
+    BILLET.supprimer_billet(id,id_spec)
