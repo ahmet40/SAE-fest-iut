@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <title>FEST-IUT - Accueil</title>
+    <link rel="stylesheet" href="../static/style/base_adm.css">
+    {% if adm_pricipale %}
+        <link rel="stylesheet" href="../static/style/adm_pricipale.css">
+    {% endif %}
+    {% if gerer_concert %}
+    <link rel="stylesheet" href="../static/style/gerer_chanteur.css">
+    {% endif %}
+    {% if add_chanteur %}
+    <link rel="stylesheet" href="../static/style/add_chanteur.css">
+    {% endif %}
+</head>
+  <body>
+    <header>
+        <div class="top-page">
+          <h1 data-value="FEST-IUT" id="titre">FEST-IUT</h1>
+        </div>
+    </header>
+
+    <main class="main-base">
+        {% block content %}
+        {% endblock %}
+    </main>
+  </body>
+</html>

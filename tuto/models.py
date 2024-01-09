@@ -23,6 +23,7 @@ from personne_bd import Personne_bd
 from organisation_bd import Organisation_bd
 from participe_bd import Participe_bd
 from billet_bd import Billet_bd
+from image_bd import Image_bd
 #---------------------------------------------------------------
 # Connexion à la base de données
 SPECTATEUR=Spectateur_bd(CNX)
@@ -38,6 +39,7 @@ PERSONNE=Personne_bd(CNX)
 ORGANISATION=Organisation_bd(CNX)
 PARTICIPE=Participe_bd(CNX)
 BILLET=Billet_bd(CNX)
+IMAGE=Image_bd(CNX)
 #-----------------------------------------------------------------------------
 # Connection et creation de compte
 def connecter_spectateur(username: str, password: str) -> bool:
@@ -322,3 +324,43 @@ def annuler_achat_concert(id_spec,id):
         id ([int]): l'id du concert
     """
     BILLET.supprimer_billet(id,id_spec)
+
+
+
+def supprimer_chanteur(id):
+    """Cette methode va nous permettre de supprimer un chanteur
+
+    Args:
+        id ([int]): l'id du chanteur
+    """
+    PERSONNE.supprimer_personne(id)
+
+def inserer_chanteur(id,nom,prenom,mail,nom_image):
+    """Cette methode va nous permettre d'inserer un chanteur
+
+    Args:
+        id ([int]): l'id du chanteur
+        nom ([str]): le nom du chanteur
+        prenom ([str]): le prenom du chanteur
+        age ([int]): l'age du chanteur
+    """
+    IMAGE.insere_image(nom_image)
+    PERSONNE.inserer_personnes(id,nom,prenom,mail,IMAGE.get_prochain_id()-1)
+
+
+def get_all_image():
+    """Cette methode va nous permettre d'obtenir toutes les images
+
+    Returns:
+        list: la liste des images
+    """
+    return IMAGE.get_nb_utilisation_image()
+
+
+def supprimer_image(id):
+    """Cette methode va nous permettre de supprimer une image
+
+    Args:
+        id ([int]): l'id de l'image
+    """
+    IMAGE.supprimer_image(id)

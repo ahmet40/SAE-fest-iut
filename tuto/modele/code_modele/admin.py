@@ -30,3 +30,16 @@ class Admin:
         Récupère le mot de passe de l'administrateur.
         """
         return self.mdp_A
+
+    def set_all(self,id,pseudo,mail):
+        """
+        Modifie toutes les informations de l'administrateur.
+
+        Args:
+            id (int): Identifiant de l'administrateur.
+            pseudo (str): Pseudo de l'administrateur.
+            mail (str): Mail de l'administrateur.
+        """
+        self.id_A=id
+        self.pseudo=pseudo
+        self.mail=mail

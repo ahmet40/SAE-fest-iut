@@ -44,12 +44,15 @@ class Image_bd:
             nom_I (str): Nom de l'image à insérer.
         """
         try:
-            query = text(f"insert into IMAGE(nom_I) values('{nom_I}')")
+            id=self.get_prochain_id()
+            query = text(f"insert into IMAGE(id_Image,nom_I) values({str(id)},'{nom_I}')")
             self.cnx.execute(query)
+            self.cnx.commit()
             return True
         except Exception as e:
             print("insert image a échoué")
             return False
+
     def get_prochain_id(self):
         """
             Récupère le prochain id d'image.
@@ -63,3 +66,50 @@ class Image_bd:
         except Exception as e:
             print("Le max de image échoue")
             return None
+        
+    def get_nb_utilisation_image(self):
+        """
+            Récupère le nombre d'utilisation d'une image.
+        """
+        try:
+            query=text(f"select id_IMAGE,nom_I from IMAGE")
+            result = self.cnx.execute(query)
+            liste=[]
+            for id_IMAGE,nom_I in result:
+                print(id_IMAGE,nom_I)
+                query1 = text(f"SELECT COUNT(id_IMAGE) as m FROM PERSONNE where id_IMAGE={str(id_IMAGE)}")
+                query2 = text(f"SELECT COUNT(id_IMAGE) as m FROM CONCERTS where id_IMAGE={str(id_IMAGE)}")
+                query3 = text(f"SELECT COUNT(id_IMAGE) as m FROM GROUPE where id_IMAGE=  {str(id_IMAGE)}")
+                cpt=0
+                result1 = self.cnx.execute(query1).fetchone()
+                result2 = self.cnx.execute(query2).fetchone()
+                result3 = self.cnx.execute(query3).fetchone()
+                if result1 and result1.m:
+                    cpt+=int(result1.m)
+                if result2 and result2.m:
+                    cpt+=int(result2.m)
+                if result3 and result3.m:
+                    cpt+=int(result3.m)
+                liste.append((Image(id_IMAGE,nom_I),cpt))
+
+            return liste
+        except Exception as e:
+            print("Le max de image échoue")
+            return None
+        
+
+    def supprimer_image(self, id_I):
+        """
+        Supprime une image de la base de données.
+
+        Args:
+            id_I (int): Identifiant de l'image à supprimer.
+        """
+        try:
+            query1 = text(f"delete from IMAGE where id_Image={str(id_I)}")
+            self.cnx.execute(query1)
+            self.cnx.commit()
+            return True
+        except Exception as e:
+            print("suppression image a échoué")
+            return False

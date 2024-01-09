@@ -1,8 +1,10 @@
 
+import random
 from flask import jsonify, render_template, url_for, redirect
 from flask import request
 from flask import request, redirect, url_for
 from .app import app
+from werkzeug.utils import secure_filename
 import os
 import sys
 ROOT = os.path.join(os.path.dirname(os.path.abspath(__file__)), '')
@@ -13,8 +15,10 @@ sys.path.append(os.path.join(ROOT, './bd'))
 from connexion import CNX
 from spectateur_bd import Spectateur_bd
 from admin_bd import Admin_bd
+from personne_bd import Personne_bd
 ADMIN=Admin_bd(CNX)
 SPECTATEUR=Spectateur_bd(CNX)
+PERSONNE=Personne_bd(CNX)
 
 ROOT = os.path.join(os.path.dirname(os.path.abspath(__file__)), './modele')
 sys.path.append(os.path.join(ROOT, './code_modele'))
@@ -50,7 +54,14 @@ def create_account():
     """
     return render_template("create_account.html")
 
-
+@app.route("/admin-principale")
+def admin_principale():
+    """Cette methode va nous permettre de nous diriger vers la page 
+        admin principale
+    Returns:
+        reder_template:direction vers la page
+    """
+    return render_template("adm_principale.html",adm_pricipale=True)
 
 @app.route("/les-concerts")
 def les_concerts():
@@ -104,7 +115,8 @@ def connecter():
     if liste_adm:
         for adm in liste_adm:
             if username == adm.get_pseudo() and password == adm.get_mdp():
-                return render_template("login_admin.html")
+                le_adm.set_all(adm.get_id(),adm.get_pseudo(),adm.get_mdp())
+                return redirect(url_for("admin_principale"))
     return redirect(url_for("login_spec"))
 
 @app.route("/les-regions")
@@ -311,3 +323,87 @@ def annule_le_billet(id):
     if le_spectateur.get_id_p()!=-1:
         models.annuler_achat_concert(le_spectateur.get_id_p(),id)
     return redirect(url_for("infos_concert",id=id))
+
+
+@app.route("/gerer-chanteur")
+def gerer_chanteur():
+    """Cette methode va nous permettre de gerer les chanteurs
+
+    Returns:
+        list: la liste des informations
+    """
+    if le_adm.get_id()!=-1:
+        return render_template("gerer_chanteur.html",chanteur=models.get_all_chanteur(),gerer_concert=True)
+    return redirect("login_spec")
+
+
+@app.route("/supprimer/<int:id>",methods=["POST"])
+def supprimer_le_chanteur(id):
+    models.supprimer_chanteur(id)
+    return redirect(url_for("gerer_chanteur"))
+
+
+@app.route("/cree-chanteur",methods=["GET","POST"])
+def cree_chanteur():
+    """Cette methode va nous permettre de creer un chanteur
+
+    Returns:
+        list: la liste des informations
+    """
+    if le_adm.get_id()!=-1:
+        return render_template("add_chanteur.html",add_chanteur=True)
+    else:
+        return redirect("login_spec")
+
+def allowed_file(filename):
+    ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif'}
+    return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
+
+@app.route("/add-chanteur",methods=["GET","POST"])
+def add_chanteur():
+    if request.method=="POST":
+            nom=request.form.get("nom")
+            prenom=request.form.get("prenom")
+            email=request.form.get("email")
+            image_file = request.files['image']
+
+            # Vérifiez si un fichier a été téléchargé
+            if image_file and allowed_file(image_file.filename):
+                # Sécurisez le nom du fichier
+                filename = secure_filename(image_file.filename)
+                filename = filename+str(random.randint(0, 100000))
+                # Enregistrez le fichier dans le répertoire "station/images"
+                image_path = os.path.join("static/images", filename)
+                image_file.save(image_path)
+
+                # Maintenant, vous pouvez utiliser le nom du fichier (filename) comme information supplémentaire
+                # dans votre base de données, par exemple:
+                models.inserer_chanteur(PERSONNE.get_prochain_id_personne(), nom, prenom, email, filename)
+
+    return redirect(url_for("gerer_chanteur"))
+
+
+@app.route("/gerer-image")
+def gerer_image():
+    """Cette methode va nous permettre de gerer les images
+
+    Returns:
+        list: la liste des informations
+    """
+    if le_adm.get_id()!=-1:
+        return render_template("gerer_image.html",image=models.get_all_image(),gerer_concert=True)
+    return redirect("login_spec")
+
+@app.route("/supprimer-image/<int:id>",methods=["POST"])
+def supprimer_image(id):
+    """Cette methode va nous permettre de supprimer une image
+
+    Args:
+        id ([int]): l'id de l'image
+
+    Returns:
+        list: la liste des informations
+    """
+    print(id)
+    models.supprimer_image(id)
+    return redirect(url_for("gerer_image"))

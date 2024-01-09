@@ -18,7 +18,6 @@ class Personne_bd:
             conx (obj): Objet de connexion à la base de données.
         """
         self.cnx = conx
-
     def get_all_personnes(self):
         """
         Récupère toutes les personnes présentes dans la base de données.
@@ -27,11 +26,16 @@ class Personne_bd:
             list[Personne] or None: Liste d'objets Personne ou None si une erreur survient.
         """
         try:
-            query = text("select  id_P, nom_P, prenom_P, email_Sp,nom_I,count(distinct(id_G)) as m from PERSONNE natural join MEMBRE natural join IMAGE group by id_P order by nom_P")
-            resultat = self.cnx.execute(query).fetchall()
+            query = text("select  id_P, nom_P, prenom_P, email_Sp,id_IMAGE,nom_I from PERSONNE natural join IMAGE group by id_P order by nom_P")
+            resultat = self.cnx.execute(query)
             personnes = []
-            for id_P, nom_P, prenom_P, email_Sp,nom_I,m in resultat:
-                personnes.append((Personne(id_P, nom_P, prenom_P, email_Sp),nom_I,m))
+            for id_P, nom_P, prenom_P, email_Sp,id_IMAGE,nom_I in resultat:
+                cpt=0
+                q=text(f"select count(*) as m from MEMBRE NATURAL JOIN PERSONNE where id_P={str(id_P)}")
+                r=self.cnx.execute(q).fetchone()                
+                if r and r.m:
+                    cpt=int(r.m)
+                personnes.append((Personne(id_P, nom_P, prenom_P, email_Sp,id_IMAGE),nom_I,cpt))
             return personnes
         except Exception as e:
             print("all personnes a échoué")
@@ -48,16 +52,16 @@ class Personne_bd:
             list[Personne] or None: Liste d'objets Personne correspondant à l'identifiant, ou None si une erreur survient.
         """
         try:
-            query = text(f"select  id_P, nom_P, prenom_P, email_Sp from PERSONNE where id_P= {str(id_P)}")
+            query = text(f"select  id_P, nom_P, prenom_P, email_Sp,id_IMAGE from PERSONNE where id_P= {str(id_P)}")
             resultat = self.cnx.execute(query)
-            personnes = [Personne(id_P, nom_P, prenom_P, email_Sp) for
-                         id_P, nom_P, prenom_P, email_Sp in resultat]
+            personnes = [Personne(id_P, nom_P, prenom_P, email_Sp,id_IMAGE) for
+                         id_P, nom_P, prenom_P, email_Sp,id_IMAGE in resultat]
             return personnes
         except Exception as e:
             print("personnes by id a échoué")
             return None
     
-    def inserer_personnes(self, id_P, nom_P, prenom_P, email_Sp):
+    def inserer_personnes(self, id_P, nom_P, prenom_P, email_Sp,id_IMAGE):
         """
         Insère une nouvelle personne dans la base de données.
 
@@ -71,12 +75,13 @@ class Personne_bd:
             None: Aucune valeur de retour, lève une exception en cas d'échec.
         """
         try:
-            query = text(f"insert into PERSONNE values({str(id_P)} , '{nom_P}','{prenom_P}','{email_Sp}')")
+            query = text(f"insert into PERSONNE values({str(id_P)} , '{nom_P}','{prenom_P}','{email_Sp}', {str(id_IMAGE)})")
             self.cnx.execute(query)
             self.cnx.commit()
         except Exception as e:
             print("insertion personnes a échoué")
-            return None
+            return []
+
 
     def get_prochain_id_personne(self):
         """
@@ -96,3 +101,23 @@ class Personne_bd:
             return None
         
 
+    def supprimer_personne(self, id_P):
+        """
+        Supprime une personne de la base de données.
+
+        Args:
+            id_P (int): Identifiant de la personne à supprimer.
+
+        Returns:
+            None: Aucune valeur de retour, lève une exception en cas d'échec.
+        """
+        try:
+            query1 = text(f"delete from MEMBRE where id_P={str(id_P)}")
+            query2 = text(f"delete from PERSONNE where id_P={str(id_P)}")
+            self.cnx.execute(query1)
+            self.cnx.execute(query2)
+            self.cnx.commit()
+        except Exception as e:
+            print("suppression personne a échoué")
+            return e
+    
