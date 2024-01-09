@@ -31,77 +31,82 @@
 </head>
   <body>
     <header>
-        <div class="top-page">
-          <h1 data-value="FEST-IUT" id="titre">FEST-IUT</h1>
-        </div>
-        <div id="utilisateur">
-          {% if le_spectateur.get_id_p() == -1 %}
-            <div id="avant-connexion">
-              <form action="{{ url_for('login_spec')}}">
-                <button class="connectBtn" >
-                  <svg xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 0 640 512" fill="white"><path d="M579.8 267.7c56.5-56.5 56.5-148 0-204.5c-50-50-128.8-56.5-186.3-15.4l-1.6 1.1c-14.4 10.3-17.7 30.3-7.4 44.6s30.3 17.7 44.6 7.4l1.6-1.1c32.1-22.9 76-19.3 103.8 8.6c31.5 31.5 31.5 82.5 0 114L422.3 334.8c-31.5 31.5-82.5 31.5-114 0c-27.9-27.9-31.5-71.8-8.6-103.8l1.1-1.6c10.3-14.4 6.9-34.4-7.4-44.6s-34.4-6.9-44.6 7.4l-1.1 1.6C206.5 251.2 213 330 263 380c56.5 56.5 148 56.5 204.5 0L579.8 267.7zM60.2 244.3c-56.5 56.5-56.5 148 0 204.5c50 50 128.8 56.5 186.3 15.4l1.6-1.1c14.4-10.3 17.7-30.3 7.4-44.6s-30.3-17.7-44.6-7.4l-1.6 1.1c-32.1 22.9-76 19.3-103.8-8.6C74 372 74 321 105.5 289.5L217.7 177.2c31.5-31.5 82.5-31.5 114 0c27.9 27.9 31.5 71.8 8.6 103.9l-1.1 1.6c-10.3 14.4-6.9 34.4 7.4 44.6s34.4 6.9 44.6-7.4l1.1-1.6C433.5 260.8 427 182 377 132c-56.5-56.5-148-56.5-204.5 0L60.2 244.3z"></path></svg>
-                  Connect
-                </button>
-              </form>
-            </div>
-          {% else %}
-            <div id="apres-connexion">
+      <div class="top">
+          <div class="top-page">
+            <h1 data-value="FEST-IUT" id="titre">FEST-IUT</h1>
+          </div>
+          <div id="utilisateur">
+            {% if le_spectateur.get_id_p() == -1 %}
+              <div id="avant-connexion">
+                <form action="{{ url_for('login_spec')}}">
+                  <button class="connectBtn" >
+                    <svg xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 0 640 512" fill="white"><path d="M579.8 267.7c56.5-56.5 56.5-148 0-204.5c-50-50-128.8-56.5-186.3-15.4l-1.6 1.1c-14.4 10.3-17.7 30.3-7.4 44.6s30.3 17.7 44.6 7.4l1.6-1.1c32.1-22.9 76-19.3 103.8 8.6c31.5 31.5 31.5 82.5 0 114L422.3 334.8c-31.5 31.5-82.5 31.5-114 0c-27.9-27.9-31.5-71.8-8.6-103.8l1.1-1.6c10.3-14.4 6.9-34.4-7.4-44.6s-34.4-6.9-44.6 7.4l-1.1 1.6C206.5 251.2 213 330 263 380c56.5 56.5 148 56.5 204.5 0L579.8 267.7zM60.2 244.3c-56.5 56.5-56.5 148 0 204.5c50 50 128.8 56.5 186.3 15.4l1.6-1.1c14.4-10.3 17.7-30.3 7.4-44.6s-30.3-17.7-44.6-7.4l-1.6 1.1c-32.1 22.9-76 19.3-103.8-8.6C74 372 74 321 105.5 289.5L217.7 177.2c31.5-31.5 82.5-31.5 114 0c27.9 27.9 31.5 71.8 8.6 103.9l-1.1 1.6c-10.3 14.4-6.9 34.4 7.4 44.6s34.4 6.9 44.6-7.4l1.1-1.6C433.5 260.8 427 182 377 132c-56.5-56.5-148-56.5-204.5 0L60.2 244.3z"></path></svg>
+                    Connect
+                  </button>
+                </form>
+              </div>
+            {% else %}
+              <div id="apres-connexion">
+                  <div class="paste-button">
+                    <button class="button">Concert &nbsp; ▼</button>
+                    <div class="dropdown-content">
+                      <a id="top" href="{{url_for('mes_concerts')}}">Mes concerts</a>
+                      <a id="top" href="{{ url_for('mes_groupes') }}">Mes groupes</a>
+                      <a id="top" href="{{ url_for('deconnexion') }}">Se déconnecter</a>
+                    </div>
+                  </div>
+              </div>
+            {% endif %}
+          </div>
+      </div>
+      
+        <nav id="nav-bar">
+          <ul id="contient">
+              <li class="lien-dans-nav"><a class="a" href="{{ url_for('home')}}">Home</a></li>
+              <li id="lien-dans-nav">
                 <div class="paste-button">
                   <button class="button">Concert &nbsp; ▼</button>
                   <div class="dropdown-content">
-                    <a id="top" href="{{url_for('mes_concerts')}}">Mes concerts</a>
-                    <a id="top" href="{{ url_for('mes_groupes') }}">Mes groupes</a>
-                    <a id="top" href="{{ url_for('deconnexion') }}">Se déconnecter</a>
+                    <a id="top" href="{{ url_for('concert_futurs') }}">À venir</a>
+                      <a id="top" href="{{ url_for('concert_passer') }}">Ancien</a>
                   </div>
                 </div>
-            </div>
-          {% endif %}
-
-        </div>
+              </li>
+              <li class="lien-dans-nav">
+                <div class="paste-button">
+                    <button class="button">Chanteur &nbsp; ▼</button>
+                      <div class="dropdown-content">
+                        <a class="a" href="{{ url_for('groupes')}}">Groupe</a>
+                        <a id="top" href="{{ url_for('liste_chanteurs') }}">Chanteur</a>
+                      </div>
+                  </div>
+                </div>
+              </li>
+              <li class="lien-dans-nav"><a class="a" href="{{ url_for('recherche_region') }}">Département</a></li>
+              {% if liste_style_parent %}
+              <li id="lien-dans-nav">
+                <div class="paste-button">
+                  <button class="button">STYLE &nbsp; ▼</button>
+                  <div class="dropdown-content">
+                    {% for style in liste_style_parent %}
+                      <a id="top" href="{{ url_for('recherche_style',nom=style.get_nom_st_p()) }}">{{ style.get_nom_st_p() }}</a>
+                    {% endfor %}
+                  </div>
+                </div>
+              </li>
+              {% endif %}
+          </ul>
+        </nav>
     </header>
 
-      <nav id="nav-bar">
-        <ul id="contient">
-            <li class="lien-dans-nav"><a class="a" href="{{ url_for('home')}}">Home</a></li>
-            <li id="lien-dans-nav">
-              <div class="paste-button">
-                <button class="button">Concert &nbsp; ▼</button>
-                <div class="dropdown-content">
-                  <a id="top" href="{{ url_for('concert_futurs') }}">À venir</a>
-                    <a id="top" href="{{ url_for('concert_passer') }}">Ancien</a>
-                </div>
-              </div>
-            </li>
-            <li class="lien-dans-nav">
-              <div class="paste-button">
-                  <button class="button">Chanteur &nbsp; ▼</button>
-                    <div class="dropdown-content">
-                      <a class="a" href="{{ url_for('groupes')}}">Groupe</a>
-                      <a id="top" href="{{ url_for('liste_chanteurs') }}">Chanteur</a>
-                    </div>
-                </div>
-              </div>
-            </li>
-            <li class="lien-dans-nav"><a class="a" href="{{ url_for('recherche_region') }}">Département</a></li>
-            {% if liste_style_parent %}
-            <li id="lien-dans-nav">
-              <div class="paste-button">
-                <button class="button">STYLE &nbsp; ▼</button>
-                <div class="dropdown-content">
-                  {% for style in liste_style_parent %}
-                    <a id="top" href="{{ url_for('recherche_style',nom=style.get_nom_st_p()) }}">{{ style.get_nom_st_p() }}</a>
-                  {% endfor %}
-                </div>
-              </div>
-            </li>
-            {% endif %}
-        </ul>
-    </nav>
+      
     <main class="main-base">
         {% block content %}
         {% endblock %}
     </main>
+
   </body>
+
   <script src="../static/script/search.js"></script>
   <script>
     const letters="ABCDEFGHIJKLMNOPQRSTUVWXYZ";
