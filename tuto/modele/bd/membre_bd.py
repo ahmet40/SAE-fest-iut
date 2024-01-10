@@ -46,11 +46,13 @@ class Membre_bd:
             list[Membre] or None: Liste d'objets Membre correspondant à l'identifiant du membre, ou None si une erreur survient.
         """
         try:
-            query = text(f"SELECT M.id_P, P.nom_P,P.prenom_P, P.email_Sp, I2.nom_I AS nom_instrument, I.nom_I AS nom_image FROM MEMBRE M NATURAL JOIN PERSONNE P LEFT JOIN INSTRUMENT I2 ON M.id_I = I2.id_I  LEFT JOIN IMAGE I ON P.id_IMAGE = I.id_IMAGE WHERE M.id_G = {str(id_G)}")
+            query = text(f"SELECT M.id_P, P.nom_P,P.prenom_P, P.email_Sp,P.id_Image, I2.nom_I AS nom_instrument, I.nom_I AS nom_image FROM MEMBRE M NATURAL JOIN PERSONNE P LEFT JOIN INSTRUMENT I2 ON M.id_I = I2.id_I  LEFT JOIN IMAGE I ON P.id_IMAGE = I.id_IMAGE WHERE M.id_G = {str(id_G)}")
             resultat = self.cnx.execute(query)
             membres = []
-            for id_P, nom_P, prenom_P, email_Sp, nom_instrument, nom_image in resultat:
-                membres.append((Personne(id_P,nom_P, prenom_P, email_Sp),nom_instrument, nom_image))
+            print("hahahaha")
+            for id_P, nom_P, prenom_P, email_Sp,id_Image, nom_instrument, nom_image in resultat:
+                print(id_P, nom_P, prenom_P, email_Sp, nom_instrument, nom_image)
+                membres.append((Personne(id_P,nom_P, prenom_P, email_Sp,id_Image),nom_instrument, nom_image))
             return membres
         except Exception as e:
             print("membre by id a échoué")
@@ -118,4 +120,23 @@ class Membre_bd:
             self.cnx.commit()
         except Exception as e:
             print("insertion membres a échoué")
+            return None
+
+
+    def delete_membre_by_personne(self,id_p):
+        """
+        Supprime un membre de la base de données.
+
+        Args:
+            id_p (int): Identifiant du membre à supprimer.
+
+        Returns:
+            None: Aucune valeur de retour, lève une exception en cas d'échec.
+        """
+        try:
+            query = text(f"delete from MEMBRE where id_P = {str(id_p)}")
+            self.cnx.execute(query)
+            self.cnx.commit()
+        except Exception as e:
+            print("delete membres a échoué")
             return None

@@ -407,3 +407,57 @@ def supprimer_image(id):
     print(id)
     models.supprimer_image(id)
     return redirect(url_for("gerer_image"))
+
+
+@app.route("/gerer-groupe")
+def gerer_groupe():
+    """Cette methode va nous permettre de gerer les groupes
+
+    Returns:
+        list: la liste des informations
+    """
+    if le_adm.get_id()!=-1:
+        return render_template("gerer_groupe.html",groupe=models.get_groupe_cpt(),gerer_concert=True)
+    return redirect("login_spec")
+
+
+@app.route("/gerer-membre/<int:id>")
+def gerer_membre(id):
+    """
+        permet de gerer les groupes
+    """
+    if le_adm.get_id()!=-1:
+        return render_template("gerer_membre.html",chanteur=models.get_membre_liste(id),gerer_concert=True)
+    return redirect("login_spec")
+
+
+
+@app.route("/supprimer-groupe/<int:id>",methods=["POST"])
+def supprimer_groupe(id):
+    """Cette methode va nous permettre de supprimer une image
+
+    Args:
+        id ([int]): l'id de l'image
+
+    Returns:
+        list: la liste des informations
+    """
+    print(id)
+    models.delete_groupe(id)
+    return redirect(url_for("gerer_groupe"))
+
+
+
+@app.route("/supprimer-membre/<int:id>",methods=["POST"])
+def supprimer_membre(id):
+    """Cette methode va nous permettre de supprimer une image
+
+    Args:
+        id ([int]): l'id de l'image
+
+    Returns:
+        list: la liste des informations
+    """
+    print(id)
+    models.delete_membre_par_personne(id)
+    return redirect(url_for("gerer_membre"))

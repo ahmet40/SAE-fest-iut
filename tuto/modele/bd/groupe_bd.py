@@ -86,6 +86,27 @@ class Groupe_bd:
         except Exception as e:
             print("all groupe a échoué")
             return []
+        
+
+    def get_groupe_img_nb_membre(self):
+        """
+        Récupère tous les groupes de musique présents dans la base de données avec leur image et le nombre de membres.
+        """
+        try:
+            query = text("select  id_G,nom, description, id_IMAGE, lien_Reseaux, lien_Video,nom_I from GROUPE natural join IMAGE group by id_G order by nom asc")
+            resultat = self.cnx.execute(query)
+            groupe=[]
+            for id_G,nom, description, id_IMAGE, lien_Reseaux, lien_Video,nom_I in resultat:
+                nb_membre=0
+                q=text(f"select count(*) as m from MEMBRE where id_G={str(id_G)}")
+                r=self.cnx.execute(q).fetchone()
+                if r and r.m:
+                    nb_membre=int(r.m)
+                groupe.append((Groupe(id_G,nom,description,id_IMAGE,lien_Reseaux,lien_Video),nom_I,nb_membre))
+            return groupe
+        except Exception as e:
+            print("all groupe a échoué")
+            return []
 
     def get_all_information_groupe(self,id):
         """
@@ -159,4 +180,34 @@ class Groupe_bd:
                 return int(result.m) + 1
         except Exception as e:
             print("Le max de groupe échoue")
+            return None
+
+    def delete_groupe(self,id_G):
+        """
+        Supprime un groupe de musique de la base de données.
+
+        Args:
+            id_G (int): Identifiant du groupe à supprimer.
+
+        Returns:
+            None: Aucune valeur de retour, lève une exception en cas d'échec.
+        """
+        try:
+            query1 = text(f"delete from MEMBRE where id_G={str(id_G)}")
+            query2= text(f"delete from ORGANISATION where id_G={str(id_G)}")
+            query3= text(f"delete from PARTICIPE where id_G={str(id_G)}")
+            query4= text(f"delete from FAVORIS where id_G={str(id_G)}")
+            query5= text(f"delete from GROUPE_A_POUR_STYLE where id_G={str(id_G)}")
+            query6= text(f"delete from HEBERGER where id_G={str(id_G)}")
+            query7 = text(f"delete from GROUPE where id_G={str(id_G)}")
+            self.cnx.execute(query1)
+            self.cnx.execute(query2)
+            self.cnx.execute(query3)
+            self.cnx.execute(query4)
+            self.cnx.execute(query5)
+            self.cnx.execute(query6)
+            self.cnx.execute(query7)
+            self.cnx.commit()
+        except Exception as e:
+            print("delete groupe a échoué")
             return None

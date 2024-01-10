@@ -364,3 +364,41 @@ def supprimer_image(id):
         id ([int]): l'id de l'image
     """
     IMAGE.supprimer_image(id)
+
+def get_groupe_cpt():
+    """Cette methode va nous permettre d'obtenir le nombre de groupes
+
+    Returns:
+        int: le nombre de groupes
+    """
+    return GROUPE.get_groupe_img_nb_membre()
+
+
+def get_membre_liste(id):
+    """Cette methode va nous permettre d'obtenir les membres d'un groupe
+
+    Args:
+        id ([int]): l'id du groupe
+
+    Returns:
+        list: la liste des membres
+    """
+    return MEMBRE.get_membre_par_id(id)
+
+
+def delete_groupe(id_G):
+    """Cette methode va nous permettre de supprimer un groupe
+
+    Args:
+        id_G ([int]): l'id du groupe
+    """
+    GROUPE.delete_groupe(id_G)
+
+
+def delete_membre_par_personne(id):
+    """Cette methode va nous permettre de supprimer un membre
+
+    Args:
+        id ([int]): l'id du membre
+    """
+    MEMBRE.delete_membre_by_personne(id)
