@@ -1,0 +1,61 @@
+{% extends "base_admin.html" %}
+{% block styles %}
+    {{ super() }}
+{% endblock %}
+{% block content %}
+        <form class="form" action="{{ url_for('nouveau_groupe') }}" method="POST" enctype="multipart/form-data">
+            <span class="title">Crée Groupe</span>
+                <input type="text" class="input" name="nom" maxlength="40" placeholder="nom Groupe">
+                <div class="form-label-admin-desc">
+                    <label for="description" class="label">Description du Groupe :</label>
+                    <textarea name="textarea" rows="7" cols="50" maxlength="200">Vous pouvez écrire ici.</textarea>
+                </div>
+                
+                <input type="text" class="input" name="lien_resaux" placeholder="lien reseaux">
+                
+                <input type="text" class="input" name="lien_video" placeholder="lien video">
+                
+                <div class="form-label-admin">
+                    <div class="drop-zone" id="dropZone">
+                        <span class="drop-zone__prompt">Image</span>
+                        <input type="file" name="image" id="inputFile" class="drop-zone__input" accept="image/*">
+                    </div>
+                    
+                    <div class="image-preview" id="imagePreview">
+                        <span class="image-preview__prompt">Aucune image sélectionnée</span>
+                        <img src="" alt="Image preview" class="image-preview__image">
+                    </div>
+                </div>
+            
+            
+            <button>Sign up</button>
+        </form>
+<script>
+    document.addEventListener("DOMContentLoaded", () => {
+    const dropZone = document.getElementById("dropZone");
+    const inputFile = document.getElementById("inputFile");
+    const imagePreview = document.getElementById("imagePreview");
+
+    dropZone.addEventListener("click", () => {
+        inputFile.click();
+    });
+
+    inputFile.addEventListener("change", handleFileSelect);
+
+    function handleFileSelect() {
+        const files = inputFile.files;
+
+        if (files.length > 0) {
+            const reader = new FileReader();
+
+            reader.onload = function (e) {
+                imagePreview.querySelector(".image-preview__image").src = e.target.result;
+                imagePreview.querySelector(".image-preview__prompt").style.display = "none";
+            };
+
+            reader.readAsDataURL(files[0]);
+        }
+    }
+});
+</script>
+{% endblock %}

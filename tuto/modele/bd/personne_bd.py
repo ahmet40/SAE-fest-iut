@@ -40,6 +40,24 @@ class Personne_bd:
         except Exception as e:
             print("all personnes a échoué")
             return []
+        
+    def get_all_personne_only(self,id_g):
+        """
+        Récupère toutes les personnes présentes dans la base de données.
+
+        Returns:
+            list[Personne] or None: Liste d'objets Personne ou None si une erreur survient.
+        """
+        try:
+            query = text(f"select  id_P, nom_P, prenom_P, email_Sp,id_IMAGE from PERSONNE where id_P not in(select id_P from MEMBRE where id_g={str(id_g)}) order by nom_P")
+            resultat = self.cnx.execute(query)
+            personnes = []
+            for id_P, nom_P, prenom_P, email_Sp,id_IMAGE in resultat:
+                personnes.append(Personne(id_P, nom_P, prenom_P, email_Sp,id_IMAGE))
+            return personnes
+        except Exception as e:
+            print("all personnes a échoué")
+            return []
 
     def get_par_id_personnes(self, id_P):
         """

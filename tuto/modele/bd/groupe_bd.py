@@ -158,8 +158,8 @@ class Groupe_bd:
             None: Aucune valeur de retour, lève une exception en cas d'échec.
         """
         try:
-            query = text(f"insert into GROUPE values({str(id_G)} ,'{nom}', '{description}', {str(id_IMAGE)},'{lien_Reseaux}','{lien_Video}')")
-            self.cnx.execute(query)
+            query2 = text(f"insert into GROUPE values({str(id_G)} ,'{nom}', '{description}', {str(id_IMAGE)},'{lien_Reseaux}','{lien_Video}')")
+            self.cnx.execute(query2)
             self.cnx.commit()
         except Exception as e:
             print("insertion groupe a échoué")
@@ -211,3 +211,4 @@ class Groupe_bd:
         except Exception as e:
             print("delete groupe a échoué")
             return None
+        

@@ -24,6 +24,7 @@ from organisation_bd import Organisation_bd
 from participe_bd import Participe_bd
 from billet_bd import Billet_bd
 from image_bd import Image_bd
+from instrument_bd import Instrument_bd
 #---------------------------------------------------------------
 # Connexion à la base de données
 SPECTATEUR=Spectateur_bd(CNX)
@@ -40,6 +41,7 @@ ORGANISATION=Organisation_bd(CNX)
 PARTICIPE=Participe_bd(CNX)
 BILLET=Billet_bd(CNX)
 IMAGE=Image_bd(CNX)
+INSTRUMENT=Instrument_bd(CNX)
 #-----------------------------------------------------------------------------
 # Connection et creation de compte
 def connecter_spectateur(username: str, password: str) -> bool:
@@ -395,10 +397,50 @@ def delete_groupe(id_G):
     GROUPE.delete_groupe(id_G)
 
 
-def delete_membre_par_personne(id):
+def delete_membre_par_personne(id_g,id_p):
     """Cette methode va nous permettre de supprimer un membre
 
     Args:
         id ([int]): l'id du membre
     """
-    MEMBRE.delete_membre_by_personne(id)
+    MEMBRE.delete_membre_by_personne(id_g,id_p)
+
+
+
+def inserer_groupe(nom, description, lien_Reseaux, lien_Video,nom_I):
+    """Cette methode va nous permettre d'inserer un groupe
+
+    Args:
+        id_G ([int]): l'id du groupe
+        nom ([str]): le nom du groupe
+        description ([str]): la description du groupe
+        lien_Reseaux ([str]): le lien du reseau social du groupe
+        lien_Video ([str]): le lien de la video du groupe
+        nom_I ([str]): le nom de l'image du groupe
+    """
+    print("heheheeheheheh")
+    IMAGE.insere_image(nom_I)
+    GROUPE.inserer_groupe(GROUPE.get_prochain_id_groupe(),nom, description, IMAGE.get_prochain_id()-1, lien_Reseaux, lien_Video)
+
+
+
+
+def get_all_personne_instrumement(id):
+    """Cette methode va nous permettre d'obtenir tous les membres
+
+    Returns:
+        list: la liste des membres
+    """
+    liste1=PERSONNE.get_all_personne_only(id)
+    liste2=INSTRUMENT.get_all_instrument()
+    return (liste1,liste2)
+
+
+def creer_membre(id_g,id_personne,id_instrument):
+    """Cette methode va nous permettre de creer un membre
+
+    Args:
+        id_g ([int]): l'id du groupe
+        id_personne_id_instrument ([int]): l'id du membre
+    """
+    MEMBRE.inserer_membres(id_personne,id_g,id_instrument)

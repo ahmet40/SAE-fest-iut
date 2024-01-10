@@ -427,7 +427,7 @@ def gerer_membre(id):
         permet de gerer les groupes
     """
     if le_adm.get_id()!=-1:
-        return render_template("gerer_membre.html",chanteur=models.get_membre_liste(id),gerer_concert=True)
+        return render_template("gerer_membre.html",chanteur=models.get_membre_liste(id),gerer_concert=True,grp=id)
     return redirect("login_spec")
 
 
@@ -448,8 +448,8 @@ def supprimer_groupe(id):
 
 
 
-@app.route("/supprimer-membre/<int:id>",methods=["POST"])
-def supprimer_membre(id):
+@app.route("/supprimer-membre/<int:id_g>/<int:id_p>",methods=["POST"])
+def supprimer_membre(id_g,id_p):
     """Cette methode va nous permettre de supprimer une image
 
     Args:
@@ -459,5 +459,76 @@ def supprimer_membre(id):
         list: la liste des informations
     """
     print(id)
-    models.delete_membre_par_personne(id)
-    return redirect(url_for("gerer_membre"))
+    models.delete_membre_par_personne(id_g,id_p)
+    return redirect(url_for("gerer_membre",id=id_g))
+
+
+@app.route("/cree-groupe")
+def creer_groupe():
+    """Cette methode va nous permettre de creer un groupe
+
+    Returns:
+        list: la liste des informations
+    """
+    if le_adm.get_id()!=-1:
+        return render_template("add_groupe.html",add_chanteur=True)
+    else:
+        return redirect("login_spec")
+    
+
+
+@app.route("/nouveau_groupe",methods=["GET","POST"])
+def nouveau_groupe():
+    if request.method=="POST":
+            print("hahahahaa")
+            nom=request.form.get("nom")
+            description=request.form.get("textarea")
+            lien_reseau=request.form.get("lien_resaux")
+            lien_video=request.form.get("lien_video")
+            image_file = request.files['image']
+
+            # Vérifiez si un fichier a été téléchargé
+            if image_file and allowed_file(image_file.filename):
+                filename, file_extension = os.path.splitext(secure_filename(image_file.filename))
+                
+                # Générez un nombre aléatoire
+                random_number = str(random.randint(0, 100000))
+
+                # Concaténez le nombre aléatoire avant l'extension du fichier
+                filename = filename + random_number + file_extension
+
+                # Enregistrez le fichier dans le répertoire "station/images"
+                image_path = os.path.join("static/images", filename)
+                image_file.save(image_path)
+
+                # Maintenant, vous pouvez utiliser le nom du fichier (filename) comme information supplémentaire
+                # dans votre base de données, par exemple:
+                models.inserer_groupe(nom, description, lien_reseau, lien_video, filename)
+    return redirect(url_for("gerer_groupe"))
+
+
+@app.route("/cree-membre/<int:id>")
+def cree_membre(id):
+    """Cette methode va nous permettre de creer un membre
+
+    Returns:
+        list: la liste des informations
+    """
+    if le_adm.get_id()!=-1:
+        return render_template("add_membre.html",add_chanteur=True,grp=id,personne=models.get_all_personne_instrumement(id)[0],instrument=models.get_all_personne_instrumement(id)[1])
+    else:
+        return redirect("login_spec")
+    
+
+# Ajoutez cette route à votre application Flask
+@app.route("/action-creer-membre/<int:id>", methods=["POST"])
+def action_creer_membre(id):
+    if request.method == "POST":
+        id_personne = int(request.form.get("selectPersonne"))
+        id_instrument = int(request.form.get("selectInstrument"))
+
+        # Faites quelque chose avec les identifiants sélectionnés, par exemple, ajoutez-les à la base de données
+        models.creer_membre(id,id_personne, id_instrument)
+
+    # Redirigez ou renvoyez une réponse appropriée
+    return redirect(url_for("gerer_membre",id=id))

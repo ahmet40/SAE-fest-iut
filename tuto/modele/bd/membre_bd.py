@@ -123,7 +123,7 @@ class Membre_bd:
             return None
 
 
-    def delete_membre_by_personne(self,id_p):
+    def delete_membre_by_personne(self,id_g,id_p):
         """
         Supprime un membre de la base de données.
 
@@ -134,7 +134,7 @@ class Membre_bd:
             None: Aucune valeur de retour, lève une exception en cas d'échec.
         """
         try:
-            query = text(f"delete from MEMBRE where id_P = {str(id_p)}")
+            query = text(f"delete from MEMBRE where id_P = {str(id_p)} and id_G={str(id_g)}")
             self.cnx.execute(query)
             self.cnx.commit()
         except Exception as e:
