@@ -230,3 +230,56 @@ class Concert_bd:
         except Exception as e:
             print("Le max de concert échoue")
             return []
+        
+    def get_concerts_with_group_count_and_image_name(self):
+        """
+        Récupère la liste des concerts avec leur nombre de groupes associés et le nom de l'image.
+
+        Returns:
+            list[tuple[Concert, int, str]] or None: Liste de tuples contenant un objet Concert, le nombre de groupes associés et le nom de l'image, ou None si une erreur survient.
+        """
+        try:
+            query = text("SELECT C.id_C, C.nom_C, C.date_Debut, C.date_Fin, C.id_L, C.id_IMAGE, I.nom_I, COUNT(O.id_G) AS group_count "
+                         "FROM CONCERTS C "
+                         "LEFT JOIN ORGANISATION O ON C.id_C = O.id_C "
+                         "JOIN IMAGE I ON C.id_IMAGE = I.id_IMAGE "
+                         "GROUP BY C.id_C, C.nom_C, C.date_Debut, C.date_Fin, C.id_L, C.id_IMAGE, I.nom_I "
+                         "ORDER BY C.date_Debut")
+            result = self.cnx.execute(query)
+
+            concerts = []
+            for id_C, nom_C, date_Debut, date_Fin, id_L, id_IMAGE, nom_I, group_count in result:
+                concert = Concert(id_C, nom_C, date_Debut, date_Fin, id_L, id_IMAGE)
+                concerts.append((concert, group_count, nom_I))
+
+            return concerts
+        except Exception as e:
+            print("Erreur lors de la récupération des concerts avec le nombre de groupes associés et le nom de l'image:", str(e))
+            return []
+    
+    def delete_concert(self, id_C):
+        """
+        Supprime un concert de la base de données et ses données associées.
+
+        Args:
+            id_C (int): Identifiant du concert à supprimer.
+
+        Returns:
+            None: Aucune valeur de retour, lève une exception en cas d'échec.
+        """
+        try:
+            query1 = text(f"DELETE FROM BILLET WHERE id_C={str(id_C)}")
+            query2 = text(f"DELETE FROM ORGANISATION WHERE id_C={str(id_C)}")
+            query4 = text(f"DELETE FROM FAVORIS WHERE id_C={str(id_C)}")
+            query5 = text(f"DELETE FROM CONCERTS WHERE id_C={str(id_C)}")
+            
+            self.cnx.execute(query1)
+            self.cnx.execute(query2)
+            self.cnx.execute(query3)
+            self.cnx.execute(query4)
+            self.cnx.execute(query5)
+            
+            self.cnx.commit()
+        except Exception as e:
+            print(f"Erreur lors de la suppression du concert (id_C={id_C}): {str(e)}")
+            return None

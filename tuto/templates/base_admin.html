@@ -17,8 +17,19 @@
   <body>
     <header>
         <div class="top-page">
-          <h1 data-value="FEST-IUT" id="titre">FEST-IUT</h1>
+          <a href="{{ url_for('admin_principale') }}" ><h1 data-value="FEST-IUT" id="titre">FEST-IUT</h1></a>
         </div>
+        <nav>
+          
+            <ul>
+                <li><a href="{{ url_for('admin_principale') }}" >Home</a></li>
+                <li><a href="{{ url_for('gerer_concert') }}" >Concerts</a></li>
+                <li><a href="{{ url_for('gerer_chanteur') }}" >chanteur</a></li>
+                <li><a href="{{ url_for('gerer_image') }}" >image</a></li>
+                <li><a href="{{ url_for('gerer_groupe') }}" >groupe</a></li>
+            </ul>
+        
+        </nav>
     </header>
 
     <main class="main-base">

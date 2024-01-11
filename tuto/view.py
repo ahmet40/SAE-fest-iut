@@ -156,7 +156,7 @@ def deconnexion():
         redirect:redirection vers la page
     """
     le_spectateur.set_all(-1,"","","")
-    return redirect(url_for("les_concerts"))
+    return redirect(url_for("home"))
 
 
 @app.route("/groupes")
@@ -532,3 +532,40 @@ def action_creer_membre(id):
 
     # Redirigez ou renvoyez une réponse appropriée
     return redirect(url_for("gerer_membre",id=id))
+
+
+
+@app.route("/gerer-concert")
+def gerer_concert():
+    """Cette methode va nous permettre de gerer les concerts
+
+
+    """
+    if le_adm.get_id()!=-1:
+        return render_template("gerer_concerts.html",liste_concert=models.get_concerts_nb_groupe_img(),gerer_concert=True)
+    return redirect("login_spec")
+
+@app.route("/cree-concert")
+def creer_concert():
+    """Cette methode va nous permettre de creer un groupe
+
+    """
+    if le_adm.get_id()!=-1:
+        return render_template("add_concert.html",add_chanteur=True)
+    else:
+        return redirect("login_spec")
+    
+
+@app.route("/supprimer-concert/<int:id>",methods=["POST"])
+def supprimer_concert(id):
+    """Cette methode va nous permettre de supprimer une image
+
+    Args:
+        id ([int]): l'id de l'image
+
+    Returns:
+        list: la liste des informations
+    """
+    print(id)
+    models.delete_concert(id)
+    return redirect(url_for("gerer_concert"))

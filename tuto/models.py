@@ -2,6 +2,8 @@ import yaml
 import os.path
 import sys
 from datetime import datetime
+
+
 ROOT = os.path.join(os.path.dirname(os.path.abspath(__file__)), '')
 sys.path.append(os.path.join(ROOT, ''))
 from app import db
@@ -444,3 +446,19 @@ def creer_membre(id_g,id_personne,id_instrument):
         id_personne_id_instrument ([int]): l'id du membre
     """
     MEMBRE.inserer_membres(id_personne,id_g,id_instrument)
+
+def get_concerts_nb_groupe_img():
+    """Cette methode va nous permettre de lister les concerts avec leurs nombre de groupes 
+
+    Returns:
+        list: Concert,le nombre de groupes
+    """
+    return CONCERTS.get_concerts_with_group_count_and_image_name()
+
+def delete_concert(id_C):
+    """Cette methode va nous permettre de supprimer un concert
+
+    Args:
+        id_c ([int]): l'id du concert
+    """
+    CONCERTS.delete_concert(id_C)
