@@ -268,16 +268,15 @@ class Concert_bd:
             None: Aucune valeur de retour, lève une exception en cas d'échec.
         """
         try:
-            query1 = text(f"DELETE FROM BILLET WHERE id_C={str(id_C)}")
+            query1 = text(f"DELETE FROM INSCRIPTION WHERE id_C={str(id_C)}")
             query2 = text(f"DELETE FROM ORGANISATION WHERE id_C={str(id_C)}")
-            query4 = text(f"DELETE FROM FAVORIS WHERE id_C={str(id_C)}")
-            query5 = text(f"DELETE FROM CONCERTS WHERE id_C={str(id_C)}")
+            query3 = text(f"DELETE FROM BILLET WHERE id_C={str(id_C)}")
+            query4 = text(f"DELETE FROM CONCERTS WHERE id_C={str(id_C)}")
             
             self.cnx.execute(query1)
             self.cnx.execute(query2)
             self.cnx.execute(query3)
             self.cnx.execute(query4)
-            self.cnx.execute(query5)
             
             self.cnx.commit()
         except Exception as e:
