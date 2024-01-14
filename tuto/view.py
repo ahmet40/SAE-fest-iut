@@ -515,7 +515,7 @@ def cree_membre(id):
         list: la liste des informations
     """
     if le_adm.get_id()!=-1:
-        return render_template("add_membre.html",add_chanteur=True,grp=id,personne=models.get_all_personne_instrumement(id)[0],instrument=models.get_all_personne_instrumement(id)[1])
+        return render_template("add_membre.html",grp=id,personne=models.get_all_personne_instrumement(id)[0],instrument=models.get_all_personne_instrumement(id)[1])
     else:
         return redirect("login_spec")
     
@@ -569,3 +569,36 @@ def supprimer_concert(id):
     print(id)
     models.delete_concert(id)
     return redirect(url_for("gerer_concert"))
+
+@app.route("/gerer-groupe-concert/<int:id>")
+def gerer_groupe_concert(id):
+    """
+        permet de gerer les groupes des concerts
+    """
+    if le_adm.get_id()!=-1:
+        return render_template("gerer_groupe_concert.html",groupes=models.get_groupe_concert_liste(id),gerer_concert=True,concert=id)
+    return redirect("login_spec")
+
+@app.route("/ajouter-groupe-concert/<int:id>")
+def ajouter_groupe(id):
+    """Cette methode va nous permettre d'ajouter un groupe à un concert'
+
+    """
+    if le_adm.get_id()!=-1:
+        return render_template("add_groupe_concert.html",groupes=models.liste_groupe_absent_concert(id),gerer_concert=True,concert=id)
+    else:
+        return redirect("login_spec")
+
+@app.route("/supprimer-groupe-concert/<int:id_c>/<int:id_g>",methods=["POST"])
+def supprimer_groupe_concert(id_c,id_g):
+    """Cette methode va nous permettre de supprimer une image
+
+    Args:
+        id ([int]): l'id de l'image
+
+    Returns:
+        list: la liste des informations
+    """
+    print(id)
+    models.delete_groupe_concert(id_c,id_g)
+    return redirect(url_for("gerer_groupe_concert",id=id_c))

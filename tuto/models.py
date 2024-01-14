@@ -462,3 +462,30 @@ def delete_concert(id_C):
         id_c ([int]): l'id du concert
     """
     CONCERTS.delete_concert(id_C)
+    
+def get_groupe_concert_liste(id):
+    """Cette methode va nous permettre d'obtenir les groupes d'un concert
+
+    Args:
+        id ([int]): l'id du concert
+
+    Returns:
+        list: la liste des groupes
+    """
+    return ORGANISATION.get_groupe_concert_id(id)
+
+def delete_groupe_concert(id_c,id_g):
+    """Cette methode va nous permettre de supprimer un groupe d'un concert
+
+    Args:
+        id ([int]): l'id du groupe
+    """
+    ORGANISATION.delete_groupe_concert(id_c,id_g)
+
+def liste_groupe_absent_concert(id_c):
+    """Cette méthode va nous permettre d'obtenir les groupes absents du concert
+
+    Args:
+        id_c (int): identifiant du concert
+    """
+    return ORGANISATION.liste_groupe_absent_concert(id_c)

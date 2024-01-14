@@ -5,6 +5,7 @@ import os
 ROOT = os.path.join(os.path.dirname(os.path.abspath(__file__)), '../..')
 sys.path.append(os.path.join(ROOT, 'modele/code_model/'))
 from organisation import Organisation
+from groupe import Groupe
 
 class Organisation_bd:
     """
@@ -120,3 +121,91 @@ class Organisation_bd:
         except Exception as e:
             print("insertion organisations a échoué")
             return None
+        
+    def get_groupe_concert_id(self, id_C):
+        """
+        Récupère la liste des groupes avec le nom de l'image, les styles appartenant à un concert spécifique.
+
+        Args:
+            id_C (int): L'identifiant du concert.
+
+        Returns:
+            list[tuple[Groupe, str, list[str]]] or None: Liste de tuples contenant un objet Groupe, le nom de l'image et une liste de styles, ou None si une erreur survient.
+        """
+        try:
+            query = text("SELECT G.id_G, G.nom, G.description, G.id_IMAGE, G.lien_Reseaux, G.lien_Video, I.nom_I, GROUP_CONCAT(S.nom_St) as styles "
+                        "FROM GROUPE G "
+                        "JOIN ORGANISATION O ON G.id_G = O.id_G "
+                        "JOIN IMAGE I ON G.id_IMAGE = I.id_IMAGE "
+                        "LEFT JOIN GROUPE_A_POUR_STYLE GS ON G.id_G = GS.id_G "
+                        "LEFT JOIN STYLE S ON GS.id_St = S.id_St "
+                        "WHERE O.id_C = :id_C "
+                        "GROUP BY G.id_G, G.nom, G.description, G.id_IMAGE, G.lien_Reseaux, G.lien_Video, I.nom_I")
+            result = self.cnx.execute(query, {'id_C': id_C})
+
+            groups = []
+            for id_G, nom, description, id_IMAGE, lien_Reseaux, lien_Video, nom_I, styles_str in result:
+                styles = styles_str.split(',') if styles_str else []
+                group = Groupe(id_G, nom, description, id_IMAGE, lien_Reseaux, lien_Video)
+                groups.append((group, nom_I, styles))
+
+            return groups
+        except Exception as e:
+            print("Erreur lors de la récupération des groupes avec le nom de l'image et les styles pour le concert {}:".format(id_C), str(e))
+            return []
+    
+    def delete_groupe_concert(self,id_c,id_g):
+        """
+        Supprime un groupe d'un concert de la base de données.
+
+        Args:
+            id_c (int): Identifiant du concert 
+            id_g (int): Identifiant du groupe a suprimmer du concert
+
+        Returns:
+            None: Aucune valeur de retour, lève une exception en cas d'échec.
+        """
+        try:
+            query = text(f"delete from ORGANISATION where id_G = {str(id_g)} and id_C={str(id_c)}")
+            self.cnx.execute(query)
+            self.cnx.commit()
+        except Exception as e:
+            print("delete orga a échoué")
+            return None
+    
+    def liste_groupe_absent_concert(self,id_C):
+        """
+        Récupère la liste des groupes absents d'un concert avec le nom de l'image et les styles.
+
+        Args:
+            id_C (int): L'identifiant du concert.
+
+        Returns:
+            list[tuple[Groupe, str, list[str]]] or None: Liste de tuples contenant un objet Groupe, le nom de l'image et une liste de styles, ou None si une erreur survient.
+        """
+        try:
+            query = text("SELECT G.id_G, G.nom, G.description, G.id_IMAGE, G.lien_Reseaux, G.lien_Video, I.nom_I, GROUP_CONCAT(S.nom_St) as styles "
+                        "FROM GROUPE G "
+                        "JOIN IMAGE I ON G.id_IMAGE = I.id_IMAGE "
+                        "LEFT JOIN GROUPE_A_POUR_STYLE GS ON G.id_G = GS.id_G "
+                        "LEFT JOIN STYLE S ON GS.id_St = S.id_St "
+                        "WHERE G.id_G NOT IN (SELECT O.id_G FROM ORGANISATION O WHERE O.id_C = :id_C) "
+                        "GROUP BY G.id_G, G.nom, G.description, G.id_IMAGE, G.lien_Reseaux, G.lien_Video, I.nom_I")
+            result = self.cnx.execute(query, {'id_C': id_C})
+
+            groups = []
+            for id_G, nom, description, id_IMAGE, lien_Reseaux, lien_Video, nom_I, styles_str in result:
+                styles = styles_str.split(',') if styles_str else []
+                group = Groupe(id_G, nom, description, id_IMAGE, lien_Reseaux, lien_Video)
+                groups.append((group, nom_I, styles))
+            print(groups)
+            return groups
+        except Exception as e:
+            
+            print("Erreur lors de la récupération des groupes absents du concert {}:".format(id_C), str(e))
+            return []
+
+        
+        
+
+
