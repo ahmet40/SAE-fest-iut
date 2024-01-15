@@ -19,7 +19,7 @@
                     {% for personne,image,cpt in chanteur %}
                         <div class="dans-boucle">
                             <div class="contain-infos-grp img-contain"><img class="groupe-img" src="{{ url_for('static', filename='images/' + image) }}" alt="image du chanteur"></div>
-                            <div class="contain-infos-grp"><p>{{ personne.get_nom_p() }}, {{ personne.get_prenom_p() }}</p></div>
+                            <div class="contain-infos-grp"><p>{{ personne.get_nom_p() }} {{ personne.get_prenom_p() }}</p></div>
                             <div class="contain-infos-grp"><p>Nombre de groupe : {{cpt}}</p></div>
                             <div class="contain-infos-grp">
                                 <form class="contain-infos-grp" action="{{ url_for('supprimer_le_chanteur',id=personne.get_id_p()) }}" method="post">

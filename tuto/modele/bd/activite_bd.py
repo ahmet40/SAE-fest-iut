@@ -77,18 +77,20 @@ class Activite_bd:
             return None
 
     def get_prochain_id_activite(self):
-        """
-            Récupère le prochain identifiant disponible pour une nouvelle activité.
+        """Récupère le prochain identifiant disponible pour une nouvelle activité.
 
-            Returns:
-                int or None: Prochain identifiant disponible ou None si une erreur survient.
+        Returns:
+            int or None: Prochain identifiant disponible, ou None si une erreur survient.
         """
         try:
             query = text("SELECT MAX(id_C) as m FROM ACTIVITE")
             result = self.cnx.execute(query).fetchone()
             if result and result.m:
-                print(int(result.m) + 1)
                 return int(result.m) + 1
+            else:
+                # Aucune activité dans la base de données, le prochain id sera 1
+                return 1
         except Exception as e:
-            print("Le max de activite échoue")
+            print("Le max de activite échoue:", str(e))
             return None
+

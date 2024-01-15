@@ -12,10 +12,6 @@ class Organisation_bd:
     """
         Classe gérant l'accès à la base de données pour la gestion des organisations d'événements.
     """
-    ERREUR_DATES_NON_CORRESPONDANTES = "dates_non_correspondantes"
-    ERREUR_CHEVAUCHEMENT_ACTIVITE = "chevauchement_activite"
-    ERREUR_CHEVAUCHEMENT_CONCERT = "chevauchement_concert"
-    
     def __init__(self, conx):
         """
         Initialise une instance de la classe Organisation_bd.
@@ -233,7 +229,15 @@ class Organisation_bd:
         
         try:
             if date_fin < date_debut:
-                raise ValueError(self.ERREUR_DATES_NON_CORRESPONDANTES)
+                return " ERREUR_DATES_NON_CORRESPONDANTES "
+            
+            # Vérifier si le groupe existe déjà dans le concert
+            query_existence = text("SELECT * FROM ORGANISATION WHERE id_C = :id_c AND id_G = :id_g")
+            result_existence = self.cnx.execute(query_existence, {'id_c': id_c, 'id_g': id_g})
+            existence = result_existence.fetchall()
+
+            if existence:
+                return "ERREUR_GROUPE_DEJA_PRESENT"
 
             # Récupérer les activités existantes du groupe dans la plage de temps donnée
             query_activites = text("SELECT date_Debut_A, date_Fin_A FROM ACTIVITE natural join PARTICIPE natural join GROUPE WHERE id_G = :id_g")
@@ -245,19 +249,19 @@ class Organisation_bd:
             result_concerts = self.cnx.execute(query_concerts, {'id_c': id_c})
             concerts_existants = result_concerts.fetchall()
             
-            #Faire si le groupe à déja un concert de prévu
-            
             activites_existantes = [(str(row[0]), str(row[1])) for row in activites_existantes]
             concerts_existants = [(str(row[0]), str(row[1])) for row in concerts_existants]
 
             # Vérifier les chevauchements de dates
             for activite in activites_existantes:
                 if not (activite[1] < date_debut or activite[0] > date_fin):
-                    raise ValueError(self.ERREUR_CHEVAUCHEMENT_ACTIVITE)
+                    return "ERREUR_CHEVAUCHEMENT_ACTIVITE"
 
             for concert in concerts_existants:
                 if not (concert[1] < date_debut or concert[0] > date_fin):
-                    raise ValueError(self.ERREUR_CHEVAUCHEMENT_CONCERT)
+                    return "ERREUR_CHEVAUCHEMENT_CONCERT"
+                
+            
             # Insérer le nouvel enregistrement dans ORGANISATION
             query_insertion = text("""
                 INSERT INTO ORGANISATION (id_C, id_G, date_Debut_O, date_Fin_O, temps_Montage, temps_Demontage)
@@ -267,13 +271,10 @@ class Organisation_bd:
 
             # Valider les changements
             self.cnx.commit()
-            print("Enregistrement inséré avec succès.")
-
-        except ValueError as ve:
-            raise ve
+            return "Enregistrement inséré avec succès."
         except Exception as e:
             print("Erreur inconnue lors de l'insertion de l'enregistrement dans ORGANISATION :", str(e))
-            raise ValueError("erreur_inconnue")
+            return "erreur_inconnue"
 
 
             

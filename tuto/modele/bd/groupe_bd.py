@@ -166,21 +166,23 @@ class Groupe_bd:
             return None
 
     def get_prochain_id_groupe(self):
-        """
-        Récupère le prochain identifiant disponible pour un nouveau groupe de musique.
+        """Récupère le prochain identifiant disponible pour un nouveau groupe de musique.
 
         Returns:
-            int or None: Prochain identifiant disponible ou None si une erreur survient.
+            int or None: Prochain identifiant disponible, ou None si une erreur survient.
         """
         try:
             query = text("SELECT MAX(id_G) as m FROM GROUPE")
             result = self.cnx.execute(query).fetchone()
             if result and result.m:
-                print(int(result.m) + 1)
                 return int(result.m) + 1
+            else:
+                # Aucun groupe dans la base de données, le prochain id sera 1
+                return 1
         except Exception as e:
-            print("Le max de groupe échoue")
+            print("Le max de groupe échoue:", str(e))
             return None
+
 
     def delete_groupe(self,id_G):
         """

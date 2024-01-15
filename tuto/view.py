@@ -377,6 +377,7 @@ def add_chanteur():
                 # Enregistrez le fichier dans le répertoire "station/images"
                 image_path = os.path.join("static/images", filename)
                 image_file.save(image_path)
+                print(PERSONNE.get_prochain_id_personne())
 
                 # Maintenant, vous pouvez utiliser le nom du fichier (filename) comme information supplémentaire
                 # dans votre base de données, par exemple:
@@ -581,12 +582,13 @@ def gerer_groupe_concert(id):
     return redirect("login_spec")
 
 @app.route("/ajouter-groupe-concert/<int:id>")
-def ajouter_groupe(id,message=None):
+def ajouter_groupe(id,message,show_popup):
     """Cette methode va nous permettre d'ajouter un groupe à un concert'
 
     """
     if le_adm.get_id()!=-1:
-        return render_template("add_groupe_concert.html",groupes=models.liste_groupe_absent_concert(id),gerer_concert=True,concert=models.get_concert(id),msg=message)
+        print(message, show_popup)
+        return render_template("add_groupe_concert.html",groupes=models.liste_groupe_absent_concert(id),gerer_concert=True,concert=models.get_concert_id(id),msg=message,show_popup=show_popup)
     else:
         return redirect("login_spec")
 
@@ -610,23 +612,7 @@ def action_ajouter_groupe_concert(id_c, id_g):
         debut = str(request.form.get("debut_concert"))
         fin = str(request.form.get("fin_concert"))
 
-        try:
-            # Appel de la fonction inserer_dans_organisation et récupération du type d'erreur
-            models.inserer_dans_organisation(id_c, id_g, debut, fin)
-
-            # Pas d'erreur, redirection
-            return redirect(url_for("ajouter_groupe",id=id_c))
-
-        except ValueError as ve:
-            # Mappez le type d'erreur à un message spécifique
-            messages_erreurs = {
-                ORGANISATION.ERREUR_DATES_NON_CORRESPONDANTES: "Les dates ne correspondent pas.",
-                ORGANISATION.ERREUR_CHEVAUCHEMENT_ACTIVITE: "Chevauchement avec une activité existante.",
-                ORGANISATION.ERREUR_CHEVAUCHEMENT_CONCERT: "Chevauchement avec un autre concert.",
-                "erreur_inconnue": "Erreur inconnue.",
-            }
-
-            type_erreur = str(ve)
-            # Utilisez le message spécifique dans le modèle
-            return redirect(url_for("ajouter_groupe",id=id_c , erreur_insertion=messages_erreurs.get(type_erreur, "Erreur inconnue")))
+        messages = models.inserer_dans_organisation(id_c, id_g, debut, fin)
+        print(messages)
+        return redirect(url_for("ajouter_groupe",id=id_c , erreur_insertion=messages,show_popup=True))
 

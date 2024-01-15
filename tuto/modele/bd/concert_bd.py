@@ -198,20 +198,23 @@ class Concert_bd:
 
     def get_prochain_id_concert(self):
         """
-            Récupère le prochain identifiant disponible pour un nouveau concert.
+        Récupère le prochain identifiant disponible pour un nouveau concert.
 
-            Returns:
-                int or None: Prochain identifiant disponible ou None si une erreur survient.
+        Returns:
+            int or None: Prochain identifiant disponible, ou None si une erreur survient.
         """
         try:
             query = text("SELECT MAX(id_C) as m FROM CONCERTS")
             result = self.cnx.execute(query).fetchone()
             if result and result.m:
-                print(int(result.m) + 1)
                 return int(result.m) + 1
+            else:
+                # Aucun concert dans la base de données, le prochain id sera 1
+                return 1
         except Exception as e:
-            print("Le max de concert échoue")
-            return 0
+            print("Le max de concert échoue:", str(e))
+            return None
+
         
     def get_concert_debut_proche(self):
         """

@@ -75,18 +75,20 @@ class Hebergement_bd:
             return None
 
     def get_prochain_id_hebergement(self):
-        """
-        Récupère le prochain identifiant disponible pour un nouvel hébergement.
+        """Récupère le prochain identifiant disponible pour un nouvel hébergement.
 
         Returns:
-            int or None: Prochain identifiant disponible ou None si une erreur survient.
+            int or None: Prochain identifiant disponible, ou None si une erreur survient.
         """
         try:
             query = text("SELECT MAX(id_H) as m FROM HEBERGEMENT")
             result = self.cnx.execute(query).fetchone()
             if result and result.m:
-                print(int(result.m) + 1)
                 return int(result.m) + 1
+            else:
+                # Aucun hébergement dans la base de données, le prochain id sera 1
+                return 1
         except Exception as e:
-            print("Le max de HEBERGEMENT échoue")
+            print("Le max de HEBERGEMENT échoue:", str(e))
             return None
+

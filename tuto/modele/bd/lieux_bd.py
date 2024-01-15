@@ -79,14 +79,16 @@ class Lieux_bd:
         Récupère le prochain identifiant disponible pour un nouveau lieu d'événement.
 
         Returns:
-            int or None: Prochain identifiant disponible ou None si une erreur survient.
+            int or None: Prochain identifiant disponible, ou None si une erreur survient.
         """
         try:
             query = text("SELECT MAX(id_L) as m FROM LIEUX")
             result = self.cnx.execute(query).fetchone()
             if result and result.m:
-                print(int(result.m) + 1)
                 return int(result.m) + 1
+            else:
+                # Aucun lieu dans la base de données, le prochain id sera 1
+                return 1
         except Exception as e:
-            print("Le max de lieux échoue")
+            print("Le max de lieux échoue:", str(e))
             return None

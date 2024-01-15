@@ -74,18 +74,20 @@ class Style_parent_bd:
             return None
 
     def get_prochain_id_style_parent(self):
-        """
-        Récupère le prochain identifiant disponible pour un nouveau style parent.
+        """Récupère le prochain identifiant disponible pour un nouveau style parent.
 
         Returns:
-            int or None: Prochain identifiant disponible ou None si une erreur survient.
+            int or None: Prochain identifiant disponible, ou None si une erreur survient.
         """
         try:
             query = text("SELECT MAX(id_St_P) as m FROM STYLE_PARENT")
             result = self.cnx.execute(query).fetchone()
             if result and result.m:
-                print(int(result.m) + 1)
                 return int(result.m) + 1
+            else:
+                # Aucun style parent dans la base de données, le prochain id sera 1
+                return 1
         except Exception as e:
-            print("Le max de STYLE_PARENT échoue")
+            print("Le max de STYLE_PARENT échoue:", str(e))
             return None
+

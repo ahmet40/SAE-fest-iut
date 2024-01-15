@@ -112,11 +112,14 @@ class Personne_bd:
             query = text("SELECT MAX(id_P) as m FROM PERSONNE")
             result = self.cnx.execute(query).fetchone()
             if result and result.m:
-                print(int(result.m) + 1)
                 return int(result.m) + 1
+            else:
+                # Aucune personne dans la base de données, le prochain id sera 1
+                return 1
         except Exception as e:
-            print("Le max de personne échoue")
+            print("Le max de personne échoue:", str(e))
             return None
+
         
 
     def supprimer_personne(self, id_P):
