@@ -1,0 +1,68 @@
+#tout-container {
+    overflow-x: auto;
+    margin-right: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    flex-direction: column;
+}
+
+#tout {
+    display: flex;
+    width: 90%;
+    justify-content: center;
+    align-items: center;
+    border-radius: 15px;
+    margin-top: 4vh;
+    flex-wrap: wrap;
+}
+
+.dans-boucle{
+    display:flex;
+    width :22%;
+    justify-content: center;
+    flex-direction: column;
+    border-bottom: 0.5px solid rgb(83, 83, 83);
+    margin-inline: 11px;
+    margin-top: 5%;
+    margin-bottom: 2%;
+    align-items: center;
+}
+.dans-boucle div{
+    margin: 2px;
+}
+
+.dans-boucle form{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.groupe-img{
+    width: 12em;
+    height: 10em;
+    border-radius: 14%;
+}
+.img-contain{
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding-left:5px;
+}
+
+@media (max-width: 880px) {
+    .dans-boucle {
+      width: 45%;
+    }
+  }
+
+  @media (max-width: 500px) {
+    .dans-boucle {
+      width: 80%;
+    }
+  }
+
+
+

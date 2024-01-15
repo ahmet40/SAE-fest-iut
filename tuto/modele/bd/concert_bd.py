@@ -282,3 +282,24 @@ class Concert_bd:
         except Exception as e:
             print(f"Erreur lors de la suppression du concert (id_C={id_C}): {str(e)}")
             return None
+        
+    def get_concert(self,id_C):
+        """
+            Récupère un concert spécifique en fonction de son identifiant.
+
+            Args:
+                id_C (int): Identifiant du concert à récupérer.
+
+            Returns:
+                list[Concert] or None: Liste d'objets Concert correspondant à l'identifiant donné, ou None si une erreur survient.
+        """
+        try:
+            query = text(f"select id_C, nom_C, date_Debut, date_Fin, id_L,id_IMAGE from CONCERTS where id_C= {str(id_C)}")
+            resultat = self.cnx.execute(query)
+            concert= None
+            for id_C, nom_C, date_Debut, date_Fin, id_L,id_IMAGE in resultat:
+                concert = Concert(id_C, nom_C, date_Debut, date_Fin, id_L,id_IMAGE)
+            return concert
+        except Exception as e:
+            print("Le concert n'éxiste pas")
+            return None

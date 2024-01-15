@@ -489,3 +489,23 @@ def liste_groupe_absent_concert(id_c):
         id_c (int): identifiant du concert
     """
     return ORGANISATION.liste_groupe_absent_concert(id_c)
+
+def get_concert(id_C):
+    """Cette fonction permet de récupérer un concert a partir de son id
+    
+    Args :
+        id_c (int): identifiant du concert
+    """
+    return CONCERTS.get_concert(id_C)
+
+def inserer_dans_organisation(id_c, id_g, date_debut, date_fin):
+    """Cette fonction permet d'inserer une organisation
+
+    Args:
+        id_c (int): ID du concert.
+        id_g (int): ID du groupe.
+        date_debut (datetime): Date et heure de début.
+        date_fin (datetime): Date et heure de fin.
+    """
+    
+    ORGANISATION.inserer_dans_organisation(id_c, id_g, date_debut, date_fin)

@@ -18,9 +18,15 @@
             {% if groupe %}
                     {% for grp,img,cpt in groupe %}
                         <div class="dans-boucle">
-                            <div class="contain-infos-grp img-contain"><img class="groupe-img" src="{{ url_for('static', filename='groupes/' + img) }}" alt="groupe du chanteur"></div>
+                            <div class="contain-infos-grp img-contain"><img class="groupe-img" src="{{ url_for('static', filename='images/' + img) }}" alt="groupe du chanteur"></div>
                             <div class="contain-infos-grp"><p>{{ grp.get_nom() }}</p></div>
-                            <div class="contain-infos-grp"><a href="{{ url_for('gerer_membre',id=grp.get_id_g()) }}">Nombre membre : {{cpt}}</a></div>
+                            <div class="contain-infos-grp">
+                                <a href="{{ url_for('gerer_membre',id=grp.get_id_g()) }}">
+                                    <button class="button_top">
+                                        <span>Nombre membre : {{cpt}}</span>
+                                    </button>
+                                </a>
+                            </div>
                                 <div class="contain-infos-grp">
                                     <form class="contain-infos-grp" action="{{ url_for('supprimer_groupe',id=grp.get_id_g()) }}" method="post">
                                         <button class="button_supprimer">

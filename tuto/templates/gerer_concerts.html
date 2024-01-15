@@ -22,10 +22,12 @@
                         <div class="dans-boucle">
                             <div class="contain-infos-concert img-contain"><img class="groupe-img" src="{{ url_for('static', filename='images/' + img) }}" alt="concert"></div>
                             <div class="contain-infos-concert"><p>{{ concert.get_nom_c() }}</p></div>
-                            <div class="contain-infos-concert"><a href="{{ url_for('gerer_groupe_concert',id=concert.get_id_c()) }}">
-                                <button class="button_top">
-                                    <span>Nombre de groupe : {{cpt}}</span>
-                                </button></a>
+                            <div class="contain-infos-concert">
+                                <a href="{{ url_for('gerer_groupe_concert',id=concert.get_id_c()) }}">
+                                    <button class="button_top">
+                                        <span>Nombre de groupe : {{cpt}}</span>
+                                    </button>
+                                </a>
                             </div>
                                 <div class="contain-infos-concert">
                                     <form class="contain-infos-concert" action="{{ url_for('supprimer_concert',id=concert.get_id_c()) }}" method="post">

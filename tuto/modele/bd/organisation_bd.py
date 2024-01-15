@@ -1,4 +1,5 @@
 from sqlalchemy.sql.expression import text
+from datetime import datetime
 import sys
 import os
 
@@ -11,6 +12,10 @@ class Organisation_bd:
     """
         Classe gérant l'accès à la base de données pour la gestion des organisations d'événements.
     """
+    ERREUR_DATES_NON_CORRESPONDANTES = "dates_non_correspondantes"
+    ERREUR_CHEVAUCHEMENT_ACTIVITE = "chevauchement_activite"
+    ERREUR_CHEVAUCHEMENT_CONCERT = "chevauchement_concert"
+    
     def __init__(self, conx):
         """
         Initialise une instance de la classe Organisation_bd.
@@ -198,14 +203,80 @@ class Organisation_bd:
                 styles = styles_str.split(',') if styles_str else []
                 group = Groupe(id_G, nom, description, id_IMAGE, lien_Reseaux, lien_Video)
                 groups.append((group, nom_I, styles))
-            print(groups)
             return groups
         except Exception as e:
             
             print("Erreur lors de la récupération des groupes absents du concert {}:".format(id_C), str(e))
             return []
 
+
+    def inserer_dans_organisation(self, id_c, id_g, date_debut, date_fin):
+        """
+        Insérer un nouvel enregistrement dans la table ORGANISATION en vérifiant les chevauchements de dates avec les activités existantes du groupe (id_g) et les concerts (id_c).
+
+        Args:
+            id_c (int): ID du concert.
+            id_g (int): ID du groupe.
+            date_debut (datetime): Date et heure de début.
+            date_fin (datetime): Date et heure de fin.
+
+        Raises:
+            ValueError: En cas d'erreur, lève une exception avec le type d'erreur.
+        """
+        date_object_deb = datetime.strptime(date_debut, "%Y-%m-%dT%H:%M")
+        date_debut = date_object_deb.strftime("%Y-%m-%d %H:%M:%S")
         
+        date_object_fin = datetime.strptime(date_fin, "%Y-%m-%dT%H:%M")
+        date_fin = date_object_fin.strftime("%Y-%m-%d %H:%M:%S")
         
+        print(date_debut)
+        
+        try:
+            if date_fin < date_debut:
+                raise ValueError(self.ERREUR_DATES_NON_CORRESPONDANTES)
+
+            # Récupérer les activités existantes du groupe dans la plage de temps donnée
+            query_activites = text("SELECT date_Debut_A, date_Fin_A FROM ACTIVITE natural join PARTICIPE natural join GROUPE WHERE id_G = :id_g")
+            result_activites = self.cnx.execute(query_activites, {'id_g': id_g})
+            activites_existantes = result_activites.fetchall()
+
+            # Récupérer les concerts existants dans la plage de temps donnée
+            query_concerts = text("SELECT date_Debut_O, date_Fin_O FROM ORGANISATION WHERE id_C = :id_c")
+            result_concerts = self.cnx.execute(query_concerts, {'id_c': id_c})
+            concerts_existants = result_concerts.fetchall()
+            
+            #Faire si le groupe à déja un concert de prévu
+            
+            activites_existantes = [(str(row[0]), str(row[1])) for row in activites_existantes]
+            concerts_existants = [(str(row[0]), str(row[1])) for row in concerts_existants]
+
+            # Vérifier les chevauchements de dates
+            for activite in activites_existantes:
+                if not (activite[1] < date_debut or activite[0] > date_fin):
+                    raise ValueError(self.ERREUR_CHEVAUCHEMENT_ACTIVITE)
+
+            for concert in concerts_existants:
+                if not (concert[1] < date_debut or concert[0] > date_fin):
+                    raise ValueError(self.ERREUR_CHEVAUCHEMENT_CONCERT)
+            # Insérer le nouvel enregistrement dans ORGANISATION
+            query_insertion = text("""
+                INSERT INTO ORGANISATION (id_C, id_G, date_Debut_O, date_Fin_O, temps_Montage, temps_Demontage)
+                VALUES (:id_c, :id_g, :date_debut, :date_fin, 0, 0)
+            """)
+            self.cnx.execute(query_insertion, {'id_c': id_c, 'id_g': id_g, 'date_debut': date_debut, 'date_fin': date_fin})
+
+            # Valider les changements
+            self.cnx.commit()
+            print("Enregistrement inséré avec succès.")
+
+        except ValueError as ve:
+            raise ve
+        except Exception as e:
+            print("Erreur inconnue lors de l'insertion de l'enregistrement dans ORGANISATION :", str(e))
+            raise ValueError("erreur_inconnue")
+
+
+            
+            
 
 

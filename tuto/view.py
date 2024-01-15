@@ -16,9 +16,11 @@ from connexion import CNX
 from spectateur_bd import Spectateur_bd
 from admin_bd import Admin_bd
 from personne_bd import Personne_bd
+from organisation_bd import Organisation_bd
 ADMIN=Admin_bd(CNX)
 SPECTATEUR=Spectateur_bd(CNX)
 PERSONNE=Personne_bd(CNX)
+ORGANISATION=Organisation_bd(CNX)
 
 ROOT = os.path.join(os.path.dirname(os.path.abspath(__file__)), './modele')
 sys.path.append(os.path.join(ROOT, './code_modele'))
@@ -566,7 +568,6 @@ def supprimer_concert(id):
     Returns:
         list: la liste des informations
     """
-    print(id)
     models.delete_concert(id)
     return redirect(url_for("gerer_concert"))
 
@@ -580,12 +581,12 @@ def gerer_groupe_concert(id):
     return redirect("login_spec")
 
 @app.route("/ajouter-groupe-concert/<int:id>")
-def ajouter_groupe(id):
+def ajouter_groupe(id,message=None):
     """Cette methode va nous permettre d'ajouter un groupe à un concert'
 
     """
     if le_adm.get_id()!=-1:
-        return render_template("add_groupe_concert.html",groupes=models.liste_groupe_absent_concert(id),gerer_concert=True,concert=id)
+        return render_template("add_groupe_concert.html",groupes=models.liste_groupe_absent_concert(id),gerer_concert=True,concert=models.get_concert(id),msg=message)
     else:
         return redirect("login_spec")
 
@@ -599,6 +600,33 @@ def supprimer_groupe_concert(id_c,id_g):
     Returns:
         list: la liste des informations
     """
-    print(id)
     models.delete_groupe_concert(id_c,id_g)
     return redirect(url_for("gerer_groupe_concert",id=id_c))
+
+
+@app.route("/action-ajouter-groupe-concert/<int:id_c>/<int:id_g>", methods=["POST"])
+def action_ajouter_groupe_concert(id_c, id_g):
+    if request.method == "POST":
+        debut = str(request.form.get("debut_concert"))
+        fin = str(request.form.get("fin_concert"))
+
+        try:
+            # Appel de la fonction inserer_dans_organisation et récupération du type d'erreur
+            models.inserer_dans_organisation(id_c, id_g, debut, fin)
+
+            # Pas d'erreur, redirection
+            return redirect(url_for("ajouter_groupe",id=id_c))
+
+        except ValueError as ve:
+            # Mappez le type d'erreur à un message spécifique
+            messages_erreurs = {
+                ORGANISATION.ERREUR_DATES_NON_CORRESPONDANTES: "Les dates ne correspondent pas.",
+                ORGANISATION.ERREUR_CHEVAUCHEMENT_ACTIVITE: "Chevauchement avec une activité existante.",
+                ORGANISATION.ERREUR_CHEVAUCHEMENT_CONCERT: "Chevauchement avec un autre concert.",
+                "erreur_inconnue": "Erreur inconnue.",
+            }
+
+            type_erreur = str(ve)
+            # Utilisez le message spécifique dans le modèle
+            return redirect(url_for("ajouter_groupe",id=id_c , erreur_insertion=messages_erreurs.get(type_erreur, "Erreur inconnue")))
+
