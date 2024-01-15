@@ -582,7 +582,17 @@ def gerer_groupe_concert(id):
     return redirect("login_spec")
 
 @app.route("/ajouter-groupe-concert/<int:id>")
-def ajouter_groupe(id,message,show_popup):
+def ajouter_groupe(id):
+    """Cette methode va nous permettre d'ajouter un groupe à un concert'
+
+    """
+    if le_adm.get_id()!=-1:
+        return render_template("add_groupe_concert.html",groupes=models.liste_groupe_absent_concert(id),gerer_concert=True,concert=models.get_concert_id(id))
+    else:
+        return redirect("login_spec")
+
+@app.route("/ajouter-groupe-concert/<int:id>")
+def ajouter_groupe_popup(id,message,show_popup):
     """Cette methode va nous permettre d'ajouter un groupe à un concert'
 
     """
@@ -614,5 +624,5 @@ def action_ajouter_groupe_concert(id_c, id_g):
 
         messages = models.inserer_dans_organisation(id_c, id_g, debut, fin)
         print(messages)
-        return redirect(url_for("ajouter_groupe",id=id_c , erreur_insertion=messages,show_popup=True))
+        return redirect(url_for("ajouter_groupe_popup",id=id_c , erreur_insertion=messages,show_popup=True))
 
