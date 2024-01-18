@@ -27,6 +27,7 @@ from participe_bd import Participe_bd
 from billet_bd import Billet_bd
 from image_bd import Image_bd
 from instrument_bd import Instrument_bd
+from lieux_bd import Lieux_bd
 #---------------------------------------------------------------
 # Connexion à la base de données
 SPECTATEUR=Spectateur_bd(CNX)
@@ -44,6 +45,7 @@ PARTICIPE=Participe_bd(CNX)
 BILLET=Billet_bd(CNX)
 IMAGE=Image_bd(CNX)
 INSTRUMENT=Instrument_bd(CNX)
+LIEUX = Lieux_bd(CNX)
 #-----------------------------------------------------------------------------
 # Connection et creation de compte
 def connecter_spectateur(username: str, password: str) -> bool:
@@ -455,13 +457,13 @@ def get_concerts_nb_groupe_img():
     """
     return CONCERTS.get_concerts_with_group_count_and_image_name()
 
-def delete_concert(id_C):
+def delete_concert(id_C, id_i):
     """Cette methode va nous permettre de supprimer un concert
 
     Args:
         id_c ([int]): l'id du concert
     """
-    CONCERTS.delete_concert(id_C)
+    CONCERTS.delete_concert(id_C,id_i)
     
 def get_groupe_concert_liste(id):
     """Cette methode va nous permettre d'obtenir les groupes d'un concert
@@ -509,3 +511,32 @@ def inserer_dans_organisation(id_c, id_g, date_debut, date_fin):
     """
     
     return ORGANISATION.inserer_dans_organisation(id_c, id_g, date_debut, date_fin)
+
+    
+def inserer_concert(nom_concert, date_debut, date_fin, departement, lieux, nom_I, capacite):
+    """
+    Insère un nouveau concert dans les bases de données des images, des lieux et des concerts.
+
+    :param nom_concert: Nom du concert.
+    :param date_debut: Date de début du concert.
+    :param date_fin: Date de fin du concert.
+    :param departement: Département du lieu du concert.
+    :param lieux: Lieu du concert.
+    :param nom_I: Nom de l'image associée au concert.
+    :param capacite: Capacité du lieu du concert.
+    """
+    try:
+        # Insérer l'image associée au concert
+        IMAGE.insere_image(nom_I)
+
+        # Insérer le lieu du concert
+        LIEUX.insere_lieux(departement, lieux, capacite)
+
+        # Insérer le concert en utilisant les identifiants des dernières images et lieux ajoutés
+        return CONCERTS.insere_concert(nom_concert, date_debut, date_fin, LIEUX.get_prochain_id_lieux()-1, IMAGE.get_prochain_id()-1)
+
+    except Exception as e:
+        # Gérer les exceptions et afficher un message d'erreur
+        print(f"Une erreur s'est produite lors de l'insertion du concert : {e}")
+
+

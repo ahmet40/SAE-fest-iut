@@ -212,6 +212,18 @@ class Groupe_bd:
             self.cnx.execute(query6)
             self.cnx.execute(query7)
             self.cnx.execute(query8)
+            
+            
+            query = text(f"select  nom_I from IMAGE where id_IMAGE= {str(id_i)}")
+            resultat = self.cnx.execute(query)
+            image = [img for img in resultat]
+
+            
+            if os.path.exists('../../static/images/'+image[0]):
+                os.remove('../../static/images/'+image[0])
+            else:
+                print("Impossible de supprimer le fichier car il n'existe pas")
+                return
             self.cnx.commit()
         except Exception as e:
             print("delete groupe a échoué")

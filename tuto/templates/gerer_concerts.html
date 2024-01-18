@@ -30,7 +30,7 @@
                                 </a>
                             </div>
                                 <div class="contain-infos-concert">
-                                    <form class="contain-infos-concert" action="{{ url_for('supprimer_concert',id=concert.get_id_c()) }}" method="post">
+                                    <form class="contain-infos-concert" action="{{ url_for('supprimer_concert',id=concert.get_id_c(), id_i = concert.get_id_image()) }}" method="post">
                                         <button class="button_supprimer">
                                             <svg
                                             xmlns="http://www.w3.org/2000/svg"

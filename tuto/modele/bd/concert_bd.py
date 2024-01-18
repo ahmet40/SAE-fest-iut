@@ -1,3 +1,5 @@
+from datetime import datetime
+
 from sqlalchemy.sql.expression import text
 import sys
 import os
@@ -260,7 +262,7 @@ class Concert_bd:
             print("Erreur lors de la récupération des concerts avec le nombre de groupes associés et le nom de l'image:", str(e))
             return []
     
-    def delete_concert(self, id_C):
+    def delete_concert(self, id_C, id_i):
         """
         Supprime un concert de la base de données et ses données associées.
 
@@ -281,7 +283,25 @@ class Concert_bd:
             self.cnx.execute(query3)
             self.cnx.execute(query4)
             
-            self.cnx.commit()
+            
+            query_image = text(f"SELECT nom_I FROM IMAGE WHERE id_IMAGE={str(id_i)}")
+            resultat_image = self.cnx.execute(query_image)
+            image_row = resultat_image.fetchone()
+            print(image_row[0])
+            repertoire_actuel = os.getcwd()
+            print(repertoire_actuel)
+
+            if image_row!=():
+
+                if os.path.exists('static/images/' + image_row[0]):
+                    os.remove('static/images/' + image_row[0])
+                else:
+                    print("Impossible de supprimer le fichier car il n'existe pas")
+                    return
+
+                self.cnx.commit()
+            else:
+                print("Image non trouvée pour l'id_image spécifié.")
         except Exception as e:
             print(f"Erreur lors de la suppression du concert (id_C={id_C}): {str(e)}")
             return None
@@ -306,3 +326,44 @@ class Concert_bd:
         except Exception as e:
             print("Le concert n'éxiste pas")
             return None
+    
+    
+
+    def insere_concert(self, nom_concert, date_debut, date_fin, id_l, id_i):
+        """
+        Insère un nouveau concert dans la base de données.
+
+        Args:
+            nom_concert (str): Nom du concert.
+            date_debut (str): Date de début du concert au format 'AAAA-MM-JJTHH:MM'.
+            date_fin (str): Date de fin du concert au format 'AAAA-MM-JJTHH:MM'.
+            id_l (int): Identifiant du lieu du concert.
+            id_i (int): Identifiant de l'image associée au concert.
+
+        Returns:
+            None: Aucune valeur de retour, lève une exception en cas d'échec.
+        """
+        try:
+            # Convertir les chaînes de date en objets datetime
+            date_debut_obj = datetime.strptime(date_debut, "%Y-%m-%dT%H:%M")
+            date_fin_obj = datetime.strptime(date_fin, "%Y-%m-%dT%H:%M")
+            
+            date_debut = date_debut_obj.strftime("%Y-%m-%d %H:%M:%S")
+        
+            date_fin = date_fin_obj.strftime("%Y-%m-%d %H:%M:%S")
+
+            # Vérifier la cohérence des dates
+            if date_fin < date_debut:
+                print(" ERREUR_DATES_NON_CORRESPONDANTES ")
+                return
+            id = self.get_prochain_id_concert()
+            # Code d'insertion dans la base de données
+            query = text(f"INSERT INTO CONCERTS (id_C, nom_C, date_Debut, date_Fin, id_L, id_IMAGE) VALUES ({id},'{nom_concert}', '{date_debut}', '{date_fin}', {id_l}, {id_i})")
+            self.cnx.execute(query)
+            self.cnx.commit()
+            return True
+        except Exception as e:
+            print("Insertion du concert a échoué:", str(e))
+            return None
+
+        

@@ -61,8 +61,10 @@ class Image_bd:
             query = text("SELECT MAX(id_IMAGE) as m FROM IMAGE")
             result = self.cnx.execute(query).fetchone()
             if result and result.m:
-                print(int(result.m) + 1)
                 return int(result.m) + 1
+            else:
+                # Aucune image dans la base de données, le prochain id sera 1
+                return 1
         except Exception as e:
             print("Le max de image échoue")
             return None

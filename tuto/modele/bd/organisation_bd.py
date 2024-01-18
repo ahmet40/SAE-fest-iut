@@ -271,7 +271,8 @@ class Organisation_bd:
 
             # Valider les changements
             self.cnx.commit()
-            return "Enregistrement inséré avec succès."
+            print("Enregistrement inséré avec succès.")
+            return True
         except Exception as e:
             print("Erreur inconnue lors de l'insertion de l'enregistrement dans ORGANISATION :", str(e))
             return "erreur_inconnue"

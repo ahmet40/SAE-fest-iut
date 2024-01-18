@@ -17,10 +17,12 @@ from spectateur_bd import Spectateur_bd
 from admin_bd import Admin_bd
 from personne_bd import Personne_bd
 from organisation_bd import Organisation_bd
+from concert_bd import Concert_bd
 ADMIN=Admin_bd(CNX)
 SPECTATEUR=Spectateur_bd(CNX)
 PERSONNE=Personne_bd(CNX)
 ORGANISATION=Organisation_bd(CNX)
+CONCERT=Concert_bd(CNX)
 
 ROOT = os.path.join(os.path.dirname(os.path.abspath(__file__)), './modele')
 sys.path.append(os.path.join(ROOT, './code_modele'))
@@ -490,6 +492,7 @@ def nouveau_groupe():
             lien_reseau=request.form.get("lien_resaux")
             lien_video=request.form.get("lien_video")
             image_file = request.files['image']
+            
 
             # Vérifiez si un fichier a été téléchargé
             if image_file and allowed_file(image_file.filename):
@@ -565,22 +568,41 @@ def creer_concert():
         return redirect("login_spec")
     
 
-@app.route("/action-creer-membre", methods=["POST"])
-def action_creer_membre():
+@app.route("/action_creer_concert", methods=["GET", "POST"])
+def action_creer_concert():
     if request.method == "POST":
-        id_personne = int(request.form.get("selectPersonne"))
-        id_instrument = int(request.form.get("selectInstrument"))
-
-        # Faites quelque chose avec les identifiants sélectionnés, par exemple, ajoutez-les à la base de données
-        models.creer_membre(id,id_personne, id_instrument)
-
+        nom_concert = request.form.get("nom_C")
+        date_debut = request.form.get("date_Debut")
+        date_fin = request.form.get("date_Fin")
+        departement = request.form.get("departement")
+        lieux = request.form.get("lieux")
+        image_file = request.files["image"]
+        capacite=request.form.get("capacite")
+        print(date_debut,"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa")
+        
+        result = None
+        
+        # Vérifiez si un fichier a été téléchargé
+        if image_file and allowed_file(image_file.filename):
+            # Sécurisez le nom du fichier
+            filename = secure_filename(image_file.filename)
+            filename = filename+str(random.randint(0, 100000))
+            # Enregistrez le fichier dans le répertoire "static/images"
+            image_path = os.path.join("static/images", filename)
+            image_file.save(image_path)
+            # Maintenant, vous pouvez utiliser le nom du fichier (filename) comme information supplémentaire
+            # dans votre base de données, par exemple:
+            result = models.inserer_concert(nom_concert,date_debut,date_fin, departement, lieux, filename, capacite)
+    if result is True:
+        return redirect(url_for("gerer_concert"))
     # Redirigez ou renvoyez une réponse appropriée
-    return redirect(url_for("gerer_membre",id=id))
+    else:
+        return redirect(url_for("creer_concert"))
 
 
 
-@app.route("/supprimer-concert/<int:id>",methods=["POST"])
-def supprimer_concert(id):
+@app.route("/supprimer-concert/<int:id>/<int:id_i>",methods=["POST"])
+def supprimer_concert(id, id_i):
     """Cette methode va nous permettre de supprimer une image
 
     Args:
@@ -589,7 +611,7 @@ def supprimer_concert(id):
     Returns:
         list: la liste des informations
     """
-    models.delete_concert(id)
+    models.delete_concert(id,id_i)
     return redirect(url_for("gerer_concert"))
 
 @app.route("/gerer-groupe-concert/<int:id>")
@@ -633,5 +655,8 @@ def action_ajouter_groupe_concert(id_c, id_g):
 
         messages = models.inserer_dans_organisation(id_c, id_g, debut, fin)
         print(messages)
-        return redirect(url_for("ajouter_groupe",id=id_c ))
+        if messages is True:
+            return redirect(url_for("creer_concert"))
+        else :
+            return redirect(url_for("ajouter_groupe",id=id_c ))
 

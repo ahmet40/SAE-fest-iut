@@ -92,3 +92,37 @@ class Lieux_bd:
         except Exception as e:
             print("Le max de lieux échoue:", str(e))
             return None
+    
+    def insere_lieux(self, nom_dep, nom_L, nb_Max_Personne):
+        """
+        Insère un nouveau lieu d'événement dans la base de données.
+
+        Args:
+            nom_dep (str): nom du département.
+            nom_L (str): Nom du lieu d'événement.
+            nb_Max_Personne (int): Nombre maximum de personnes pouvant être accueillies dans le lieu.
+
+        Returns:
+            bool: True si l'insertion réussit, False si le département et le lieu existent déjà.
+        """
+        try:
+            # Vérifier si le département et le lieu existent déjà
+            query_existence = text(f"SELECT COUNT(*) FROM LIEUX WHERE nom_dep = '{nom_dep}' AND nom_L = '{nom_L}'")
+            existence_result = self.cnx.execute(query_existence).fetchone()
+
+            if existence_result[0] > 0:
+                print("Le lieu existe déjà dans le département.")
+                return False
+
+            # Insérer le nouveau lieu
+            id_L = self.get_prochain_id_lieux()
+            query_insertion = text(f"INSERT INTO LIEUX VALUES ({id_L}, '{nom_dep}', '{nom_L}', {nb_Max_Personne})")
+            self.cnx.execute(query_insertion)
+            self.cnx.commit()
+
+            return True
+
+        except Exception as e:
+            print(f"Erreur lors de l'insertion du lieu : {e}")
+            return False
+
