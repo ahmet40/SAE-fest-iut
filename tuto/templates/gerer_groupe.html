@@ -28,7 +28,7 @@
                                 </a>
                             </div>
                                 <div class="contain-infos-grp">
-                                    <form class="contain-infos-grp" action="{{ url_for('supprimer_groupe',id=grp.get_id_g()) }}" method="post">
+                                    <form class="contain-infos-grp" action="{{ url_for('supprimer_groupe',id=grp.get_id_g(),id_i = grp.get_photo()) }}" method="post">
                                         <button class="button_supprimer">
                                             <svg
                                             xmlns="http://www.w3.org/2000/svg"

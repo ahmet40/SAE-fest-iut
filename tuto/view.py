@@ -339,9 +339,9 @@ def gerer_chanteur():
     return redirect("login_spec")
 
 
-@app.route("/supprimer/<int:id>",methods=["POST"])
-def supprimer_le_chanteur(id):
-    models.supprimer_chanteur(id)
+@app.route("/supprimer/<int:id>/<int:id_i>",methods=["POST"])
+def supprimer_le_chanteur(id, id_i):
+    models.supprimer_chanteur(id,id_i)
     return redirect(url_for("gerer_chanteur"))
 
 
@@ -353,7 +353,7 @@ def cree_chanteur():
         list: la liste des informations
     """
     if le_adm.get_id()!=-1:
-        return render_template("add_chanteur.html",add_chanteur=True)
+        return render_template("add_chanteur.html",add=True)
     else:
         return redirect("login_spec")
 
@@ -435,8 +435,8 @@ def gerer_membre(id):
 
 
 
-@app.route("/supprimer-groupe/<int:id>",methods=["POST"])
-def supprimer_groupe(id):
+@app.route("/supprimer-groupe/<int:id>/<int:id_i>",methods=["POST"])
+def supprimer_groupe(id, id_i):
     """Cette methode va nous permettre de supprimer une image
 
     Args:
@@ -445,18 +445,19 @@ def supprimer_groupe(id):
     Returns:
         list: la liste des informations
     """
-    print(id)
-    models.delete_groupe(id)
+
+    models.delete_groupe(id,id_i)
     return redirect(url_for("gerer_groupe"))
 
 
 
 @app.route("/supprimer-membre/<int:id_g>/<int:id_p>",methods=["POST"])
 def supprimer_membre(id_g,id_p):
-    """Cette methode va nous permettre de supprimer une image
+    """Cette methode va nous permettre de supprimer un membre d'un groupe
 
     Args:
-        id ([int]): l'id de l'image
+        id_g ([int]): l'id du groupe
+        id_p ([int]): l'id de la personne (chanteur)
 
     Returns:
         list: la liste des informations
@@ -474,7 +475,7 @@ def creer_groupe():
         list: la liste des informations
     """
     if le_adm.get_id()!=-1:
-        return render_template("add_groupe.html",add_chanteur=True)
+        return render_template("add_groupe.html",add=True)
     else:
         return redirect("login_spec")
     
@@ -550,14 +551,33 @@ def gerer_concert():
 
 @app.route("/cree-concert")
 def creer_concert():
-    """Cette methode va nous permettre de creer un groupe
+    """Cette methode va nous permettre de creer un concert
 
     """
     if le_adm.get_id()!=-1:
-        return render_template("add_concert.html",add_chanteur=True)
+        departement = request.form.get("departement")
+        print(departement)
+
+
+
+        return render_template("add_concert.html",add=True)
     else:
         return redirect("login_spec")
     
+
+@app.route("/action-creer-membre", methods=["POST"])
+def action_creer_membre():
+    if request.method == "POST":
+        id_personne = int(request.form.get("selectPersonne"))
+        id_instrument = int(request.form.get("selectInstrument"))
+
+        # Faites quelque chose avec les identifiants sélectionnés, par exemple, ajoutez-les à la base de données
+        models.creer_membre(id,id_personne, id_instrument)
+
+    # Redirigez ou renvoyez une réponse appropriée
+    return redirect(url_for("gerer_membre",id=id))
+
+
 
 @app.route("/supprimer-concert/<int:id>",methods=["POST"])
 def supprimer_concert(id):
@@ -591,17 +611,6 @@ def ajouter_groupe(id):
     else:
         return redirect("login_spec")
 
-@app.route("/ajouter-groupe-concert/<int:id>")
-def ajouter_groupe_popup(id,message,show_popup):
-    """Cette methode va nous permettre d'ajouter un groupe à un concert'
-
-    """
-    if le_adm.get_id()!=-1:
-        print(message, show_popup)
-        return render_template("add_groupe_concert.html",groupes=models.liste_groupe_absent_concert(id),gerer_concert=True,concert=models.get_concert_id(id),msg=message,show_popup=show_popup)
-    else:
-        return redirect("login_spec")
-
 @app.route("/supprimer-groupe-concert/<int:id_c>/<int:id_g>",methods=["POST"])
 def supprimer_groupe_concert(id_c,id_g):
     """Cette methode va nous permettre de supprimer une image
@@ -624,5 +633,5 @@ def action_ajouter_groupe_concert(id_c, id_g):
 
         messages = models.inserer_dans_organisation(id_c, id_g, debut, fin)
         print(messages)
-        return redirect(url_for("ajouter_groupe_popup",id=id_c , erreur_insertion=messages,show_popup=True))
+        return redirect(url_for("ajouter_groupe",id=id_c ))
 

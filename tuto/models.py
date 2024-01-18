@@ -331,13 +331,13 @@ def annuler_achat_concert(id_spec,id):
 
 
 
-def supprimer_chanteur(id):
+def supprimer_chanteur(id,id_i):
     """Cette methode va nous permettre de supprimer un chanteur
 
     Args:
         id ([int]): l'id du chanteur
     """
-    PERSONNE.supprimer_personne(id)
+    PERSONNE.supprimer_personne(id, id_i)
 
 def inserer_chanteur(id,nom,prenom,mail,nom_image):
     """Cette methode va nous permettre d'inserer un chanteur
@@ -390,13 +390,13 @@ def get_membre_liste(id):
     return MEMBRE.get_membre_par_id(id)
 
 
-def delete_groupe(id_G):
+def delete_groupe(id_G, id_i):
     """Cette methode va nous permettre de supprimer un groupe
 
     Args:
         id_G ([int]): l'id du groupe
     """
-    GROUPE.delete_groupe(id_G)
+    GROUPE.delete_groupe(id_G, id_i)
 
 
 def delete_membre_par_personne(id_g,id_p):

@@ -4,19 +4,19 @@
   <meta charset="utf-8">
   <title>FEST-IUT - Accueil</title>
     <link rel="stylesheet" href="../static/style/base_adm.css">
-    <link rel="stylesheet" href="../static/style/bouton_top.css">
-    <link rel="stylesheet" href="../static/style/bouton_supprimer.css">
-    <link rel="stylesheet" href="../static/style/bouton_ajouter.css">
-
     {% if adm_pricipale %}
         <link rel="stylesheet" href="../static/style/adm_pricipale.css">
     {% endif %}
     {% if gerer_concert %}
     <link rel="stylesheet" href="../static/style/gerer_admin.css">
     {% endif %}
-    {% if add_chanteur %}
+    {% if add %}
     <link rel="stylesheet" href="../static/style/add_chanteur.css">
     {% endif %}
+    <link rel="stylesheet" href="../static/style/bouton_top.css">
+    <link rel="stylesheet" href="../static/style/bouton_supprimer.css">
+    <link rel="stylesheet" href="../static/style/bouton_ajouter.css">
+    <link rel="stylesheet" href="../static/style/add_images.css">
 </head>
   <body>
     <header>
@@ -29,7 +29,6 @@
                 <li><a href="{{ url_for('admin_principale') }}" >Home</a></li>
                 <li><a href="{{ url_for('gerer_concert') }}" >Concerts</a></li>
                 <li><a href="{{ url_for('gerer_chanteur') }}" >chanteur</a></li>
-                <li><a href="{{ url_for('gerer_image') }}" >image</a></li>
                 <li><a href="{{ url_for('gerer_groupe') }}" >groupe</a></li>
             </ul>
         

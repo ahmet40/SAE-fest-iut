@@ -6,13 +6,7 @@
 }
 
 
-.form-box {
-    max-width: 300px;
-    background: #f1f7fe;
-    overflow: hidden;
-    border-radius: 16px;
-    color: #010101;
-  }
+
   
   .form {
     position: relative;
@@ -21,7 +15,9 @@
     padding: 32px 24px 24px;
     gap: 16px;
     text-align: center;
+    max-width: 300px;
   }
+
   
   /*Form text*/
   .title {
@@ -33,7 +29,7 @@
   
   /*Inputs box*/
   .form-container {
-    overflow: hidden;
+
     border-radius: 8px;
     background-color: #fff;
     margin: 1rem 0 .5rem;
@@ -70,7 +66,7 @@
   }
   
   /*Button*/
-  .form button {
+  #button_create {
     background-color: #0066ff;
     color: #fff;
     border: 0;
@@ -82,7 +78,7 @@
     transition: background-color .3s ease;
   }
   
-  .form button:hover {
+  #button_create:hover {
     background-color: #005ce6;
   }
 

@@ -184,7 +184,7 @@ class Groupe_bd:
             return None
 
 
-    def delete_groupe(self,id_G):
+    def delete_groupe(self,id_G,id_i):
         """
         Supprime un groupe de musique de la base de données.
 
@@ -202,6 +202,8 @@ class Groupe_bd:
             query5= text(f"delete from GROUPE_A_POUR_STYLE where id_G={str(id_G)}")
             query6= text(f"delete from HEBERGER where id_G={str(id_G)}")
             query7 = text(f"delete from GROUPE where id_G={str(id_G)}")
+            query8 = text(f"delete from IMAGE where id_Image={str(id_i)}")
+
             self.cnx.execute(query1)
             self.cnx.execute(query2)
             self.cnx.execute(query3)
@@ -209,6 +211,7 @@ class Groupe_bd:
             self.cnx.execute(query5)
             self.cnx.execute(query6)
             self.cnx.execute(query7)
+            self.cnx.execute(query8)
             self.cnx.commit()
         except Exception as e:
             print("delete groupe a échoué")

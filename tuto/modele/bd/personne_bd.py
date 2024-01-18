@@ -122,7 +122,7 @@ class Personne_bd:
 
         
 
-    def supprimer_personne(self, id_P):
+    def supprimer_personne(self, id_P, id_i):
         """
         Supprime une personne de la base de données.
 
@@ -135,8 +135,12 @@ class Personne_bd:
         try:
             query1 = text(f"delete from MEMBRE where id_P={str(id_P)}")
             query2 = text(f"delete from PERSONNE where id_P={str(id_P)}")
+            query3 = text(f"delete from IMAGE where id_Image={str(id_i)}")
+            
+
             self.cnx.execute(query1)
             self.cnx.execute(query2)
+            self.cnx.execute(query3)
             self.cnx.commit()
         except Exception as e:
             print("suppression personne a échoué")

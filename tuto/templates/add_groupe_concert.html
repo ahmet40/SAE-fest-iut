@@ -46,27 +46,5 @@
             {% endif %}
         </div>
     </div>
-    {% if show_popup %}
-            <p>AAAAAAAAAAAA</p>
-            <script>
-                // Appeler la fonction pour ouvrir la pop-up avec le message approprié
-                openPopup("{{ msg }}");
-            </script>
-    {% endif %}
-    <script>
-        
-
-        function openPopup(message) {
-            var popupContainer = document.getElementById('popup-container');
-            var popupMessage = document.getElementById('popup-message');
-
-            popupMessage.innerHTML = message;
-            popupContainer.style.display = 'block';
-        }
-
-        function closePopup() {
-            var popupContainer = document.getElementById('popup-container');
-            popupContainer.style.display = 'none';
-        }
-    </script>
+    
 {% endblock %}
