@@ -287,9 +287,6 @@ class Concert_bd:
             query_image = text(f"SELECT nom_I FROM IMAGE WHERE id_IMAGE={str(id_i)}")
             resultat_image = self.cnx.execute(query_image)
             image_row = resultat_image.fetchone()
-            print(image_row[0])
-            repertoire_actuel = os.getcwd()
-            print(repertoire_actuel)
 
             if image_row!=():
 

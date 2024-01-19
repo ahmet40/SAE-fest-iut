@@ -28,6 +28,7 @@ from billet_bd import Billet_bd
 from image_bd import Image_bd
 from instrument_bd import Instrument_bd
 from lieux_bd import Lieux_bd
+from activite_bd import Activite_bd
 #---------------------------------------------------------------
 # Connexion à la base de données
 SPECTATEUR=Spectateur_bd(CNX)
@@ -46,6 +47,7 @@ BILLET=Billet_bd(CNX)
 IMAGE=Image_bd(CNX)
 INSTRUMENT=Instrument_bd(CNX)
 LIEUX = Lieux_bd(CNX)
+ACTIVITE=Activite_bd
 #-----------------------------------------------------------------------------
 # Connection et creation de compte
 def connecter_spectateur(username: str, password: str) -> bool:
@@ -539,4 +541,7 @@ def inserer_concert(nom_concert, date_debut, date_fin, departement, lieux, nom_I
         # Gérer les exceptions et afficher un message d'erreur
         print(f"Une erreur s'est produite lors de l'insertion du concert : {e}")
 
+def insere_act(id_c, id_g,name, debut, fin):
+    id_l = CONCERTS.get_concert(id_c).get_id_l()
+    return ACTIVITE.insere_act(id_c, id_g,name, debut, fin, id_l)
 

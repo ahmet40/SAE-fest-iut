@@ -1,0 +1,24 @@
+{% extends "base_admin.html" %}
+{% block styles %}
+    {{ super() }}
+{% endblock %}
+{% block content %}
+    <h1>Ajouter une activité</h1>
+
+    <form class="form" action="{{ url_for('action_ajouter_activite',id_c=concert.get_id_c(),id_g=id_g) }}" method="POST" enctype="multipart/form-data">
+        <input type="hidden" name="id_C">
+        <label for="nom_C">Nom de l'activité:</label>
+        <input type="text" name="nom_A" required>
+
+        <label for="date_Debut">Date de Début:</label>
+        <input type="datetime-local" name="date_A" required min="{{ concert.get_date_debut() }}" max="{{ concert.get_date_fin() }}">
+
+        <label for="date_Fin">Date de Fin:</label>
+        <input type="datetime-local" name="date_A" required min="{{ concert.get_date_debut() }}" max="{{ concert.get_date_fin() }}">
+
+        
+
+        <input type="submit" value="Créer" id="button_create">
+    </form>
+
+{% endblock %}

@@ -22,6 +22,8 @@
                         <div class="dans-boucle">
                             <div class="contain-infos-concert img-contain"><img class="groupe-img" src="{{ url_for('static', filename='images/' + img) }}" alt="concert"></div>
                             <div class="contain-infos-concert"><p>{{ concert.get_nom_c() }}</p></div>
+                            <div class="contain-infos-concert"><p>Début : {{ concert.get_date_fin() }}</p></div>
+                            <div class="contain-infos-concert"><p>Fin : {{ concert.get_date_fin() }}</p></div>
                             <div class="contain-infos-concert">
                                 <a href="{{ url_for('gerer_groupe_concert',id=concert.get_id_c()) }}">
                                     <button class="button_top">

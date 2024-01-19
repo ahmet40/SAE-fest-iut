@@ -620,7 +620,7 @@ def gerer_groupe_concert(id):
         permet de gerer les groupes des concerts
     """
     if le_adm.get_id()!=-1:
-        return render_template("gerer_groupe_concert.html",groupes=models.get_groupe_concert_liste(id),gerer_concert=True,concert=id)
+        return render_template("gerer_groupe_concert.html",groupes=models.get_groupe_concert_liste(id),gerer_concert=True,concert=models.get_concert_id(id))
     return redirect("login_spec")
 
 @app.route("/ajouter-groupe-concert/<int:id>")
@@ -656,7 +656,30 @@ def action_ajouter_groupe_concert(id_c, id_g):
         messages = models.inserer_dans_organisation(id_c, id_g, debut, fin)
         print(messages)
         if messages is True:
-            return redirect(url_for("creer_concert"))
+            return redirect(url_for("gerer_groupe_concert"))
         else :
             return redirect(url_for("ajouter_groupe",id=id_c ))
 
+@app.route("/ajouter-activite/<int:id_c>/<int:id_g>")
+def ajouter_activite(id_c,id_g ):
+    """Cette methode va nous permettre d'ajouter une activitée à un groupe 
+
+    """
+    if le_adm.get_id()!=-1:
+        return render_template("add_activite.html",concert=models.get_concert_id(id_c),id_g=id_g,add=True)
+    else:
+        return redirect("login_spec")
+    
+    
+@app.route("/action_ajouter-activite/<int:id_c>/<int:id_g>", methods=["POST"])
+def action_ajouter_activite(id_c,id_g ):
+    if request.method == "POST":
+        name = str(request.form.get("name_A"))
+        debut = str(request.form.get("debut_A"))
+        fin = str(request.form.get("fin_A"))
+
+        messages = models.insere_act(id_c, id_g,name, debut, fin)
+        if messages is True:
+            return redirect(url_for("ajouter_activite",id_c=id_c,id_g=id_g ))
+        else :
+            return redirect(url_for("ajouter_groupe",id=id_c ))

@@ -107,7 +107,7 @@ class Lieux_bd:
         """
         try:
             # Vérifier si le département et le lieu existent déjà
-            query_existence = text(f"SELECT COUNT(*) FROM LIEUX WHERE nom_dep = '{nom_dep}' AND nom_L = '{nom_L}'")
+            query_existence = text(f"SELECT COUNT(*) FROM LIEUX WHERE nom_region = '{nom_dep}' AND nom_L = '{nom_L}'")
             existence_result = self.cnx.execute(query_existence).fetchone()
 
             if existence_result[0] > 0:

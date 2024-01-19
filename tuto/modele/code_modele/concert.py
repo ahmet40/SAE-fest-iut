@@ -1,3 +1,5 @@
+from datetime import datetime
+
 class Concert:
     def __init__(self, id_c, nom_c, date_debut, date_fin, id_l,id_image):
         """
@@ -47,7 +49,7 @@ class Concert:
         :return: La date de début du concert.
         :rtype: str
         """
-        return self.__date_debut
+        return self.__date_debut.strftime("%d/%m/%Y %H:%M:%S")
 
     def get_date_fin(self):
         """
@@ -56,7 +58,7 @@ class Concert:
         :return: La date de fin du concert.
         :rtype: str
         """
-        return self.__date_fin
+        return self.__date_fin.strftime("%d/%m/%Y %H:%M:%S")
 
     def get_id_l(self):
         """

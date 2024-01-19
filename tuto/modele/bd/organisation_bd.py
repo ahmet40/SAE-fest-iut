@@ -134,7 +134,7 @@ class Organisation_bd:
             list[tuple[Groupe, str, list[str]]] or None: Liste de tuples contenant un objet Groupe, le nom de l'image et une liste de styles, ou None si une erreur survient.
         """
         try:
-            query = text("SELECT G.id_G, G.nom, G.description, G.id_IMAGE, G.lien_Reseaux, G.lien_Video, I.nom_I, GROUP_CONCAT(S.nom_St) as styles "
+            query = text("SELECT G.id_G, G.nom, G.description, G.id_IMAGE, G.lien_Reseaux, G.lien_Video, I.nom_I, GROUP_CONCAT(S.nom_St) as styles, O.date_Debut_O, O.date_Fin_O "
                         "FROM GROUPE G "
                         "JOIN ORGANISATION O ON G.id_G = O.id_G "
                         "JOIN IMAGE I ON G.id_IMAGE = I.id_IMAGE "
@@ -145,10 +145,10 @@ class Organisation_bd:
             result = self.cnx.execute(query, {'id_C': id_C})
 
             groups = []
-            for id_G, nom, description, id_IMAGE, lien_Reseaux, lien_Video, nom_I, styles_str in result:
+            for id_G, nom, description, id_IMAGE, lien_Reseaux, lien_Video, nom_I, styles_str, date_deb, date_fin in result:
                 styles = styles_str.split(',') if styles_str else []
                 group = Groupe(id_G, nom, description, id_IMAGE, lien_Reseaux, lien_Video)
-                groups.append((group, nom_I, styles))
+                groups.append((group, nom_I, styles,date_deb.strftime("%d/%m/%Y %H:%M:%S"), date_fin.strftime("%d/%m/%Y %H:%M:%S")))
 
             return groups
         except Exception as e:
