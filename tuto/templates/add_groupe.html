@@ -15,6 +15,14 @@
             <input type="text" class="input" name="lien_resaux" placeholder="lien reseaux">
                 
             <input type="text" class="input" name="lien_video" placeholder="lien video">
+
+            <label for="selectInstrument">Sélectionnez un instrument :</label>
+
+            <select name="style" id="style">
+                {% for style in styles %}
+                    <option value="{{ style.get_nom_st() }}">{{ style.get_nom_st() }}</option>
+                {% endfor %}
+            </select>
                 
             <div class="form-label-admin">
 

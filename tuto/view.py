@@ -477,7 +477,7 @@ def creer_groupe():
         list: la liste des informations
     """
     if le_adm.get_id()!=-1:
-        return render_template("add_groupe.html",add=True)
+        return render_template("add_groupe.html",add=True, styles = models.get_all_styles())
     else:
         return redirect("login_spec")
     
@@ -491,6 +491,8 @@ def nouveau_groupe():
             description=request.form.get("textarea")
             lien_reseau=request.form.get("lien_resaux")
             lien_video=request.form.get("lien_video")
+            style = request.form.get("style")
+            print(style,"AAAAAAAAAAAAAAAAAAAAAAAAAAAAAa")
             image_file = request.files['image']
             
 
@@ -510,7 +512,7 @@ def nouveau_groupe():
 
                 # Maintenant, vous pouvez utiliser le nom du fichier (filename) comme information supplémentaire
                 # dans votre base de données, par exemple:
-                models.inserer_groupe(nom, description, lien_reseau, lien_video, filename)
+                models.inserer_groupe(nom, description, lien_reseau, lien_video, filename, style)
     return redirect(url_for("gerer_groupe"))
 
 
@@ -656,17 +658,17 @@ def action_ajouter_groupe_concert(id_c, id_g):
         messages = models.inserer_dans_organisation(id_c, id_g, debut, fin)
         print(messages)
         if messages is True:
-            return redirect(url_for("gerer_groupe_concert"))
+            return redirect(url_for("gerer_groupe_concert",id=id_c))
         else :
             return redirect(url_for("ajouter_groupe",id=id_c ))
 
-@app.route("/ajouter-activite/<int:id_c>/<int:id_g>")
+@app.route("/ajouter_activite/<int:id_c>/<int:id_g>")
 def ajouter_activite(id_c,id_g ):
     """Cette methode va nous permettre d'ajouter une activitée à un groupe 
 
     """
     if le_adm.get_id()!=-1:
-        return render_template("add_activite.html",concert=models.get_concert_id(id_c),activites = models.get_activite_par_groupe(id_c, id_g),id_g=id_g,add=True,gerer_concert=True)
+        return render_template("ajoute_activite.html",concert=models.get_concert_id(id_c),activites = models.get_activite_par_groupe(id_c, id_g),id_g=id_g)
     else:
         return redirect("login_spec")
     

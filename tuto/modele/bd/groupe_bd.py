@@ -162,7 +162,7 @@ class Groupe_bd:
             self.cnx.execute(query2)
             self.cnx.commit()
         except Exception as e:
-            print("insertion groupe a échoué")
+            print("insertion groupe a échoué",e)
             return None
 
     def get_prochain_id_groupe(self):

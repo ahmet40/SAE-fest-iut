@@ -92,3 +92,22 @@ class Style_bd:
             print("Le max de STYLE échoue:", str(e))
             return None
 
+
+    def get_id_par_nom(self, nom):
+        """
+        Récupère un id à partir de son nom.
+
+        Args:
+            nom_St (int): nom du style.
+
+        Returns:
+            list[Style] or None: Liste d'un objet Style ou None si une erreur survient.
+        """
+        try:
+            query = text(f"select id_St from STYLE where nom_St= {str(nom)}")
+            resultat = self.cnx.execute(query)
+            styles = [id_St for id_St in resultat]
+            return styles[0]
+        except Exception as e:
+            print("style by id a échoué")
+            return None

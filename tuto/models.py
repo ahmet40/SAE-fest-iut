@@ -413,7 +413,7 @@ def delete_membre_par_personne(id_g,id_p):
 
 
 
-def inserer_groupe(nom, description, lien_Reseaux, lien_Video,nom_I):
+def inserer_groupe(nom, description, lien_Reseaux, lien_Video,nom_I, style):
     """Cette methode va nous permettre d'inserer un groupe
 
     Args:
@@ -426,7 +426,10 @@ def inserer_groupe(nom, description, lien_Reseaux, lien_Video,nom_I):
     """
     print("heheheeheheheh")
     IMAGE.insere_image(nom_I)
+    id_St = STYLE.get_id_par_nom(style)
+    print(id_St,"AAAAAAAAAAAAAAAAAAAAAAAA")
     GROUPE.inserer_groupe(GROUPE.get_prochain_id_groupe(),nom, description, IMAGE.get_prochain_id()-1, lien_Reseaux, lien_Video)
+    GROUPE_A_POUR_STYLE.inserer_gr_a_style(GROUPE.get_prochain_id_groupe()-1, id_St)
 
 
 
@@ -550,3 +553,7 @@ def get_activite_par_groupe(id_c, id_g):
 
 def delete_activite_groupe(id_a):
     return ACTIVITE.delete_activite_groupe(id_a)
+
+def get_all_styles():
+    
+    return STYLE.get_all_styles()

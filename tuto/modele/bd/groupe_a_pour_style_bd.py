@@ -107,7 +107,7 @@ class GroupeAPourStyle_bd:
             gr_a_style = [GroupeAPourStyle(id_G, id_St) for id_G, id_St in resultat]
             return gr_a_style
         except Exception as e:
-            print("gr_a_style by id groupe a échoué")
+            print("gr_a_style by id groupe a échoué",e)
             return None     
         
     def inserer_gr_a_style(self, id_G, id_St):
