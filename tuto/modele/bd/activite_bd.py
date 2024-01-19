@@ -115,6 +115,7 @@ class Activite_bd:
             ValueError: Si les dates ne correspondent pas ou s'il y a un chevauchement d'activités/concerts.
             Exception: En cas d'erreur inconnue lors de l'insertion.
         """
+        print(debut,"--------------")
         date_object_deb = datetime.strptime(debut, "%Y-%m-%dT%H:%M")
         date_debut = date_object_deb.strftime("%Y-%m-%d %H:%M:%S")
 
@@ -172,4 +173,63 @@ class Activite_bd:
         except Exception as e:
             print("Erreur inconnue lors de l'insertion :", str(e))
             return "erreur_inconnue"
+        
+    from datetime import datetime
+
+    def get_activite_par_groupe(self, id_c, id_g):
+        """
+        Récupère toutes les activités présentes dans la base de données d'un groupe pour un concert.
+
+        Returns:
+            list[Activite] or None: Liste d'objets Activite ou None si une erreur survient.
+        """
+        try:
+            query = text("SELECT ACTIVITE.id_A, type_Act, id_L, date_Debut_A, date_Fin_A "
+                        "FROM ACTIVITE "
+                        "JOIN PARTICIPE ON ACTIVITE.id_A = PARTICIPE.id_A "
+                        "JOIN GROUPE ON PARTICIPE.id_G = GROUPE.id_G "
+                        "JOIN ORGANISATION ON GROUPE.id_G = ORGANISATION.id_G " 
+                        "WHERE ORGANISATION.id_G = :id_g AND ORGANISATION.id_C = :id_c")
+
+            resultat = self.cnx.execute(query, {'id_g': id_g, 'id_c': id_c})
+            activites = []
+
+            for id_A, type_Act, id_L, date_Debut_A, date_Fin_A in resultat:
+                activite = Activite(id_A, type_Act, id_L)
+                activites.append((activite, date_Debut_A, date_Fin_A))
+
+            return activites
+        except Exception as e:
+            print("Erreur lors de la récupération des activités :", str(e))
+            return None
+
+    
+    
+    def delete_activite_groupe(seld,id_a):
+        """
+        Supprime une activité d'un groupe dans la base de données.
+
+        Args:
+            id_a (int): L'identifiant de l'activité à supprimer.
+
+        Returns:
+            None: Aucune valeur de retour en cas de succès.
+
+        Raises:
+            Exception: En cas d'erreur lors de la suppression de l'activité.
+        """
+        try:
+            query1 = text(f"delete from ACTIVITE where id_G={str(id_a)}")
+            query2 = text(f"delete from PARTICIPE where id_G={str(id_a)}")
+
+
+            self.cnx.execute(query1)
+            self.cnx.execute(query2)
+            self.cnx.commit()
+
+        except Exception as e:
+            print("delete groupe a échoué")
+            return None
+        
+
         

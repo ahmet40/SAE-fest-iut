@@ -47,7 +47,7 @@ BILLET=Billet_bd(CNX)
 IMAGE=Image_bd(CNX)
 INSTRUMENT=Instrument_bd(CNX)
 LIEUX = Lieux_bd(CNX)
-ACTIVITE=Activite_bd
+ACTIVITE=Activite_bd(CNX)
 #-----------------------------------------------------------------------------
 # Connection et creation de compte
 def connecter_spectateur(username: str, password: str) -> bool:
@@ -545,3 +545,8 @@ def insere_act(id_c, id_g,name, debut, fin):
     id_l = CONCERTS.get_concert(id_c).get_id_l()
     return ACTIVITE.insere_act(id_c, id_g,name, debut, fin, id_l)
 
+def get_activite_par_groupe(id_c, id_g):
+    return ACTIVITE.get_activite_par_groupe(id_c, id_g)
+
+def delete_activite_groupe(id_a):
+    return ACTIVITE.delete_activite_groupe(id_a)

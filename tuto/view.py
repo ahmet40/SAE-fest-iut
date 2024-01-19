@@ -666,7 +666,7 @@ def ajouter_activite(id_c,id_g ):
 
     """
     if le_adm.get_id()!=-1:
-        return render_template("add_activite.html",concert=models.get_concert_id(id_c),id_g=id_g,add=True)
+        return render_template("add_activite.html",concert=models.get_concert_id(id_c),activites = models.get_activite_par_groupe(id_c, id_g),id_g=id_g,add=True,gerer_concert=True)
     else:
         return redirect("login_spec")
     
@@ -683,3 +683,18 @@ def action_ajouter_activite(id_c,id_g ):
             return redirect(url_for("ajouter_activite",id_c=id_c,id_g=id_g ))
         else :
             return redirect(url_for("ajouter_groupe",id=id_c ))
+        
+
+        
+@app.route("/supprimer_activite_groupe/<int:id_a>",methods=["POST"])
+def supprimer_activite_groupe(id_a):
+    """Cette methode va nous permettre de supprimer une activité d'un groupe
+
+    Args:
+        id ([int]): l'id de l'image
+
+    Returns:
+        list: la liste des informations
+    """
+    models.delete_activite_groupe(id_a)
+    return redirect(url_for("ajouter_activite",id_a=id_a))     
