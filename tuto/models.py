@@ -426,10 +426,10 @@ def inserer_groupe(nom, description, lien_Reseaux, lien_Video,nom_I, style):
     """
     print("heheheeheheheh")
     IMAGE.insere_image(nom_I)
-    id_St = STYLE.get_id_par_nom(style)
-    print(id_St,"AAAAAAAAAAAAAAAAAAAAAAAA")
+    id = STYLE.get_id_par_nom(style)
+    print(id,"AAAAAAAAAAAAAAAAAAAAAAAA")
     GROUPE.inserer_groupe(GROUPE.get_prochain_id_groupe(),nom, description, IMAGE.get_prochain_id()-1, lien_Reseaux, lien_Video)
-    GROUPE_A_POUR_STYLE.inserer_gr_a_style(GROUPE.get_prochain_id_groupe()-1, id_St)
+    GROUPE_A_POUR_STYLE.inserer_gr_a_style(GROUPE.get_prochain_id_groupe()-1, id)
 
 
 

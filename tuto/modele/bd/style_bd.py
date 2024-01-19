@@ -107,6 +107,7 @@ class Style_bd:
             query = text(f"select id_St from STYLE where nom_St= {str(nom)}")
             resultat = self.cnx.execute(query)
             styles = [id_St for id_St in resultat]
+            print(styles,"------------------")
             return styles[0]
         except Exception as e:
             print("style by id a échoué")
