@@ -104,11 +104,13 @@ class Style_bd:
             list[Style] or None: Liste d'un objet Style ou None si une erreur survient.
         """
         try:
-            query = text(f"select id_St from STYLE where nom_St= {str(nom)}")
+            query = text(f"select id_St from STYLE where nom_St= '{nom}'")
             resultat = self.cnx.execute(query)
-            styles = [id_St for id_St in resultat]
+            styles = []
+            for id_st in resultat:
+                styles.append(id_st)
             print(styles,"------------------")
-            return styles[0]
+            return styles[0][0]
         except Exception as e:
             print("style by id a échoué")
             return None

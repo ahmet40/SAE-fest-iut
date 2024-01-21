@@ -1,0 +1,22 @@
+/* Static CSS for horizontal list layout */
+#tout-act {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.dans-boucle-act {
+    display: flex;
+    flex-wrap: wrap;
+    width: 90%; /* Set the width of each activity container as a percentage */
+    border-bottom: 1px solid #ccc; /* Add border for better visibility */
+    margin-top: 15px;
+
+}
+
+.contain-infos-grp-act{
+    width: 20%;
+    margin-inline: auto;
+}
+
+

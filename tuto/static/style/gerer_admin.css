@@ -18,6 +18,11 @@
     flex-wrap: wrap;
 }
 
+#form-button, h1, h2{
+    margin-left: 1%;
+}
+
+
 .dans-boucle{
     display:flex;
     width :22%;

@@ -668,7 +668,7 @@ def ajouter_activite(id_c,id_g ):
 
     """
     if le_adm.get_id()!=-1:
-        return render_template("ajoute_activite.html",concert=models.get_concert_id(id_c),activites = models.get_activite_par_groupe(id_c, id_g),id_g=id_g)
+        return render_template("ajoute_activite.html",concert=models.get_concert_id(id_c),activites = models.get_activite_par_groupe(id_c, id_g),id_g=id_g,act=True)
     else:
         return redirect("login_spec")
     
@@ -681,15 +681,13 @@ def action_ajouter_activite(id_c,id_g ):
         fin = str(request.form.get("fin_A"))
 
         messages = models.insere_act(id_c, id_g,name, debut, fin)
-        if messages is True:
-            return redirect(url_for("ajouter_activite",id_c=id_c,id_g=id_g ))
-        else :
-            return redirect(url_for("ajouter_groupe",id=id_c ))
+        return redirect(url_for("ajouter_activite",id_c=id_c,id_g=id_g ))
+        
         
 
         
-@app.route("/supprimer_activite_groupe/<int:id_a>",methods=["POST"])
-def supprimer_activite_groupe(id_a):
+@app.route("/supprimer_activite_groupe/<int:id_a>/<int:id_c>/<int:id_g>",methods=["POST"])
+def supprimer_activite_groupe(id_a,id_c,id_g):
     """Cette methode va nous permettre de supprimer une activité d'un groupe
 
     Args:
@@ -699,4 +697,43 @@ def supprimer_activite_groupe(id_a):
         list: la liste des informations
     """
     models.delete_activite_groupe(id_a)
-    return redirect(url_for("ajouter_activite",id_a=id_a))     
+    return redirect(url_for("ajouter_activite",id_c=id_c,id_g=id_g))    
+
+
+
+
+@app.route("/ajouter_hebergement/<int:id_c>/<int:id_g>")
+def ajouter_hebergement(id_c,id_g ):
+    """Cette methode va nous permettre d'ajouter un hebergement à un groupe 
+
+    """
+    if le_adm.get_id()!=-1:
+        return render_template("ajoute_hebergement.html",concert=models.get_concert_id(id_c),heb = models.get_hebergement_par_groupe(id_c, id_g),id_g=id_g,act=True)
+    else:
+        return redirect("login_spec") 
+
+@app.route("/supprimer_hebergement_groupe/<int:id_h>/<int:id_c>/<int:id_g>",methods=["POST"])
+def supprimer_hebergement_groupe(id_h,id_c,id_g):
+    """Cette methode va nous permettre de supprimer un hebergement d'un groupe
+
+    Args:
+        id ([int]): l'id de l'hebergement
+
+    Returns:
+        list: la liste des informations
+    """
+    models.delete_hebergement_groupe(id_h)
+    return redirect(url_for("ajouter_hebergement",id_c=id_c,id_g=id_g))
+
+@app.route("/action_ajouter-hebergement/<int:id_c>/<int:id_g>", methods=["POST"])
+def action_ajouter_hebergement(id_c,id_g ):
+    if request.method == "POST":
+        name = str(request.form.get("name_A"))
+        debut = str(request.form.get("debut_A"))
+        fin = str(request.form.get("fin_A"))
+        nb = str(request.form.get("nb"))
+
+        messages = models.insere_heb(id_c, id_g,name, debut, fin, nb)
+        print(messages)
+        return redirect(url_for("ajouter_hebergement",id_c=id_c,id_g=id_g ))
+        

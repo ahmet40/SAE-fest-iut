@@ -1,10 +1,21 @@
 -- IMAGE
 INSERT INTO IMAGE (id_IMAGE,nom_I) VALUES
-(1,'a.jpg'),
-(2,'b.jpg'),
-(3,'c.jpg'),
-(4,'d.jpg'),
-(5,'e.jpg');
+(1,'cocorico.jpg'),
+(2,'tomorrowland.jpeg'),
+(3,'bourge.jpg'),
+(4,'rock.jpg'),
+(5,'jazz.png'),
+(6,'pop.jpg'),
+(7,'punk.jpg'),
+(8,'tele.jpg'),
+(9,'martin_solveig.jpg'),
+(10,'djsnake.jpg'),
+(11,'david-guetta.jpeg'),
+(12,'thomas.jpg'),
+(13,'guy.jpg'),
+(14,'louis-bertignac.jpeg');
+
+
 
 -- ADMINISTRATEUR
 INSERT INTO ADMIN VALUES
@@ -56,57 +67,51 @@ INSERT INTO INSTRUMENT (id_I,nom_I) VALUES
 (4,'Violin'),
 (5,'Saxophone');
 
--- LIEUX
-INSERT INTO LIEUX (id_L,nom_region,nom_L, nb_Max_Personne) VALUES
-(1,'Loiret','Arena', 5000),
-(2,'Loiret','Club XYZ', 200),
-(3,'Loiret','Outdoor Stage', 1000),
-(4,'Loiret','Small Hall', 1),
-(5,'Loiret','Stadium', 20000);
+-- Insertions dans la table LIEUX
+INSERT INTO LIEUX (id_L, nom_region, nom_L, nb_Max_Personne) VALUES
+(1, 'Loiret', 'La Ferté Saint Aubin', 1000),
+(2, 'Ain', 'Salle de concert B', 800),
+(3, 'Loir-et-Cher', 'Salle de concert C', 1200),
+(4, 'Loire-Atlantique', 'Salle de concert D', 1500),
+(5, 'Manche', 'Salle de concert E', 600);
 
 -- CONCERTS
 INSERT INTO CONCERTS (id_C, nom_C, date_Debut, date_Fin, id_L,id_IMAGE) VALUES
-(1,'Rock Night', '2023-11-01 10:00:00', '2023-11-01 23:00:00', 1,1),
-(2,'Jazz Jam', '2023-11-15 08:00:00', '2023-11-15 22:30:00', 2,2),
-(3,'Pop Explosion', '2023-12-05 10:30:00', '2023-12-05 21:30:00', 3,3),
-(4,'Hip Hop Showcase', '2023-12-20 10:00:00', '2023-12-20 23:30:00', 4,4),
-(5,'Classical Elegance', '2024-01-10 09:30:00', '2024-01-10 22:00:00', 5,5);
+(1,'Cocorico Electro', '2024-11-01 9:00:00', '2024-11-01 23:00:00', 1,1),
+(2,'Tomorrowland', '2024-11-15 08:00:00', '2024-11-15 22:30:00', 2,2),
+(3,'Pop Explosion', '2024-12-05 10:30:00', '2024-12-05 21:30:00', 3,3);
 
 -- GROUPE
 INSERT INTO GROUPE (id_G,nom,description, id_IMAGE, lien_Reseaux, lien_Video) VALUES
-(1,'les rocks','Rock Band', 1, 'www.rockband.com', 'www.youtube.com/rockband'),
-(2,'les jazz','Jazz Ensemble', 2, 'www.jazzensemble.com', 'www.youtube.com/jazzensemble'),
-(3,'les pops','Pop Sensation', 3, 'www.popsensation.com', 'www.youtube.com/popsensation'),
-(4,'les hips','Hip Hop Crew', 4, 'www.hiphopcrew.com', 'www.youtube.com/hiphopcrew'),
-(5,'les classiques','Classical Orchestra', 5, 'www.classicalorchestra.com', 'www.youtube.com/classicalorchestra'),
-(6,'sniper','Rap Band', 1, 'www.sniper.com', 'www.youtube.com/sniper'),
-(7,'les test','tests est un très bon groupe du 21 ème siécle', 2, 'www.rockband.com', 'www.youtube.com/rockband');
-
-
+(1,'les rocks','Rock Band', 4, 'www.rockband.com', 'www.youtube.com/rockband'),
+(2,'les jazz','Jazz Ensemble', 5, 'www.jazzensemble.com', 'www.youtube.com/jazzensemble'),
+(3,'les pops','Pop Sensation', 6, 'www.popsensation.com', 'www.youtube.com/popsensation'),
+(4,'Daft Punk','Hip Hop Crew', 7, 'www.hiphopcrew.com', 'www.youtube.com/daft-punk'),
+(5,'Telephone','Classical Orchestra', 8, 'www.classicalorchestra.com', 'www.youtube.com/telephone');
 -- BILLET
 INSERT INTO BILLET (id_B,id_Spec, id_C, id_T) VALUES
 (1, 1, 1, 2),
 (2, 2, 3, 1),
 (3, 3, 2, 3),
-(4, 4, 4, 4),
-(5, 5, 5, 5);
+(4, 4, 2, 4),
+(5, 5, 3, 5);
 
 
 -- HEBERGEMENT
-INSERT INTO HEBERGEMENT (id_H,dates, nb_Place) VALUES
-(1,'2023-11-01', '50'),
-(2,'2023-11-15', '20'),
-(3,'2023-12-05', '100'),
-(4,'2023-12-20', '30'),
-(5,'2024-01-10', '150');
+INSERT INTO HEBERGEMENT (id_H,date_Debut_H, date_Fin_H, nb_Place, nom_Heb,id_L) VALUES
+(1,'2024-11-01 19:00:00','2024-11-03 19:00:00' ,'50', 'Hotel',1 ),
+(2,'2024-11-15 19:00:00','2024-11-16 19:00:00' ,'20', 'AirBNB',2),
+(3,'2024-12-05 19:00:00','2024-12-06 19:00:00' ,'100', 'Hotel',3),
+(4,'2024-11-01 19:00:00','2024-11-02 19:00:00' ,'30', 'AirBNB',1),
+(5,'2024-11-01 19:00:00','2024-11-04 19:00:00' ,'150', 'Hotel',1);
 
 -- HEBERGER
-INSERT INTO HEBERGER (id_H, id_G, date_Debut_H, date_Fin_H) VALUES
-(1, 1, '2023-11-01', '2023-11-02'),
-(2, 2, '2023-11-15', '2023-11-16'),
-(3, 3, '2023-12-05', '2023-12-06'),
-(4, 4, '2023-12-20', '2023-12-21'),
-(5, 5, '2024-01-10', '2024-01-11');
+INSERT INTO HEBERGER (id_H, id_G) VALUES
+(1, 1),
+(2, 2),
+(3, 3),
+(4, 4),
+(5, 5);
 
 
 
@@ -116,9 +121,7 @@ INSERT INTO GROUPE_A_POUR_STYLE (id_G, id_St) VALUES
 (2, 2),
 (3, 3),
 (4, 4),
-(5, 5),
-(6, 1),
-(7, 2);
+(5, 5);
 
 -- STYLE_APPARTIENT_A
 INSERT INTO STYLE_APPARTIENT_A (id_St, id_St_P) VALUES
@@ -143,39 +146,41 @@ INSERT INTO ACTIVITE (id_A,type_Act,id_L) VALUES
 
 -- PARTICIPE
 INSERT INTO PARTICIPE (id_A, id_G, date_Debut_A, date_Fin_A) VALUES
-(1, 1, '2023-11-01 19:00:00', '2023-11-01 21:00:00'),
-(2, 2, '2023-11-15 21:00:00', '2023-11-15 22:00:00'),
-(3, 3, '2023-12-05 11:00:00', '2023-12-05 11:30:00'),
-(4, 4, '2023-12-20 12:00:00', '2023-12-20 15:00:00'),
+(1, 1, '2024-11-01 19:00:00', '2024-11-01 21:00:00'),
+(2, 2, '2024-11-15 21:00:00', '2024-11-15 22:00:00'),
+(3, 3, '2024-12-05 11:00:00', '2024-12-05 11:30:00'),
+(4, 4, '2024-12-20 12:00:00', '2024-12-20 15:00:00'),
 (5, 5, '2024-01-10 11:00:00', '2024-01-10 13:00:00');
 
 -- PERSONNE
 INSERT INTO PERSONNE (id_P,nom_P, prenom_P, email_Sp,id_IMAGE) VALUES
-(1, 'Smith', 'John', 'john.smith@example.com',1),
-(2, 'Doe', 'Jane', 'jane.doe@example.com',2),
-(3, 'Johnson', 'Bob', 'bob.johnson@example.com',3),
-(4, 'Williams', 'Alice', 'alice.williams@example.com',4),
-(5, 'Brown', 'Charlie', 'charlie.brown@example.com',5);
+(1, 'Martin', 'Solveig', 'martin@example.com',9),
+(2, 'DJSnake', 'DJSnake', 'DJSnake@example.com',10),
+(3, 'David', 'Guetta', 'david@example.com',11),
+(4, 'Thomas', 'Bangalter', 'thomas@example.com',12),
+(5, 'Guy-Manuel', 'Homem-Christo', 'Guy-Manuel@example.com',13),
+(6, 'Louis', 'Bertignac', 'louis@example.com',14);
 
 -- MEMBRE
 INSERT INTO MEMBRE (id_P, id_G, id_I) VALUES
 (1, 1, 1),
 (2, 2, 2),
 (3, 3, 3),
-(4, 4, 4),
+(3, 2, 4),
 (5, 5, 5),
-(1, 5, 1),
-(2, 3, 2);
+(6, 5, 1),
+(5, 4, 2);
 
 
 
 -- ORGANISATION
 INSERT INTO ORGANISATION (id_C, id_G, date_Debut_O, date_Fin_O, temps_Montage, temps_Demontage) VALUES
-(1, 1, '2023-11-01 12:00:00', '2023-11-01 18:00:00', 3, 2),
-(2, 2, '2023-11-15 10:00:00', '2023-11-15 20:00:00', 4, 3),
-(3, 3, '2023-12-05 12:00:00', '2023-12-05 17:00:00', 5, 4),
-(4, 4, '2023-12-20 16:00:00', '2023-12-20 22:00:00', 2, 1),
-(5, 5, '2024-01-10 14:00:00', '2024-01-10 21:00:00', 6, 5);
+(1, 1, '2024-11-01 12:00:00', '2024-11-01 15:00:00', 3, 2),
+(2, 2, '2024-11-15 10:00:00', '2024-11-15 20:00:00', 4, 3),
+(3, 3, '2024-12-05 12:00:00', '2024-12-05 17:00:00', 5, 4),
+(1, 4, '2024-11-01 16:30:00', '2024-11-01 17:00:00', 2, 1),
+(1, 5, '2024-11-01 17:30:00', '2024-11-01 20:00:00', 6, 5);
+
 
 -- FAVORIS
 INSERT INTO FAVORIS (id_Spec, id_G) VALUES
@@ -190,12 +195,12 @@ INSERT INTO INSCRIPTION (id_C, id_Spec, preinscription) VALUES
 (1, 1, false),
 (2, 2, true),
 (3, 3, false),
-(4, 4, true),
-(5, 5, false);
+(2, 4, true),
+(3, 5, false);
 
 -- Test Trigger 1
 -- INSERT INTO CONCERTS (nom_C, date_Debut, date_Fin, id_L) VALUES
--- ('Cocorico Electro', '2023-12-08 10:00:00', '2023-12-08 08:00:00', 1);
+-- ('Cocorico Electro', '2024-12-08 10:00:00', '2024-12-08 08:00:00', 1);
 
 
 -- Test Trigger 2
@@ -210,12 +215,12 @@ INSERT INTO INSCRIPTION (id_C, id_Spec, preinscription) VALUES
 
 -- Test Trigger 4
 -- INSERT INTO ORGANISATION (id_C, id_G, date_Debut_O, date_Fin_O, temps_Montage, temps_Demontage) VALUES
--- (1, 4, '2023-11-01 15:00:00', '2023-11-01 20:00:00', 3, 2);
+-- (1, 4, '2024-11-01 15:00:00', '2024-11-01 20:00:00', 3, 2);
 
 -- Test Trigger 5
 -- INSERT INTO PARTICIPE (id_A, id_G, date_Debut_A, date_Fin_A) VALUES
--- (1, 5, '2023-11-01 20:00:00', '2023-11-01 21:00:00');
+-- (1, 5, '2024-11-01 20:00:00', '2024-11-01 21:00:00');
 
 -- Test Trigger 6
 -- INSERT INTO PARTICIPE (id_A, id_G, date_Debut_A, date_Fin_A) VALUES
--- (1, 1, '2023-11-01 13:00:00', '2023-11-01 17:00:00');
+-- (1, 1, '2024-11-01 13:00:00', '2024-11-01 17:00:00');

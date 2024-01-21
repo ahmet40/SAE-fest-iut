@@ -29,6 +29,7 @@ from image_bd import Image_bd
 from instrument_bd import Instrument_bd
 from lieux_bd import Lieux_bd
 from activite_bd import Activite_bd
+from hebergement_bd import Hebergement_bd
 #---------------------------------------------------------------
 # Connexion à la base de données
 SPECTATEUR=Spectateur_bd(CNX)
@@ -48,6 +49,7 @@ IMAGE=Image_bd(CNX)
 INSTRUMENT=Instrument_bd(CNX)
 LIEUX = Lieux_bd(CNX)
 ACTIVITE=Activite_bd(CNX)
+HEBERGEMENT=Hebergement_bd(CNX)
 #-----------------------------------------------------------------------------
 # Connection et creation de compte
 def connecter_spectateur(username: str, password: str) -> bool:
@@ -557,3 +559,17 @@ def delete_activite_groupe(id_a):
 def get_all_styles():
     
     return STYLE.get_all_styles()
+
+
+def get_hebergement_par_groupe(id_c, id_g):
+    id_l = CONCERTS.get_concert(id_c).get_id_l()
+    return HEBERGEMENT.get_hebergement_par_groupe(id_c, id_g, id_l)
+
+def delete_hebergement_groupe(id_h):
+    HEBERGEMENT.delete_hebergement_groupe(id_h)
+    
+    
+def insere_heb(id_c, id_g,name, debut, fin, nb):
+    id_l = CONCERTS.get_concert(id_c).get_id_l()
+    return HEBERGEMENT.insert_hebergement_groupe(id_g, debut, fin, nb, name, id_l)
+

@@ -21,8 +21,9 @@ DROP TABLE IF EXISTS TYPES;
 DROP TABLE IF EXISTS GROUPE;
 DROP TABLE IF EXISTS INSTRUMENT;
 DROP TABLE IF EXISTS CONCERTS;
-DROP TABLE IF EXISTS LIEUX;
 DROP TABLE IF EXISTS HEBERGEMENT;
+DROP TABLE IF EXISTS LIEUX;
+
 DROP TABLE IF EXISTS PERSONNE;
 DROP TABLE IF EXISTS SPECTATEUR;
 drop table if exists IMAGE;
@@ -113,16 +114,17 @@ CREATE TABLE BILLET (
 
 CREATE TABLE HEBERGEMENT (
   id_H INT NOT NULL  ,
-  dates DATETIME,
+  date_Debut_H DATETIME,
+  date_Fin_H DATETIME,
   nb_Place VARCHAR(42),
-  PRIMARY KEY (id_H)
-);
+  nom_Heb VARCHAR(42),
+  id_L INT NOT NULL,
+  PRIMARY KEY (id_H),
+  FOREIGN KEY (id_L) REFERENCES LIEUX (id_L));
 
 CREATE TABLE HEBERGER (
   id_H INT NOT NULL,
   id_G INT NOT NULL,
-  date_Debut_H DATETIME,
-  date_Fin_H DATETIME,
   PRIMARY KEY (id_H, id_G),
   FOREIGN KEY (id_G) REFERENCES GROUPE (id_G),
   FOREIGN KEY (id_H) REFERENCES HEBERGEMENT (id_H)
@@ -271,24 +273,36 @@ DELIMITER ;
 -- trigger 4 permet de verifier qu'il n'y a pas de chevauchement entre les organisations
 
 DELIMITER |
-CREATE TRIGGER Organisation_Chevauchement BEFORE INSERT ON ORGANISATION FOR EACH ROW
+
+CREATE TRIGGER Organisation_Chevauchement
+BEFORE INSERT ON ORGANISATION
+FOR EACH ROW
 BEGIN
-  	DECLARE debut_nouvelle_org DATETIME;
-  	DECLARE fin_nouvelle_org DATETIME;
+    DECLARE debut_nouvelle_org DATETIME;
+    DECLARE fin_nouvelle_org DATETIME;
 
-  	-- Récupérer les dates de début et de fin de la nouvelle organisation
-  	SET debut_nouvelle_org = NEW.date_Debut_O;
-  	SET fin_nouvelle_org = NEW.date_Fin_O;
+    -- Récupérer les dates de début et de fin de la nouvelle organisation
+    SET debut_nouvelle_org = NEW.date_Debut_O;
+    SET fin_nouvelle_org = NEW.date_Fin_O;
 
-  	-- Vérifier si la nouvelle organisation chevauche une autre organisation pour le même concert
-  	-- le select 1 va renvoyer au maximum 1 ligne ce qui va nous suffire à le declancher.
-  	IF EXISTS (SELECT 1 FROM ORGANISATION WHERE id_C = NEW.id_C AND ((debut_nouvelle_org BETWEEN date_Debut_O AND date_Fin_O) OR (fin_nouvelle_org BETWEEN date_Debut_O AND date_Fin_O) or (debut_nouvelle_org>date_Debut_O and fin_nouvelle_org>date_Fin_O))
-  	) 
-  	THEN
-  	  SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'La nouvelle organisation se chevauche avec une autre organisation pour le même concert.';
-  	END IF;
+    -- Vérifier si la nouvelle organisation chevauche une autre organisation pour le même concert
+    -- et ayant le même id_C
+    IF EXISTS (
+        SELECT 1
+        FROM ORGANISATION
+        WHERE id_C = NEW.id_C
+            AND (
+                (debut_nouvelle_org BETWEEN date_Debut_O AND date_Fin_O OR fin_nouvelle_org BETWEEN date_Debut_O AND date_Fin_O)
+                OR (date_Debut_O BETWEEN debut_nouvelle_org AND fin_nouvelle_org OR date_Fin_O BETWEEN debut_nouvelle_org AND fin_nouvelle_org)
+            )
+    )
+    THEN
+        SIGNAL SQLSTATE '45000'
+        SET MESSAGE_TEXT = 'La nouvelle organisation se chevauche avec une autre organisation pour le même concert et le même id_C.';
+    END IF;
 END|
-DELIMITER ;
+
+
 
 -- trigger 5 permet de verifier qu'il n'y a pas de chevauchement entre les participation au activite
 
@@ -319,7 +333,7 @@ BEGIN
   	SET debut_participation = NEW.date_Debut_A;
   	SET fin_participation = NEW.date_Fin_A;
 	
-  	IF EXISTS (SELECT 1 FROM ORGANISATION natural join GROUPE natural join PARTICIPE WHERE DAY(date_Debut_O) = DAY(debut_participation) and MONTH(date_Debut_O) =MONTH(debut_participation) AND YEAR(date_Debut_O)=YEAR(debut_participation) AND (
+  	IF EXISTS (SELECT 1 FROM ORGANISATION natural join GROUPE natural join PARTICIPE WHERE id_G = NEW.id_G AND DAY(date_Debut_O) = DAY(debut_participation) and MONTH(date_Debut_O) =MONTH(debut_participation) AND YEAR(date_Debut_O)=YEAR(debut_participation) AND (
   	      (debut_participation BETWEEN date_Debut_O AND date_Fin_O) OR (fin_participation BETWEEN date_Debut_O AND date_Fin_O))
   	) 
   	THEN

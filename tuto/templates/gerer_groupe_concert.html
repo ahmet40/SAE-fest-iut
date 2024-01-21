@@ -6,7 +6,7 @@
     <div id="grp">
         <h2>Liste de tous les groupe du concert, Début : {{ concert.get_date_debut() }}, Fin : {{ concert.get_date_fin() }} </h2>
     </div>
-    <div>
+    <div id="form-button">
         <form action="{{ url_for('ajouter_groupe',id=concert.get_id_c()) }}">
             <button class="button_top">
                 <span>Ajouter un groupe</span>
@@ -29,7 +29,14 @@
                                     <span>Les activités</span>
                                 </button>
                               </form>
-                          </div>
+                            </div>
+                            <div class="contain-infos-grp">
+                              <form action="{{ url_for('ajouter_hebergement',id_c=concert.get_id_c(),id_g=groupe.get_id_g()) }}">
+                                <button class="button_top">
+                                    <span>Hébergement</span>
+                                </button>
+                              </form>
+                            </div>
                             <div class="contain-infos-grp">
                                 <form class="contain-infos-grp" action="{{ url_for('supprimer_groupe_concert',id_c=concert.get_id_c(),id_g=groupe.get_id_g()) }}" method="post">
                                     <button class="button_supprimer" >

@@ -85,7 +85,7 @@ class Activite_bd:
             int or None: Prochain identifiant disponible, ou None si une erreur survient.
         """
         try:
-            query = text("SELECT MAX(id_C) as m FROM ACTIVITE")
+            query = text("SELECT MAX(id_A) as m FROM ACTIVITE")
             result = self.cnx.execute(query).fetchone()
             if result and result.m:
                 return int(result.m) + 1
@@ -127,9 +127,9 @@ class Activite_bd:
                 return " ERREUR_DATES_NON_CORRESPONDANTES "
             
             # Vérifier si le groupe n'a pas déjà une activité de prévu aux mêmes horaires
-            query_existence = text("SELECT date_Debut_A, date_Fin_A FROM ACTIVITE "
-                                   "WHERE id_C = :id_c AND id_G = :id_g")
-            result_existence = self.cnx.execute(query_existence, {'id_c': id_c, 'id_g': id_g})
+            query_existence = text("SELECT date_Debut_A, date_Fin_A FROM PARTICIPE "
+                                   "WHERE id_G = :id_g")
+            result_existence = self.cnx.execute(query_existence, {'id_g': id_g})
             activites_existantes = result_existence.fetchall()
 
             # On vérifie que le groupe n'a pas un concert de prévu
@@ -151,20 +151,21 @@ class Activite_bd:
                     return "ERREUR_CHEVAUCHEMENT_CONCERT"
 
             id_a = self.get_prochain_id_activite()
+            print(id_a)
             
             # Insérer le nouvel enregistrement dans ACTIVITE
             query_insertion_activite = text("""
-                INSERT INTO ACTIVITE (id_A, type_Act, id_L, date_Debut_A, date_Fin_A)
-                VALUES (:id_a, :type_act, :id_l, :date_debut, :date_fin)
+                INSERT INTO ACTIVITE (id_A, type_Act, id_L)
+                VALUES (:id_a, :type_act, :id_l)
             """)
-            self.cnx.execute(query_insertion_activite, {'id_a': id_a, 'type_act': name, 'id_l': id_l, 'date_debut': date_debut, 'date_fin': date_fin})
+            self.cnx.execute(query_insertion_activite, {'id_a': id_a, 'type_act': name, 'id_l': id_l})
 
             # Insérer le nouvel enregistrement dans PARTICIPE
             query_insertion_participe = text("""
-                INSERT INTO PARTICIPE (id_A, id_G)
-                VALUES (:id_a, :id_g)
+                INSERT INTO PARTICIPE (id_A, id_G, date_Debut_A, date_Fin_A)
+                VALUES (:id_a, :id_g, :date_debut, :date_fin)
             """)
-            self.cnx.execute(query_insertion_participe, {'id_a': id_a, 'id_g': id_g})
+            self.cnx.execute(query_insertion_participe, {'id_a': id_a, 'id_g': id_g, 'date_debut': date_debut, 'date_fin': date_fin})
 
             # Valider les changements
             self.cnx.commit()
@@ -205,7 +206,7 @@ class Activite_bd:
 
     
     
-    def delete_activite_groupe(seld,id_a):
+    def delete_activite_groupe(self,id_a):
         """
         Supprime une activité d'un groupe dans la base de données.
 
@@ -219,8 +220,9 @@ class Activite_bd:
             Exception: En cas d'erreur lors de la suppression de l'activité.
         """
         try:
-            query1 = text(f"delete from ACTIVITE where id_G={str(id_a)}")
-            query2 = text(f"delete from PARTICIPE where id_G={str(id_a)}")
+            query1 = text(f"delete from PARTICIPE where id_A={str(id_a)}")
+            query2 = text(f"delete from ACTIVITE where id_A={str(id_a)}")
+            
 
 
             self.cnx.execute(query1)
@@ -228,7 +230,7 @@ class Activite_bd:
             self.cnx.commit()
 
         except Exception as e:
-            print("delete groupe a échoué")
+            print("delete activité du groupe a échoué", e)
             return None
         
 
