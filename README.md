@@ -8,7 +8,7 @@ Ce projet a était réaliser par deux étudiant du BUT informatique dans le cadr
     - MARIDAT Ethan
     - BABA Ahmet
 ## lancement du projet.
-    Pour lancer ce projet il faut commencer par copier les fichiers et coller les fichier creation.sql et insertion.sql dans votre bdd mysql (en décommentant les ligne 'create databases ...' et 'use ...'). Ensuite il faut crée un utilisateur et li attribuer tous les droit sur la databases en faisant : 
+    Pour lancer ce projet il faut commencer par copier les fichiers et coller les fichier creation.sql et insertion.sql dans votre bdd mysql (en décommentant les ligne 'create databases ...' et 'use ...'). Ensuite il faut crée un utilisateur et lui attribuer tous les droit sur la databases en faisant : 
     - CREATE USER 'nom_utilisateur'@'localhost' identified by ''mot_de_passe;
     - grant all privilages on * . * to 'utilisateur'@'localhost';
     - flush privilages;
@@ -25,5 +25,6 @@ Ce projet a était réaliser par deux étudiant du BUT informatique dans le cadr
         Une fois que le client est connecter sur la page infos concert il peut acheter le billet pour le concert et aprés cela apparaitra dans sa page mes-concert. Il peut aussi ajoute un groupe en favoris et voir ses groupes favoris.
 
         - Admin :
-        L'admin peut gerer les Groupe et les chanteur il peut ajouter ou les  supprimer. De plus, pour les groupes on peut ajouter des chanteurs et leur crée des activités annexe.
-        Nous pouvons aussi gerer les concert, en ajouter, lui associés des groupes, les supprimer. On peut aussi crée des hebergement pour les groupes d'un concert.
+        L'administrateur peut gérer les groupes et les chanteurs en ayant la possibilité de les ajouter ou de les supprimer. De plus, pour les groupes, il est possible d'ajouter des chanteurs et de créer des activités annexes pour eux. 
+
+        Nous pouvons également gérer les concerts en les ajoutant, en leur associant des groupes, et en les supprimant. Il est également possible de créer des hébergements pour les groupes participant à un concert. 
