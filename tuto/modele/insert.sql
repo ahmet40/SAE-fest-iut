@@ -88,13 +88,7 @@ INSERT INTO GROUPE (id_G,nom,description, id_IMAGE, lien_Reseaux, lien_Video) VA
 (3,'les pops','Pop Sensation', 6, 'www.popsensation.com', 'www.youtube.com/popsensation'),
 (4,'Daft Punk','Hip Hop Crew', 7, 'www.hiphopcrew.com', 'www.youtube.com/daft-punk'),
 (5,'Telephone','Classical Orchestra', 8, 'www.classicalorchestra.com', 'www.youtube.com/telephone');
--- BILLET
-INSERT INTO BILLET (id_B,id_Spec, id_C, id_T) VALUES
-(1, 1, 1, 2),
-(2, 2, 3, 1),
-(3, 3, 2, 3),
-(4, 4, 2, 4),
-(5, 5, 3, 5);
+
 
 
 -- HEBERGEMENT

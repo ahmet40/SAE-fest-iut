@@ -95,7 +95,7 @@ class Billet_bd:
             self.cnx.execute(query)
             self.cnx.commit()
         except Exception as e:
-            print("insertion billet a échoué")
+            print("insertion billet a échoué", e)
             return None
         
     def supprimer_billet(self,id_C,id_Spec):
