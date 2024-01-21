@@ -1,0 +1,30 @@
+{% extends "base_admin.html" %}
+{% block styles %}
+    {{ super() }}
+{% endblock %}
+{% block content %}
+<form method="POST" action="{{ url_for('action_creer_membre', id=grp) }}">
+    <!-- Menu déroulant pour les noms des personnes -->
+    <label for="selectPersonne">Sélectionnez une personne :</label>
+    <select name="selectPersonne" id="selectPersonne">
+      {% for pers in personne %}
+        <option value="{{ pers.get_id_p() }}">{{ pers.get_nom_p() }}</option>
+      {% endfor %}
+    </select>
+  
+    <br>
+  
+    <!-- Menu déroulant pour les instruments -->
+    <label for="selectInstrument">Sélectionnez un instrument :</label>
+    <select name="selectInstrument" id="selectInstrument">
+      {% for instr in instrument %}
+        <option value="{{ instr.get_id_i() }}">{{ instr.get_nom_i() }}</option>
+      {% endfor %}
+    </select>
+  
+    <br>
+  
+    <!-- Bouton pour soumettre le formulaire -->
+    <input type="submit" value="Créer Membre">
+  </form>
+{% endblock %}

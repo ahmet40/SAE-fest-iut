@@ -1,0 +1,40 @@
+
+#concert-proche{
+    display:flex;
+    justify-content: space-between;
+    margin-right: 50px;
+    margin-left: 50px;
+}
+#conteneur-proche {
+    margin-top: 10px;
+    width : 100%;
+    display: grid;
+    justify-content: center;
+    align-items: center;
+    align-content: center;
+}
+#container{
+    width :100%;
+
+}
+.box-concert{
+    border-bottom: 1px solid black;
+    border-top: 1px solid black;
+}
+#liste-concert-titre{
+    margin-left: 5px;
+
+}
+.plus-a-gauche{
+    margin-left: 1vw;
+}
+
+#resultat-message{
+    color:red
+}
+
+#img-date-lieux{
+    display: flex;
+}
+
+

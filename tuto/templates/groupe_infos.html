@@ -1,0 +1,173 @@
+{% extends "base_slogan.html" %}
+{% block styles %}
+    {{ super() }}
+    {% endblock %}
+    {% block main_content %}
+    <div id="titre-img">
+        <div id="test">
+            <img id="img-membre" src="{{ url_for('static', filename='images/' + groupe[0][1]) }}" alt="image du groupe">
+            <h1>
+                Groupe : {{ groupe[0][0].get_nom() }}
+            </h1>
+        </div>
+        {% if le_spectateur.get_id_p()!=-1 %}
+        <div id="favorite-btn" data-group-id="{{ groupe[0][0].get_id_g() }}">
+            {% if is_group_favorite %}
+                <label class="container">
+                    <input type="checkbox" checked>
+                    <svg id="Layer_1" version="1.0" viewBox="0 0 24 24" xml:space="preserve" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+                        <path d="M16.4,4C14.6,4,13,4.9,12,6.3C11,4.9,9.4,4,7.6,4C4.5,4,2,6.5,2,9.6C2,14,12,22,12,22s10-8,10-12.4C22,6.5,19.5,4,16.4,4z"></path>
+                    </svg>
+                </label>
+            {% else %}
+                <label class="container">
+                    <input type="checkbox">
+                    <svg id="Layer_1" version="1.0" viewBox="0 0 24 24" xml:space="preserve" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+                        <path d="M16.4,4C14.6,4,13,4.9,12,6.3C11,4.9,9.4,4,7.6,4C4.5,4,2,6.5,2,9.6C2,14,12,22,12,22s10-8,10-12.4C22,6.5,19.5,4,16.4,4z"></path>
+                    </svg>
+                </label>
+            {% endif %}
+        </div>
+        {% endif %}
+    </div>
+    <div id="all_grp">
+        <div id="desc">
+            <div id="title">
+                <h2>Description</h2>
+                <p>{{ groupe[0][0].get_description() }}</p>
+            </div>
+        </div>
+        <div id="membre">
+            <div id="title">
+                <h2>Membres</h2>
+            </div>
+            <div id="tout-container">
+                <div id="tout">
+                    {% if chanteur %}
+                            {% for personne,instrument,image in chanteur %}
+                                <div class="dans-boucle">
+                                    <div class="contain-infos-grp img-contain"><img class="groupe-img" src="{{ url_for('static', filename='images/' + image) }}" alt="image du chanteur"></div>
+                                    <div class="contain-infos-grp"><p>{{ personne.get_nom_p() }}, {{ personne.get_prenom_p() }}</p></div>
+                                    <div class="contain-infos-grp"><p>{{ instrument }}</p></div>
+
+                                    </div>
+                            {% endfor %}
+                    {% endif %}
+                    {% if chanteur == [] %}
+                        <p>Pas de chanteur</p>
+                    {% endif %}
+                </div>
+            </div> 
+        </div>
+        {% if concert_future %}
+            <div id="concert">
+                <div id="title">
+                    <h2>futurs Concerts</h2>
+                </div>
+                <div id="lien">
+                    <div id="infos-membre">
+                        
+                        {% for org,nomconcert,img in concert_future %}
+                            <div id="concert">
+                                <a href="{{ url_for('infos_concert', id=org.get_id_c()) }}"><img class="plus-a-gauche img" src="{{ url_for('static', filename='images/' + img) }}" alt="image de tous les concert"></a>
+                                <a href="">{{ nomconcert }}</a>
+                            </div>
+                            
+                        {% endfor %}
+                        
+                    </div>
+                </div>
+        
+            </div>
+        {% endif %}
+
+        {% if concert_passe %}
+            <div id="concert">
+                <div id="title">
+                    <h2>Concerts Passé</h2>
+                </div>
+                <div id="lien">
+                    <div id="infos-membre">
+                        
+                        {% for org,nomconcert,img in concert_passe %}
+                            <div id="concert">
+                                <a href="{{ url_for('infos_concert', id=org.get_id_c()) }}"><img class="plus-a-gauche img" src="{{ url_for('static', filename='images/' + img) }}" alt="image de tous les concert"></a>
+                                <a href="">{{ nomconcert }}</a>
+                            </div>
+                        {% endfor %}
+                        
+                    </div>
+                </div>
+            </div>
+        {% endif %}
+        
+        <div id="lien">
+            <h2>Liens</h2>
+            <p>résaux : {{ groupe[0][0].get_lien_reseaux() }}</p>
+            <p>vidéo : {{ groupe[0][0].get_lien_video() }}</p>
+        </div>
+        {% if act_future %}
+            <div id="concert">
+                <div id="title">
+                    <h2>Activité futurs</h2>
+                </div>
+                <div id="lien">
+                    <div id="infos-membre">
+                        
+                        {% for activite,desc,dep,noml in act_future %}
+                            <div id="concert">
+                                <p>{{ desc}} à {{dep}},{{noml}}</p>
+                                <p>Du : {{activite.get_date_debut_a()}} au : {{activite.get_date_fin_a()}}</p>
+                            </div>
+                            
+                        {% endfor %}
+                        
+                    </div>
+                </div>
+            </div>
+        {% endif %}
+        {% if act_passe %}
+            <div id="concert">
+                <div id="title">
+                    <h2>Activité passé</h2>
+                </div>
+                <div id="lien">
+                    <div id="infos-membre">
+                        
+                        {% for activite,desc,dep,noml in act_passe %}
+                            <div id="concert">
+                                <p>{{ desc}} à {{dep}},{{noml}}</p>
+                                <p>Du : {{activite.get_date_debut_a()}} au : {{activite.get_date_fin_a()}}</p>
+                            </div>
+                            
+                        {% endfor %}
+                        
+                    </div>
+                </div>
+            </div>
+        {% endif %}
+
+    <script>
+        document.getElementById('favorite-btn').addEventListener('change', function() {
+            var groupId = this.getAttribute('data-group-id');
+            var isChecked = this.querySelector('input').checked;
+    
+            fetch('/groupe/' + groupId, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ 'isChecked': isChecked }),
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log('Statut:', data.status);
+                // Mettez à jour le style du cœur en conséquence (rouge ou blanc) ici si nécessaire
+            })
+            .catch((error) => {
+                console.error('Erreur:', error);
+            });
+        });
+    </script>
+    
+{% endblock %}

@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="utf-8">
+    <title>Fest-Accueil</title>
+    <link rel="stylesheet" href="../static/style/portails.css">
+</head>
+<body>
+    <header>
+        <div></div>
+        <h1>Fest-iut</h1>
+        <a href="{{url_for('login_spec')}}"><img src="../static/images/utilisateur.png" alt="personne" width="70"></a>
+    </header>
+    <main class="main-base">
+        <div class="container">
+            <form action="{{url_for('login_spec')}}" method="get" class="form">
+                <div class="portail-button">
+                    <input type="submit" value="Spectateur" class="btn" />
+                </div>
+                <a></a>
+            </form>
+            <form action="{{url_for('login_admin')}}" method="get" class="form">
+                <div class="portail-admin">
+                <input type="submit" value="Administrateur" class="btn" />
+                </div>
+                <a></a>
+            </form>
+        </div>
+    </main>
+</body>
+</html>

@@ -1,0 +1,49 @@
+{% extends "base_slogan.html" %}
+{% block styles %}
+    {{ super() }}
+    {% endblock %}
+    {% block main_content %}
+    <div id="container">
+        <div class="row">
+            <div class="col-md-12">
+                <div id="titre-search">
+                    <h1 id="liste-concert-titre">Liste des concerts</h1>
+                    <h2 id="resultat-message" style="display: none;">Aucun résultat trouvé.</h2>
+                    <div id="form-search">
+                        <form action="" onsubmit="search(); return false;">
+                          <div class="search-bar">
+                            <input type="text" name="query" placeholder="Un nom de concert">
+                            <button type="submit">Go</button>
+                          </div>
+                        </form>
+                    </div>
+                    
+                        
+                </div>
+            </div>
+                {% if liste_concert|length == 0 %}
+                    <p>Aucun concert n'est disponible pour le moment</p>
+                {% else %}
+                    {% for concert,image,lieux in liste_concert %}
+                        <div class="box-concert">
+                            <h3 class="plus-a-gauche">{{ concert.get_nom_c() }}</h3>
+                            <div >
+                                <div id="img-date-lieux">
+                                <a href="{{ url_for('infos_concert', id=concert.get_id_c()) }}"><img class="plus-a-gauche img" src="{{ url_for('static', filename='images/' + image) }}" alt="image de tous les concert"></a>
+                                    <div id="date">
+                                        <p class="plus-a-gauche">Date début (année/mois/jour : hh/mn/sd) : {{ concert.get_date_debut() }}</p>
+                                        <p class="plus-a-gauche">Date fin (année/mois/jour : hh/mn/sd) : {{ concert.get_date_fin() }}</p>
+                                    </div>
+                                </div>
+                                <div id="lieux">
+                                    <p class="plus-a-gauche">Région : {{ lieux[0] }}</p>
+                                    <p class="plus-a-gauche">lieux : {{ lieux[1] }}</p>
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
+                {% endif %}
+            </div>
+        </div>
+    </div>
+{% endblock %}

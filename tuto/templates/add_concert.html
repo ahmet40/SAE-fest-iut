@@ -1,0 +1,190 @@
+{% extends "base_admin.html" %}
+{% block styles %}
+    {{ super() }}
+{% endblock %}
+{% block content %}
+    <h1>Ajouter un Concert</h1>
+
+    <form class="form" action="{{ url_for('action_creer_concert') }}" method="POST" enctype="multipart/form-data">
+        <!-- Champ pour l'ID du Concert (caché, car généralement auto-incrémenté) -->
+        <input type="hidden" name="id_C">
+        <label for="nom_C">Nom du Concert:</label>
+        <input type="text" name="nom_C" required>
+
+        <label for="date_Debut">Date de Début:</label>
+        <input type="datetime-local" name="date_Debut" required>
+
+        <label for="date_Fin">Date de Fin:</label>
+        <input type="datetime-local" name="date_Fin" required>
+
+        <!-- Liste déroulante pour les départements -->
+        <label for="departement">Département:</label>
+        <select name="departement" required>
+            <option value="Ain">Ain</option>
+            <option value="Aisne">Aisne</option>
+            <option value="Allier">Allier</option>
+            <option value="Alpes-de-Haute-Provence">Alpes-de-Haute-Provence</option>
+            <option value="Hautes-Alpes">Hautes-Alpes</option>
+            <option value="Alpes-Maritimes">Alpes-Maritimes</option>
+            <option value="Ardèche">Ardèche</option>
+            <option value="Ardennes">Ardennes</option>
+            <option value="Ariège">Ariège</option>
+            <option value="Aube">Aube</option>
+            <option value="Aude">Aude</option>
+            <option value="Aveyron">Aveyron</option>
+            <option value="Bouches-du-Rhône">Bouches-du-Rhône</option>
+            <option value="Calvados">Calvados</option>
+            <option value="Cantal">Cantal</option>
+            <option value="Charente">Charente</option>
+            <option value="Charente-Maritime">Charente-Maritime</option>
+            <option value="Cher">Cher</option>
+            <option value="Corrèze">Corrèze</option>
+            <option value="Corse-du-Sud">Corse-du-Sud</option>
+            <option value="Haute-Corse">Haute-Corse</option>
+            <option value="Côte-d'Or">Côte-d'Or</option>
+            <option value="Côtes-d'Armor">Côtes-d'Armor</option>
+            <option value="Creuse">Creuse</option>
+            <option value="Dordogne">Dordogne</option>
+            <option value="Doubs">Doubs</option>
+            <option value="Drôme">Drôme</option>
+            <option value="Eure">Eure</option>
+            <option value="Eure-et-Loir">Eure-et-Loir</option>
+            <option value="Finistère">Finistère</option>
+            <option value="Gard">Gard</option>
+            <option value="Haute-Garonne">Haute-Garonne</option>
+            <option value="Gers">Gers</option>
+            <option value="Gironde">Gironde</option>
+            <option value="Hérault">Hérault</option>
+            <option value="Ille-et-Vilaine">Ille-et-Vilaine</option>
+            <option value="Indre">Indre</option>
+            <option value="Indre-et-Loire">Indre-et-Loire</option>
+            <option value="Isère">Isère</option>
+            <option value="Jura">Jura</option>
+            <option value="Landes">Landes</option>
+            <option value="Loir-et-Cher">Loir-et-Cher</option>
+            <option value="Loire">Loire</option>
+            <option value="Haute-Loire">Haute-Loire</option>
+            <option value="Loire-Atlantique">Loire-Atlantique</option>
+            <option value="Loiret">Loiret</option>
+            <option value="Lot">Lot</option>
+            <option value="Lot-et-Garonne">Lot-et-Garonne</option>
+            <option value="Lozère">Lozère</option>
+            <option value="Maine-et-Loire">Maine-et-Loire</option>
+            <option value="Manche">Manche</option>
+            <option value="Marne">Marne</option>
+            <option value="Haute-Marne">Haute-Marne</option>
+            <option value="Mayenne">Mayenne</option>
+            <option value="Meurthe-et-Moselle">Meurthe-et-Moselle</option>
+            <option value="Meuse">Meuse</option>
+            <option value="Morbihan">Morbihan</option>
+            <option value="Moselle">Moselle</option>
+            <option value="Nièvre">Nièvre</option>
+            <option value="Nord">Nord</option>
+            <option value="Oise">Oise</option>
+            <option value="Orne">Orne</option>
+            <option value="Pas-de-Calais">Pas-de-Calais</option>
+            <option value="Puy-de-Dôme">Puy-de-Dôme</option>
+            <option value="Pyrénées-Atlantiques">Pyrénées-Atlantiques</option>
+            <option value="Hautes-Pyrénées">Hautes-Pyrénées</option>
+            <option value="Pyrénées-Orientales">Pyrénées-Orientales</option>
+            <option value="Bas-Rhin">Bas-Rhin</option>
+            <option value="Haut-Rhin">Haut-Rhin</option>
+            <option value="Rhône">Rhône</option>
+            <option value="Haute-Saône">Haute-Saône</option>
+            <option value="Saône-et-Loire">Saône-et-Loire</option>
+            <option value="Sarthe">Sarthe</option>
+            <option value="Savoie">Savoie</option>
+            <option value="Haute-Savoie">Haute-Savoie</option>
+            <option value="Paris">Paris</option>
+            <option value="Seine-Maritime">Seine-Maritime</option>
+            <option value="Seine-et-Marne">Seine-et-Marne</option>
+            <option value="Yvelines">Yvelines</option>
+            <option value="Deux-Sèvres">Deux-Sèvres</option>
+            <option value="Somme">Somme</option>
+            <option value="Tarn">Tarn</option>
+            <option value="Tarn-et-Garonne">Tarn-et-Garonne</option>
+            <option value="Var">Var</option>
+            <option value="Vaucluse">Vaucluse</option>
+            <option value="Vendée">Vendée</option>
+            <option value="Vienne">Vienne</option>
+            <option value="Haute-Vienne">Haute-Vienne</option>
+            <option value="Vosges">Vosges</option>
+            <option value="Yonne">Yonne</option>
+            <option value="Territoire de Belfort">Territoire de Belfort</option>
+            <option value="Essonne">Essonne</option>
+            <option value="Hauts-de-Seine">Hauts-de-Seine</option>
+            <option value="Seine-Saint-Denis">Seine-Saint-Denis</option>
+            <option value="Val-de-Marne">Val-de-Marne</option>
+            <option value="Val-d'Oise">Val-d'Oise</option>
+        </select>
+
+        <label for="lieux">Nom du lieux:</label>
+        <input type="text" name="lieux" required>
+
+        <label for="capacite">Capacité du Lieu:</label>
+        <input type="number" name="capacite" required>
+
+        <div class="form-label-admin">
+
+            <label class="custum-file-upload" id="dropZone" for="file" required>
+                <div class="icon">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="" viewBox="0 0 24 24"><g stroke-width="0" id="SVGRepo_bgCarrier"></g><g stroke-linejoin="round" stroke-linecap="round" id="SVGRepo_tracerCarrier"></g><g id="SVGRepo_iconCarrier"> <path fill="" d="M10 1C9.73478 1 9.48043 1.10536 9.29289 1.29289L3.29289 7.29289C3.10536 7.48043 3 7.73478 3 8V20C3 21.6569 4.34315 23 6 23H7C7.55228 23 8 22.5523 8 22C8 21.4477 7.55228 21 7 21H6C5.44772 21 5 20.5523 5 20V9H10C10.5523 9 11 8.55228 11 8V3H18C18.5523 3 19 3.44772 19 4V9C19 9.55228 19.4477 10 20 10C20.5523 10 21 9.55228 21 9V4C21 2.34315 19.6569 1 18 1H10ZM9 7H6.41421L9 4.41421V7ZM14 15.5C14 14.1193 15.1193 13 16.5 13C17.8807 13 19 14.1193 19 15.5V16V17H20C21.1046 17 22 17.8954 22 19C22 20.1046 21.1046 21 20 21H13C11.8954 21 11 20.1046 11 19C11 17.8954 11.8954 17 13 17H14V16V15.5ZM16.5 11C14.142 11 12.2076 12.8136 12.0156 15.122C10.2825 15.5606 9 17.1305 9 19C9 21.2091 10.7909 23 13 23H20C22.2091 23 24 21.2091 24 19C24 17.1305 22.7175 15.5606 20.9844 15.122C20.7924 12.8136 18.858 11 16.5 11Z" clip-rule="evenodd" fill-rule="evenodd"></path> </g></svg>
+                </div>
+                <div class="text" >
+                   <span>Click to upload image</span>
+                   </div>
+                   <input type="file" name="image" id="inputFile" accept="image/*" required>
+
+                </div>
+            </label>
+
+            <div class="image-preview" id="imagePreview" style="display: none;">
+                <span class="image-preview__prompt">Aucune image sélectionnée</span>
+                <img src="" alt="Image preview" class="image-preview__image">
+            </div>
+
+
+
+        </div>
+
+        <input type="submit" value="Créer" id="button_create">
+    </form>
+
+
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const dropZone = document.getElementById("dropZone");
+            const inputFile = document.getElementById("inputFile");
+            const imagePreview = document.getElementById("imagePreview");
+    
+            dropZone.addEventListener("click", () => {
+                inputFile.click();
+            });
+    
+            inputFile.addEventListener("change", handleFileSelect);
+    
+            // Ajoutez cet événement de clic pour changer l'image
+            imagePreview.querySelector(".image-preview__image").addEventListener("click", () => {
+                inputFile.click();
+            });
+    
+            function handleFileSelect() {
+                const files = inputFile.files;
+    
+                if (files.length > 0) {
+                    const reader = new FileReader();
+    
+                    reader.onload = function (e) {
+                        imagePreview.querySelector(".image-preview__image").src = e.target.result;
+                        imagePreview.querySelector(".image-preview__prompt").style.display = "none";
+                        dropZone.style.display = "none";
+                        imagePreview.style.display = "block";
+                        document.querySelector(".change-image-section").style.display = "block";
+                    };
+    
+                    reader.readAsDataURL(files[0]);
+                }
+            }
+        });
+    </script>
+{% endblock %}

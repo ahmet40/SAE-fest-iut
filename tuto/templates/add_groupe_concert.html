@@ -1,0 +1,50 @@
+{% extends "base_admin.html" %}
+{% block styles %}
+    {{ super() }}
+{% endblock %}
+{% block content %}
+    <div id="grp">
+        <h2>Liste de tous les groupes absents du concert</h2>
+        <p>{{concert.get_date_debut()}}</p>
+    </div>
+    
+    <div id="tout-container">
+        <div id="tout">
+            {% if groupes %}
+                    {% for groupe,image,style in groupes %}
+                        <div class="dans-boucle">
+
+                            <div class="contain-infos-grp img-contain"><img class="groupe-img" src="{{ url_for('static', filename='images/' + image) }}" alt="image du groupe"></div>
+                            <div class="contain-infos-grp"><p>{{ groupe.get_nom() }}</p></div>
+                            <div class="contain-infos-grp"><p>{{ style }}</p></div>
+                            <div class="contain-infos-grp">
+
+                                <form class="contain-infos-grp" action="{{ url_for('action_ajouter_groupe_concert',id_c=concert.get_id_c(),id_g=groupe.get_id_g()) }}" method="post">
+                                    <label for="debut_concert">Début du concert:</label>
+                                    <input type="datetime-local" id="debut_concert" name="debut_concert" required min="{{ concert.get_date_debut() }}" max="{{ concert.get_date_fin() }}">
+
+                                    <label for="fin_concert">Fin du concert:</label>
+                                    <input type="datetime-local" id="fin_concert" name="fin_concert" required min="{{ concert.get_date_debut() }}" max="{{ concert.get_date_fin() }}">
+
+                                    <button class="button_ajouter" type="submit">
+                                        <span class="button__text">Ajouter</span>
+                                        <span class="button__icon"><svg class="svg" fill="none" height="24" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><line x1="12" x2="12" y1="5" y2="19"></line><line x1="5" x2="19" y1="12" y2="12"></line></svg></span>
+                                    </button>
+                                </form>
+                            </div>
+                            <div id="popup-container" class="popup-container">
+                                <div id="popup" class="popup">
+                                    <span class="close" onclick="closePopup()">&times;</span>
+                                    <p id="popup-message"></p>
+                                </div>
+                            </div>
+                        
+                        </div>
+                    {% endfor %}
+            {% else %}
+                <p>Pas de groupe </p>
+            {% endif %}
+        </div>
+    </div>
+    
+{% endblock %}

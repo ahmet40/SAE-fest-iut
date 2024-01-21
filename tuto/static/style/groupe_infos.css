@@ -1,0 +1,170 @@
+.img{
+    width: 115px;
+    height: 140px;
+    object-fit: cover;
+    padding: 2px;
+    border-radius: 15px;
+}
+#img-membre{
+    border-radius: 50%;
+    width: 100px;
+    height: 100px;
+}
+#infos-membre{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 5px;
+    margin-top: 5px;
+    width: 100%;
+}
+
+#titre-img{
+    display: flex;
+    width: 100%;
+    justify-content:space-around;
+    border-bottom: 1px solid black;
+}
+
+a{
+    text-decoration: none;
+    color: black;
+}
+
+#test{
+    display: flex;
+    justify-content:space-around;
+}
+
+
+#titre-img>div>img{
+    margin: 5px;
+}
+
+#img{
+    display: flex;
+    align-items: center;
+    width : 100%;
+}
+#desc{
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+}
+#lien{
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+}
+#all_grp{
+    width: 100%;
+}
+
+#title{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    border-bottom: 1px solid black;
+}
+
+
+
+.container input {
+    position: absolute;
+    opacity: 0;
+    cursor: pointer;
+    height: 0;
+    width: 0;
+  }
+  
+  .container {
+    display: block;
+    position: relative;
+    cursor: pointer;
+    user-select: none;
+  }
+  
+  .container svg {
+    position: relative;
+    top: 0;
+    left: 0;
+    height: 50px;
+    width: 50px;
+    transition: all 0.3s;
+    fill: #666;
+  }
+  
+  .container svg:hover {
+    transform: scale(1.1);
+  }
+  
+  .container input:checked ~ svg {
+    fill: #E3474F;
+  }
+#concert{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+
+
+#tout-container {
+    overflow-x: auto;
+    margin-right: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    flex-direction: column;
+}
+
+#tout {
+    display: flex;
+    width: 90%;
+    justify-content: center;
+    align-items: center;
+    background-color: #f1f1f1;
+    border-radius: 15px;
+    margin-top: 4vh;
+    flex-direction: column;
+}
+
+.contain-infos-grp{
+    display: flex;
+    width: 33%;
+    justify-content: center;align-items: center;
+}
+
+
+#grp {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    align-content: center;
+    border-top: 0.5px solid black;
+    border-bottom: 0.5px solid black;
+}
+
+.dans-boucle{
+    display:flex;
+    width :95%;
+    justify-content: space-around;
+    border-bottom: 0.5px solid rgb(83, 83, 83);
+}
+.groupe-img{
+    width: 6vw;
+    height: 7vh;
+    border-radius: 35%;
+}
+.img-contain{
+    display: flex;
+    justify-content: start;
+    align-items: start;
+    padding-left:5px;
+}

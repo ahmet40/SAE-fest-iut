@@ -1,0 +1,26 @@
+{% extends "base_slogan.html" %}
+{% block styles %}
+    {{ super() }}
+{% endblock %}
+{% block main_content %}
+    <div id="grp">
+        <h2>Les groupes</h2>
+    </div>
+    <div id="tout-container">
+        <div id="tout">
+            {% if liste_groupe %}
+                    {% for grp,image,cpt in liste_groupe %}
+                        <div class="dans-boucle">
+                            <div class="contain-infos-grp img-contain"><img class="groupe-img" src="{{ url_for('static', filename='images/' + image) }}" alt="image des groupes"></div>
+                            <div class="contain-infos-grp"><a class="aa" href="{{ url_for('groupe',id=grp.get_id_g())}}">{{ grp.get_nom() }}</a></div>
+                            <div class="contain-infos-grp"><p>concert à venir : {{cpt}}</p></div>
+                        </div>
+                    {% endfor %}
+            {% endif %}
+            {% if liste_groupe == [] %}
+                <p>Il n'existe pas encore de groupe de music</p>
+            {% endif %}
+        </div>
+    </div>
+
+{% endblock %}

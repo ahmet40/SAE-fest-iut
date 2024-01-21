@@ -1,0 +1,26 @@
+{% extends "base_slogan.html" %}
+{% block styles %}
+    {{ super() }}
+{% endblock %}
+{% block main_content %}
+    <div id="grp">
+        <h2>Liste de tous les chanteurs</h2>
+    </div>
+    <div id="tout-container">
+        <div id="tout">
+            {% if chanteur %}
+                    {% for personne,image,cpt in chanteur %}
+                        <div class="dans-boucle">
+                            <div class="contain-infos-grp img-contain"><img class="groupe-img" src="{{ url_for('static', filename='images/' + image) }}" alt="image du chanteur"></div>
+                            <div class="contain-infos-grp"><p>{{ personne.get_nom_p() }} {{ personne.get_prenom_p() }}</p></div>
+
+                            <div class="contain-infos-grp"><a class="aa" href="{{ url_for('get_infos_groupe',id=personne.get_id_p()) }}">Nombre de groupe : {{cpt}}</a></div>
+                        </div>
+                    {% endfor %}
+            {% endif %}
+            {% if chanteur == [] %}
+                <p>Pas de chanteur</p>
+            {% endif %}
+        </div>
+    </div> 
+{% endblock %}
